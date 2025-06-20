@@ -83,10 +83,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     return GestureDetector(
       onTap: _onScreenTapped,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: VideoPlayer(_controller),
+            ),
           ),
           if (_showControls)
             Positioned(
@@ -94,8 +98,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               left: 0,
               right: 0,
               child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withOpacity(0.3),
                   borderRadius: isPortrait
                       ? const BorderRadius.only(
                           bottomLeft: Radius.circular(20.0),
@@ -104,63 +109,71 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                       : null,
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    VideoProgressIndicator(
-                      _controller,
-                      allowScrubbing: true,
-                      colors: VideoProgressColors(
-                        playedColor: Colors.red,
-                        bufferedColor: Colors.grey,
-                        backgroundColor: Colors.black,
-                      ),
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.replay_5, color: Colors.white),
-                          onPressed: () {
-                            final newPosition =
-                                _controller.value.position -
-                                const Duration(seconds: 5);
-                            _controller.seekTo(newPosition);
-                          },
+                          icon: const Icon(Icons.shuffle, color: Colors.white),
+                          onPressed: () {},
                         ),
+                        const Spacer(),
                         IconButton(
-                          icon: Icon(
-                            _controller.value.isPlaying
-                                ? Icons.pause
-                                : Icons.play_arrow,
+                          icon: const Icon(Icons.skip_previous, color: Colors.white),
+                          onPressed: () {},
+                        ),
+                        const Spacer(),
+                        Container(
+                          decoration: BoxDecoration(
                             color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 8,
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            setState(() {
+                          child: IconButton(
+                            icon: Icon(
                               _controller.value.isPlaying
-                                  ? _controller.pause()
-                                  : _controller.play();
-                            });
-                          },
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              color: Colors.orange,
+                              size: 32,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _controller.value.isPlaying
+                                    ? _controller.pause()
+                                    : _controller.play();
+                              });
+                            },
+                          ),
                         ),
+                        const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.forward_5, color: Colors.white),
-                          onPressed: () {
-                            final newPosition =
-                                _controller.value.position +
-                                const Duration(seconds: 5);
-                            _controller.seekTo(newPosition);
-                          },
+                          icon: const Icon(Icons.skip_next, color: Colors.white),
+                          onPressed: () {},
                         ),
-                        if (!isPortrait)
-                          IconButton(
-                            icon: const Icon(Icons.screen_rotation, color: Colors.white),
-                            onPressed: _toggleOrientation,
-                          ),
-                        if (isPortrait)
-                          IconButton(
-                            icon: const Icon(Icons.fullscreen, color: Colors.white),
-                            onPressed: _toggleOrientation,
-                          ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.volume_up, color: Colors.white),
+                          onPressed: () {},
+                        ),
                       ],
+                    ),
+                    const SizedBox(height: 8),
+                    Slider(
+                      value: _controller.value.position.inSeconds.toDouble(),
+                      min: 0,
+                      max: _controller.value.duration.inSeconds.toDouble(),
+                      onChanged: (value) {
+                        _controller.seekTo(Duration(seconds: value.toInt()));
+                      },
+                      activeColor: Colors.white,
+                      inactiveColor: Colors.white.withOpacity(0.3),
                     ),
                   ],
                 ),

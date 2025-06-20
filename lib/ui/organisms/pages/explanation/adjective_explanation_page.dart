@@ -11,9 +11,28 @@ class AdjectiveExplanationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adjective Explanation'),
-        backgroundColor: LColors.blueDark,
+        backgroundColor: LColors.blue,
         elevation: 0,
+        title: Column(
+          children: [
+            Text(
+              'ADJECTIVE EXPLANATION',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Learn Concepts Easily',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
       ),
       backgroundColor: LColors.blueDark,
       body: ListView.builder(
