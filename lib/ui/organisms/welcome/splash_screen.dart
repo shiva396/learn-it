@@ -2,8 +2,8 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:learnit/auth/auth_functions.dart';
 import 'package:learnit/ui/molecules/splash_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -19,17 +19,18 @@ class _SplashState extends State<Splash> {
     navigateAfterDelay();
   }
 
-  void navigateAfterDelay() {
-    Future.delayed(const Duration(seconds: 2), () async {
-      final loggedIn = await isLoggedIn();
-      if (!context.mounted) return;
+  void navigateAfterDelay() async {
+    await Future.delayed(const Duration(seconds: 2));
+    final prefs = await SharedPreferences.getInstance();
+    final userName = prefs.getString('userName');
 
-      if (!loggedIn) {
-        Navigator.pushReplacementNamed(context, '/login');
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
+    if (!context.mounted) return;
+
+    if (userName == null) {
+      Navigator.pushReplacementNamed(context, '/welcome');
+    } else {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
   }
 
   @override

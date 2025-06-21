@@ -13,12 +13,14 @@ import 'package:learnit/ui/organisms/pages/profile_page.dart';
 import 'package:learnit/ui/organisms/pages/mistakes_page.dart';
 import 'package:learnit/ui/organisms/pages/tenses_page.dart';
 import 'package:learnit/ui/organisms/pages/tests_page.dart';
-import 'package:learnit/ui/organisms/welcome/login_screen.dart';
-import 'package:learnit/ui/organisms/welcome/signup_screen.dart';
+import 'package:learnit/archive/login_screen.dart';
+import 'package:learnit/archive/signup_screen.dart';
 import 'package:learnit/ui/organisms/welcome/splash_screen.dart';
 import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/adjective_explanation_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/noun_explanation_page.dart';
+import 'package:learnit/ui/organisms/welcome/welcome_screen.dart';
+import 'package:learnit/ui/organisms/welcome/onboarding_screen.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -28,8 +30,8 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/tests': (context) => const TestsPage(),
   '/mistakes': (context) => const MistakesPage(),
   '/confused': (context) => const ConfusedPage(),
-  '/login': (context) => const LogIn(),
-  '/signup': (context) => const SignUp(),
+  // '/login': (context) => const LogIn(),
+  // '/signup': (context) => const SignUp(),
   '/home': (context) => const HomeScreen(),
   '/menu': (context) => const MenuPage(),
   '/grammar/adjective': (context) => const AdjectivePage(),
@@ -43,4 +45,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/grammar/nouns': (context) => const NounsPage(),
   '/explanation/adjective': (context) => const AdjectiveExplanationPage(),
   '/explanation/noun': (context) => const NounExplanationPage(),
+  '/welcome': (context) => const WelcomeScreen(),
+  '/onboarding': (context) => const OnboardingScreen(),
 };

@@ -1,12 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learnit/routes.dart';
-import 'package:learnit/firebase_options.dart' show DefaultFirebaseOptions;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -15,14 +12,16 @@ void main() async {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
 
-  runApp(const MainApp());
+  runApp(const MainApp(initialRoute: '/splash'));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final String initialRoute;
+
+  const MainApp({required this.initialRoute, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(initialRoute: '/', routes: appRoutes);
+    return MaterialApp(initialRoute: initialRoute, routes: appRoutes);
   }
 }
