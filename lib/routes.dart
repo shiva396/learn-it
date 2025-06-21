@@ -13,8 +13,6 @@ import 'package:learnit/ui/organisms/pages/home_screen.dart';
 import 'package:learnit/ui/organisms/pages/profile/profile_page.dart';
 import 'package:learnit/ui/organisms/pages/mistakes_page.dart';
 import 'package:learnit/ui/organisms/pages/tests_page.dart';
-import 'package:learnit/archive/login_screen.dart';
-import 'package:learnit/archive/signup_screen.dart';
 import 'package:learnit/ui/organisms/welcome/splash_screen.dart';
 import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/adjective_explanation_page.dart';
@@ -37,8 +35,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/tests': (context) => const TestsPage(),
   '/mistakes': (context) => const MistakesPage(),
   '/confused': (context) => const ConfusedPage(),
-  // '/login': (context) => const LogIn(),
-  // '/signup': (context) => const SignUp(),
   '/home': (context) => const HomeScreen(),
   '/menu': (context) => const MenuPage(),
   '/grammar/adjective': (context) => const AdjectivePage(),
@@ -57,8 +53,11 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/excercises/jumbled_words': (context) => const JumbledWordsPage(),
   '/excercises/odd_one_out': (context) => const OddOneOutPage(),
   '/excercises/analogies': (context) => const AnalogiesPage(),
-  '/excercises/arithmetic_word_problems': (context) => const ArithmeticWordProblemsPage(),
+  '/excercises/arithmetic_word_problems':
+      (context) => const ArithmeticWordProblemsPage(),
   '/excercises/number_series': (context) => const NumberSeriesPage(),
-  '/excercises/vocabulary_definitions': (context) => const VocabularyDefinitionsPage(),
-  '/excercises/image_based_questions': (context) => const ImageBasedQuestionsPage(),
+  '/excercises/vocabulary_definitions':
+      (context) => const VocabularyDefinitionsPage(),
+  '/excercises/image_based_questions':
+      (context) => const ImageBasedQuestionsPage(),
 };

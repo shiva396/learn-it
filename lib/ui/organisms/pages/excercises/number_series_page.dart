@@ -10,9 +10,7 @@ class NumberSeriesPage extends StatelessWidget {
         title: const Text('Number Series'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Number Series Content Here'),
-      ),
+      body: const Center(child: Text('Number Series Content Here')),
     );
   }
 }

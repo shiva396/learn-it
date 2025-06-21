@@ -89,16 +89,25 @@ class ExcercisesPage extends StatelessWidget {
                     Navigator.pushNamed(context, '/excercises/analogies');
                     break;
                   case 'Arithmetic Word Problems':
-                    Navigator.pushNamed(context, '/excercises/arithmetic_word_problems');
+                    Navigator.pushNamed(
+                      context,
+                      '/excercises/arithmetic_word_problems',
+                    );
                     break;
                   case 'Number Series':
                     Navigator.pushNamed(context, '/excercises/number_series');
                     break;
                   case 'Vocabulary & Definitions':
-                    Navigator.pushNamed(context, '/excercises/vocabulary_definitions');
+                    Navigator.pushNamed(
+                      context,
+                      '/excercises/vocabulary_definitions',
+                    );
                     break;
                   case 'Image-Based Questions':
-                    Navigator.pushNamed(context, '/excercises/image_based_questions');
+                    Navigator.pushNamed(
+                      context,
+                      '/excercises/image_based_questions',
+                    );
                     break;
                   default:
                     break;

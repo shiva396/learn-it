@@ -10,9 +10,7 @@ class OddOneOutPage extends StatelessWidget {
         title: const Text('Odd One Out'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Odd One Out Content Here'),
-      ),
+      body: const Center(child: Text('Odd One Out Content Here')),
     );
   }
 }

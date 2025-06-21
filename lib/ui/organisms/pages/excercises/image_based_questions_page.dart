@@ -10,9 +10,7 @@ class ImageBasedQuestionsPage extends StatelessWidget {
         title: const Text('Image-Based Questions'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Image-Based Questions Content Here'),
-      ),
+      body: const Center(child: Text('Image-Based Questions Content Here')),
     );
   }
 }

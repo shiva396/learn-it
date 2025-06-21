@@ -10,9 +10,7 @@ class VocabularyDefinitionsPage extends StatelessWidget {
         title: const Text('Vocabulary & Definitions'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Vocabulary & Definitions Content Here'),
-      ),
+      body: const Center(child: Text('Vocabulary & Definitions Content Here')),
     );
   }
 }

@@ -10,9 +10,7 @@ class ArithmeticWordProblemsPage extends StatelessWidget {
         title: const Text('Arithmetic Word Problems'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Arithmetic Word Problems Content Here'),
-      ),
+      body: const Center(child: Text('Arithmetic Word Problems Content Here')),
     );
   }
 }

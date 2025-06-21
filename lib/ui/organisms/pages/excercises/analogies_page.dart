@@ -10,9 +10,7 @@ class AnalogiesPage extends StatelessWidget {
         title: const Text('Analogies'),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text('Analogies Content Here'),
-      ),
+      body: const Center(child: Text('Analogies Content Here')),
     );
   }
 }
