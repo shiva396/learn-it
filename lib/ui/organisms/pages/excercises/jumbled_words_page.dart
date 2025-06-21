@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/data/excercises/jumbled_words_data.dart';
-import 'package:learnit/ui/molecules/progress_bar.dart';
 
 class JumbledWordsPage extends StatefulWidget {
   const JumbledWordsPage({Key? key}) : super(key: key);
@@ -12,6 +11,7 @@ class JumbledWordsPage extends StatefulWidget {
 class _JumbledWordsPageState extends State<JumbledWordsPage> {
   int currentQuestionIndex = 0;
   int? selectedOptionIndex;
+  List<bool?> questionResults = List.filled(jumbledQuestions.length, null);
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +115,8 @@ class _JumbledWordsPageState extends State<JumbledWordsPage> {
                                     ? () {
                                       setState(() {
                                         selectedOptionIndex = index;
+                                        questionResults[currentQuestionIndex] =
+                                            index == question.correctIndex;
                                       });
                                     }
                                     : null,
@@ -151,24 +153,23 @@ class _JumbledWordsPageState extends State<JumbledWordsPage> {
             const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProgressBar(
-                  totalQuestions: totalQuestions,
-                  currentQuestionIndex:
-                      currentQuestionIndex + 1, // Reflect the current question
-                  questionResults: List.generate(
-                    totalQuestions,
-                    (index) =>
-                        index < currentQuestionIndex
-                            ? (index == currentQuestionIndex &&
-                                    selectedOptionIndex != null
-                                ? selectedOptionIndex ==
-                                    jumbledQuestions[index].correctIndex
-                                : null)
-                            : null,
-                  ),
-                ),
-              ],
+              children: List.generate(totalQuestions, (index) {
+                Color? dotColor;
+                if (questionResults[index] == true) {
+                  dotColor = Colors.green;
+                } else if (questionResults[index] == false) {
+                  dotColor = Colors.red;
+                } else {
+                  dotColor = Colors.grey.withOpacity(
+                    0.3,
+                  ); // No color for unanswered
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Icon(Icons.circle, size: 12.0, color: dotColor),
+                );
+              }),
             ),
             const SizedBox(height: 16.0),
             Row(
