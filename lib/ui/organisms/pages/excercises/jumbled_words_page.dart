@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/data/excercises/jumbled_words_data.dart';
+import 'package:learnit/ui/molecules/progress_bar.dart';
 
 class JumbledWordsPage extends StatefulWidget {
   const JumbledWordsPage({Key? key}) : super(key: key);
@@ -150,20 +151,24 @@ class _JumbledWordsPageState extends State<JumbledWordsPage> {
             const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                totalQuestions,
-                (index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Icon(
-                    Icons.circle,
-                    size: 12.0,
-                    color:
-                        index == currentQuestionIndex
-                            ? Colors.blue
-                            : Colors.grey,
+              children: [
+                ProgressBar(
+                  totalQuestions: totalQuestions,
+                  currentQuestionIndex:
+                      currentQuestionIndex + 1, // Reflect the current question
+                  questionResults: List.generate(
+                    totalQuestions,
+                    (index) =>
+                        index < currentQuestionIndex
+                            ? (index == currentQuestionIndex &&
+                                    selectedOptionIndex != null
+                                ? selectedOptionIndex ==
+                                    jumbledQuestions[index].correctIndex
+                                : null)
+                            : null,
                   ),
                 ),
-              ),
+              ],
             ),
             const SizedBox(height: 16.0),
             Row(
