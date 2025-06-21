@@ -4,7 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> setLoginState(bool value) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool('isLogged', value);
+
+  if (value) {
+    final now = DateTime.now();
+    await prefs.setString('lastLogin', '${now.month}/${now.day}/${now.year}');
+  }
+
   print("Login state set to: $value");
+}
+
+Future<String?> getLastLogin() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('lastLogin');
 }
 
 Future<bool> isLoggedIn() async {

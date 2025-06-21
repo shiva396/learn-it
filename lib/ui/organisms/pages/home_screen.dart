@@ -94,9 +94,9 @@ class HomeScreen extends StatelessWidget {
               _HomeTile(
                 color: Color(0xFF1DE9B6),
                 icon: Icons.book,
-                title: 'TENSES',
-                subtitle: 'Learn English Tenses',
-                onTap: () => Navigator.pushNamed(context, '/tenses'),
+                title: 'EXCERCISES',
+                subtitle: 'Learn English Excercises',
+                onTap: () => Navigator.pushNamed(context, '/excercises'),
               ),
               SizedBox(height: 16),
               _HomeTile(

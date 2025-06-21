@@ -60,3 +60,30 @@ Column splashCard(BuildContext context) {
     ],
   );
 }
+
+
+// Column logoCard(BuildContext context) {
+//  return Column(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     crossAxisAlignment: CrossAxisAlignment.center,
+//     children: [
+//       Image.asset('assets/images/Learn-it.png', height: asp * 200),
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Shimmer.fromColors(
+//             baseColor: Colors.white,
+//             highlightColor: const Color.fromARGB(255, 105, 172, 227),
+
+//             child: Text(
+//               "Learn-IT",
+//               style: TextStyle(
+//                 fontFamily: 'mont2',
+//                 color: Colors.white,
+//                 fontSize: asp * 75,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+// }
