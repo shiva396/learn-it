@@ -51,7 +51,9 @@ class _AdjectivePageState extends State<AdjectivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: LColors.blue,
+        backgroundColor: LColors.blue.withOpacity(
+          _progress > 0.5 ? 1.0 : 0.7,
+        ), // Change color based on progress
         elevation: 0,
         title: Text(
           'ADJECTIVE',
@@ -65,11 +67,11 @@ class _AdjectivePageState extends State<AdjectivePage> {
       ),
       body: Column(
         children: [
-          LinearProgressIndicator(
-            value: _progress,
-            backgroundColor: LColors.surface,
-            color: LColors.blue,
-          ),
+          // LinearProgressIndicator(
+          //   value: _progress,
+          //   backgroundColor: LColors.surface,
+          //   color: const Color.fromARGB(255, 171, 90, 14),
+          // ),
           Expanded(
             child: FutureBuilder<String>(
               future: DefaultAssetBundle.of(

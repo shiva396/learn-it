@@ -1,27 +1,32 @@
-// class OnBoard {
-//   final String imaage, title, description;
-//   const OnBoard({
-//     required this.imaage,
-//     required this.title,
-//     required this.description,
-//   });
-// }
+class OnboardingContents {
+  final String title;
+  final String image;
+  final String desc;
 
-// final List<OnBoard> demoData = [
-//   OnBoard(
-//     image: AppImage.firstImage,
-//     title: "Find Best Musicians All Around Your City",
-//     description: "Thousands of musicians around you are waiting to rock your event.",
-//   ),
-//   OnBoard(
-//     image: AppImage.secondImage,
-//     title: "Fastest Way To Book Great Musicians",
-//     description: "Find the perfect match to perform for your event and make the day remarkable.",
-//   ),
-//   OnBoard(
-//     image: AppImage.thirdImage,
-//     title: "Find Top Sessions Pros For Your Event",
-//     description: "Find the perfect match to perform for your event and make the day remarkable.",
-//   ),
-// ];
+  OnboardingContents({
+    required this.title,
+    required this.image,
+    required this.desc,
+  });
+}
 
+List<OnboardingContents> contents = [
+  OnboardingContents(
+    title: "Master Grammar Effortlessly",
+    image: "assets/images/onboard/onboard1.png",
+    desc:
+        "Learn grammar rules and concepts with ease through interactive lessons and examples.",
+  ),
+  OnboardingContents(
+    title: "Track Your Learning Progress",
+    image: "assets/images/onboard/onboard2.png",
+    desc:
+        "Stay motivated by tracking your progress as you complete topics and improve your skills.",
+  ),
+  OnboardingContents(
+    title: "Engage with Interactive Content",
+    image: "assets/images/onboard/onboard3.png",
+    desc:
+        "Explore engaging content, quizzes, and exercises designed to make learning fun and effective.",
+  ),
+];

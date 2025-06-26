@@ -44,7 +44,7 @@ class VideoCard extends StatelessWidget {
                       Icon(Icons.timer, size: 16.0, color: Colors.grey[600]),
                       const SizedBox(width: 4.0),
                       Text(
-                        videoData.duration,
+                        videoData.duration.isNotEmpty ? videoData.duration : 'Unknown Duration',
                         style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.grey[600],

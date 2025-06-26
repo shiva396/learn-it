@@ -18,7 +18,7 @@ import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/adjective_explanation_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/noun_explanation_page.dart';
 import 'package:learnit/ui/organisms/welcome/welcome_screen.dart';
-import 'package:learnit/ui/organisms/welcome/onboarding/onboarding_screen.dart';
+import 'package:learnit/ui/organisms/welcome/onboarding_screen.dart';
 import 'package:learnit/ui/organisms/pages/excercises/jumbled_words_page.dart';
 import 'package:learnit/ui/organisms/pages/excercises/odd_one_out_page.dart';
 import 'package:learnit/ui/organisms/pages/excercises/analogies_page.dart';

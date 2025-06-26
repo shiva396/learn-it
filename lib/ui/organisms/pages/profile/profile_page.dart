@@ -34,7 +34,7 @@ class _MenuPageState extends State<MenuPage> {
   void _initializeProfileData() async {
     final prefs = await SharedPreferences.getInstance();
     final now = DateTime.now();
-    prefs.setString('lastLogin', '${now.month}/${now.day}/${now.year}');
+    prefs.setString('lastLogin', '${now.day}/${now.month}/${now.year}');
   }
 
   @override
@@ -105,7 +105,6 @@ class _MenuPageState extends State<MenuPage> {
               const ListTile(
                 leading: Icon(Icons.person_outline, color: Colors.black),
                 title: Text('Profile Details'),
-                subtitle: Text('View your KYC information'),
               ),
               const Divider(),
               ListTile(

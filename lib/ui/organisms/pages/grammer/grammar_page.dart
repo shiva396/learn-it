@@ -65,7 +65,11 @@ class GrammarPageState extends State<GrammarPage> {
     setState(() {
       final index = _topics.indexWhere((t) => t['title'] == topic);
       if (index != -1) {
-        _topics[index]['progress'] = progress;
+        // Ensure progress only moves forward
+        _topics[index]['progress'] =
+            progress > _topics[index]['progress']
+                ? progress
+                : _topics[index]['progress'];
       }
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learnit/ui/atoms/colors.dart';
 import 'package:learnit/ui/molecules/splash_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ElevatedButton(
                   onPressed: _saveNameAndContinue,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1DE9B6),
+                    backgroundColor: LColors.buttonDarkColor,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
                       vertical: 16,

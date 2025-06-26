@@ -12,7 +12,7 @@ void main() async {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
 
-  runApp(const MainApp(initialRoute: '/splash'));
+  runApp(const MainApp(initialRoute: '/'));
 }
 
 class MainApp extends StatelessWidget {
