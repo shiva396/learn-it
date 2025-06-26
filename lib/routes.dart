@@ -6,7 +6,7 @@ import 'package:learnit/ui/organisms/pages/grammer/adjective_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/adverb_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/articles_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/conditional_sentences_page.dart';
-import 'package:learnit/ui/organisms/pages/grammer/gerund_infinitive_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/gerund_and_infinitive_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/modals_auxiliaries_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/grammar_page.dart';
 import 'package:learnit/ui/organisms/pages/home_screen.dart';
@@ -37,15 +37,66 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/confused': (context) => const ConfusedPage(),
   '/home': (context) => const HomeScreen(),
   '/menu': (context) => const MenuPage(),
-  '/grammar/adjective': (context) => const AdjectivePage(),
-  '/grammar/adverb': (context) => const AdverbPage(),
-  '/grammar/articles': (context) => const ArticlesPage(),
+  '/grammar/adjective':
+      (context) => AdjectivePage(
+        onProgressUpdate: (progress) {
+          // Update progress dynamically in GrammarPage
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Adjective', progress);
+        },
+      ),
+  '/grammar/adverb':
+      (context) => AdverbPage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Adverb', progress);
+        },
+      ),
+  '/grammar/articles':
+      (context) => ArticlesPage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Articles', progress);
+        },
+      ),
   '/grammar/conditional_sentences':
-      (context) => const ConditionalSentencesPage(),
-  '/grammar/gerund_and_infinitive': (context) => const GerundInfinitivePage(),
+      (context) => ConditionalSentencesPage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Conditional sentences', progress);
+        },
+      ),
+  '/grammar/gerund_and_infinitive':
+      (context) => GerundInfinitivePage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Gerund and Infinitive', progress);
+        },
+      ),
   '/grammar/modals_and_modal_auxiliaries':
-      (context) => const ModalsAuxiliariesPage(),
-  '/grammar/nouns': (context) => const NounsPage(),
+      (context) => ModalsAuxiliariesPage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress(
+            'Modals and Modal Auxiliaries',
+            progress,
+          );
+        },
+      ),
+  '/grammar/nouns':
+      (context) => NounsPage(
+        onProgressUpdate: (progress) {
+          final grammarPageState =
+              context.findAncestorStateOfType<GrammarPageState>();
+          grammarPageState?.updateProgress('Nouns', progress);
+        },
+      ),
   '/explanation/adjective': (context) => const AdjectiveExplanationPage(),
   '/explanation/noun': (context) => const NounExplanationPage(),
   '/welcome': (context) => const WelcomeScreen(),

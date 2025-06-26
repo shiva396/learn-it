@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
-import 'package:learnit/ui/molecules/video_card.dart';
-import 'package:learnit/data/video_data.dart';
+
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -147,11 +146,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget _chip(String label) => Chip(
-  label: Text(label, style: TextStyle(color: LColors.blueDark, fontSize: 12)),
-  backgroundColor: Colors.white,
-  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-);
 
 class _HomeTile extends StatelessWidget {
   final Color color;

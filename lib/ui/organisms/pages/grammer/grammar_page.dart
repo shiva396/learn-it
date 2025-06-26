@@ -5,10 +5,10 @@ class GrammarPage extends StatefulWidget {
   const GrammarPage({Key? key}) : super(key: key);
 
   @override
-  _GrammarPageState createState() => _GrammarPageState();
+  GrammarPageState createState() => GrammarPageState();
 }
 
-class _GrammarPageState extends State<GrammarPage> {
+class GrammarPageState extends State<GrammarPage> {
   final TextEditingController _searchController = TextEditingController();
   final List<Map<String, dynamic>> _topics = [
     {'title': 'Adjective', 'passed': 1, 'total': 36, 'progress': 20},
@@ -47,7 +47,27 @@ class _GrammarPageState extends State<GrammarPage> {
 
   void _navigateToTopic(String topic) {
     String topicLower = topic.toLowerCase().replaceAll(' ', '_');
-    Navigator.pushNamed(context, '/grammar/$topicLower');
+    Navigator.pushNamed(
+      context,
+      '/grammar/$topicLower',
+      arguments: (double progress) {
+        setState(() {
+          final index = _topics.indexWhere((t) => t['title'] == topic);
+          if (index != -1) {
+            _topics[index]['progress'] = progress;
+          }
+        });
+      },
+    );
+  }
+
+  void updateProgress(String topic, double progress) {
+    setState(() {
+      final index = _topics.indexWhere((t) => t['title'] == topic);
+      if (index != -1) {
+        _topics[index]['progress'] = progress;
+      }
+    });
   }
 
   @override
@@ -109,35 +129,12 @@ class _GrammarPageState extends State<GrammarPage> {
                 ),
               ),
               SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _TopicCard(
-                    title: 'The adverbs – Summary',
-                    daysAgo: '29 days ago',
-                    color: Colors.orange,
-                  ),
-                  _TopicCard(
-                    title: 'Comparison of adjectives',
-                    daysAgo: '1 months ago',
-                    color: Colors.green,
-                  ),
-                  _TopicCard(
-                    title: 'Demonstrative Adjectives',
-                    daysAgo: '1 months ago',
-                    color: Colors.blue,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
               ..._filteredTopics.map(
                 (topic) => GestureDetector(
                   onTap: () => _navigateToTopic(topic['title']),
                   child: _GrammarTile(
                     progress: topic['progress'],
                     title: topic['title'],
-                    passed: topic['passed'],
-                    total: topic['total'],
                   ),
                 ),
               ),
@@ -149,65 +146,12 @@ class _GrammarPageState extends State<GrammarPage> {
   }
 }
 
-class _TopicCard extends StatelessWidget {
-  final String title;
-  final String daysAgo;
-  final Color color;
-
-  const _TopicCard({
-    required this.title,
-    required this.daysAgo,
-    required this.color,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 3 - 24,
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            daysAgo,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _GrammarTile extends StatelessWidget {
   final int progress;
   final String title;
-  final int passed;
-  final int total;
 
-  const _GrammarTile({
-    required this.progress,
-    required this.title,
-    required this.passed,
-    required this.total,
-    Key? key,
-  }) : super(key: key);
+  const _GrammarTile({required this.progress, required this.title, Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -243,10 +187,6 @@ class _GrammarTile extends StatelessWidget {
                     color: LColors.greyDark,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                Text(
-                  '$passed passed / $total test',
-                  style: TextStyle(color: LColors.grey, fontSize: 12),
                 ),
               ],
             ),

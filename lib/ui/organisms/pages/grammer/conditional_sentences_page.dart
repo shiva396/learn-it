@@ -1,13 +1,149 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:learnit/ui/atoms/colors.dart';
 
-class ConditionalSentencesPage extends StatelessWidget {
-  const ConditionalSentencesPage({Key? key}) : super(key: key);
+class ConditionalSentencesPage extends StatefulWidget {
+  final Function(double) onProgressUpdate;
+
+  const ConditionalSentencesPage({Key? key, required this.onProgressUpdate})
+    : super(key: key);
+
+  @override
+  _ConditionalSentencesPageState createState() =>
+      _ConditionalSentencesPageState();
+}
+
+class _ConditionalSentencesPageState extends State<ConditionalSentencesPage> {
+  final ScrollController _scrollController = ScrollController();
+  double _fontSize = 16;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScrollExtent = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    final progress = (currentScroll / maxScrollExtent).clamp(0.0, 1.0);
+    widget.onProgressUpdate(progress * 100);
+  }
+
+  void _updateFontSize(double newSize) {
+    setState(() {
+      _fontSize = newSize;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Conditional Sentences')),
-      body: Center(child: Text('Conditional Sentences Page')),
+      appBar: AppBar(
+        backgroundColor: LColors.blue,
+        elevation: 0,
+        title: Text(
+          'CONDITIONAL SENTENCES',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<String>(
+              future: DefaultAssetBundle.of(
+                context,
+              ).loadString('assets/markdown/conditional_sentences.md'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error loading content: ${snapshot.error}'),
+                  );
+                } else {
+                  return Markdown(
+                    data: snapshot.data ?? '',
+                    styleSheet: MarkdownStyleSheet(
+                      p: TextStyle(fontSize: _fontSize),
+                      h1: TextStyle(fontSize: _fontSize + 8),
+                      h2: TextStyle(fontSize: _fontSize + 6),
+                      h3: TextStyle(fontSize: _fontSize + 4),
+                    ),
+                    controller: _scrollController,
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: LColors.blue, // Match button color to page theme
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: LColors.surface, // Match modal background to theme
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            builder: (context) {
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Slider(
+                          value: _fontSize,
+                          min: 12,
+                          max: 30,
+                          divisions: 18,
+                          label: _fontSize.round().toString(),
+                          activeColor:
+                              LColors.blue, // Match slider active color
+                          inactiveColor: LColors.blue.withOpacity(0.3),
+                          onChanged: (value) {
+                            setState(() {
+                              _updateFontSize(value);
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
+                        'Font Size: ${_fontSize.round()}',
+                        style: TextStyle(
+                          color:
+                              Colors.black, // Fallback to black for text color
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
+              );
+            },
+          );
+        },
+        child: const Icon(
+          Icons.text_fields,
+          color: Colors.white,
+        ), // White icon for contrast
+        tooltip: 'Adjust Font Size',
+      ),
     );
   }
 }

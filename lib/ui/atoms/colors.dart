@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class LColors {
   // Primary theme colors
   static const Color blue = Color(0xFF0A84FF);
