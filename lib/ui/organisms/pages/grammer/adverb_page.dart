@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 
-class AdverbPage extends StatefulWidget {
+class PartsOfSpeechPage extends StatefulWidget {
   final Function(double) onProgressUpdate;
 
-  const AdverbPage({Key? key, required this.onProgressUpdate})
+  const PartsOfSpeechPage({Key? key, required this.onProgressUpdate})
     : super(key: key);
 
   @override
-  _AdverbPageState createState() => _AdverbPageState();
+  _PartsOfSpeechPageState createState() => _PartsOfSpeechPageState();
 }
 
-class _AdverbPageState extends State<AdverbPage> {
+class _PartsOfSpeechPageState extends State<PartsOfSpeechPage> {
   double _fontSize = 16;
   ScrollController _scrollController = ScrollController();
   double _progress = 0.0;
@@ -54,7 +54,7 @@ class _AdverbPageState extends State<AdverbPage> {
         backgroundColor: LColors.blue,
         elevation: 0,
         title: Text(
-          'ADVERB',
+          'PARTS OF SPEECH',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,
@@ -153,6 +153,21 @@ class _AdverbPageState extends State<AdverbPage> {
           color: Colors.white,
         ), // White icon for contrast
         tooltip: 'Adjust Font Size',
+      ),
+    );
+  }
+}
+
+class AdverbPage extends StatelessWidget {
+  const AdverbPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Adverbs')),
+      body: Markdown(
+        data:
+            '# Adverbs\n\nAdverbs are words that modify verbs, adjectives, or other adverbs. They often answer questions like how, when, where, and to what extent.',
       ),
     );
   }

@@ -3,10 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 
 class AdjectivePage extends StatefulWidget {
-  final Function(double) onProgressUpdate;
-
-  const AdjectivePage({Key? key, required this.onProgressUpdate})
-    : super(key: key);
+  const AdjectivePage({Key? key}) : super(key: key);
 
   @override
   _AdjectivePageState createState() => _AdjectivePageState();
@@ -21,30 +18,6 @@ class _AdjectivePageState extends State<AdjectivePage> {
     setState(() {
       _fontSize = newSize;
     });
-  }
-
-  void _updateProgress() {
-    setState(() {
-      _progress =
-          _scrollController.hasClients
-              ? _scrollController.offset /
-                  (_scrollController.position.maxScrollExtent)
-              : 0.0;
-    });
-    widget.onProgressUpdate(_progress); // Notify parent about progress
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_updateProgress);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_updateProgress);
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override

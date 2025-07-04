@@ -26,77 +26,30 @@ import 'package:learnit/ui/organisms/pages/excercises/arithmetic_word_problems_p
 import 'package:learnit/ui/organisms/pages/excercises/number_series_page.dart';
 import 'package:learnit/ui/organisms/pages/excercises/vocabulary_definitions_page.dart';
 import 'package:learnit/ui/organisms/pages/excercises/image_based_questions_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/pronouns_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/verbs_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/prepositions_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/conjunctions_page.dart';
+import 'package:learnit/ui/organisms/pages/grammer/interjections_page.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
   '/explanation': (context) => const ExplanationPage(),
   '/grammar': (context) => const GrammarPage(),
+  '/grammar/nouns': (context) => const NounsPage(),
+  '/grammar/pronouns': (context) => const PronounsPage(),
+  '/grammar/verbs': (context) => const VerbsPage(),
+  '/grammar/adjectives': (context) => const AdjectivePage(),
+  '/grammar/adverbs': (context) => const AdverbPage(),
+  '/grammar/prepositions': (context) => const PrepositionsPage(),
+  '/grammar/conjunctions': (context) => const ConjunctionsPage(),
+  '/grammar/interjections': (context) => const InterjectionsPage(),
   '/excercises': (context) => const ExcercisesPage(),
   '/tests': (context) => const TestsPage(),
   '/mistakes': (context) => const MistakesPage(),
   '/confused': (context) => const ConfusedPage(),
   '/home': (context) => const HomeScreen(),
   '/menu': (context) => const MenuPage(),
-  '/grammar/adjective':
-      (context) => AdjectivePage(
-        onProgressUpdate: (progress) {
-          // Update progress dynamically in GrammarPage
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Adjective', progress);
-        },
-      ),
-  '/grammar/adverb':
-      (context) => AdverbPage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Adverb', progress);
-        },
-      ),
-  '/grammar/articles':
-      (context) => ArticlesPage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Articles', progress);
-        },
-      ),
-  '/grammar/conditional_sentences':
-      (context) => ConditionalSentencesPage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Conditional sentences', progress);
-        },
-      ),
-  '/grammar/gerund_and_infinitive':
-      (context) => GerundInfinitivePage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Gerund and Infinitive', progress);
-        },
-      ),
-  '/grammar/modals_and_modal_auxiliaries':
-      (context) => ModalsAuxiliariesPage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress(
-            'Modals and Modal Auxiliaries',
-            progress,
-          );
-        },
-      ),
-  '/grammar/nouns':
-      (context) => NounsPage(
-        onProgressUpdate: (progress) {
-          final grammarPageState =
-              context.findAncestorStateOfType<GrammarPageState>();
-          grammarPageState?.updateProgress('Nouns', progress);
-        },
-      ),
   '/explanation/adjective': (context) => const AdjectiveExplanationPage(),
   '/explanation/noun': (context) => const NounExplanationPage(),
   '/welcome': (context) => const WelcomeScreen(),

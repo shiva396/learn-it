@@ -1,3 +1,3 @@
 # Nouns
 
-(Full content will go here...)
+Nouns are words that name people, places, things, or ideas. They can be singular or plural, common or proper.

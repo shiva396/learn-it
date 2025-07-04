@@ -1,3 +1,8 @@
+# Adjectives
+
+Adjectives are words that describe or modify nouns or pronouns. They provide more information about an object's size, shape, age, color, etc.
+
+---
 
 # What is an Adjective?
 

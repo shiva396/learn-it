@@ -1,4 +1,6 @@
-# Understanding Adverbs - A Guide for 6th Grade Students
+# Adverbs
+
+Adverbs are words that modify verbs, adjectives, or other adverbs. They often answer questions like how, when, where, and to what extent.
 
 ## What is an Adverb?
 

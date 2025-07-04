@@ -1,44 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
-class NounsPage extends StatefulWidget {
-  final Function(double) onProgressUpdate;
-
-  const NounsPage({Key? key, required this.onProgressUpdate}) : super(key: key);
-
-  @override
-  _NounsPageState createState() => _NounsPageState();
-}
-
-class _NounsPageState extends State<NounsPage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    final maxScrollExtent = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    final progress = (currentScroll / maxScrollExtent).clamp(0.0, 1.0);
-    widget.onProgressUpdate(progress * 100);
-  }
+class NounsPage extends StatelessWidget {
+  const NounsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Nouns')),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: 50,
-        itemBuilder: (context, index) => ListTile(title: Text('Item #$index')),
+      appBar: AppBar(title: const Text('Nouns')),
+      body: Markdown(
+        data:
+            '# Nouns\n\nNouns are words that name people, places, things, or ideas. They can be singular or plural, common or proper.',
       ),
     );
   }
