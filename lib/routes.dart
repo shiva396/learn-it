@@ -11,7 +11,7 @@ import 'package:learnit/ui/organisms/pages/mistakes_page.dart';
 import 'package:learnit/ui/organisms/pages/tests_page.dart';
 import 'package:learnit/ui/organisms/welcome/splash_screen.dart';
 import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
-import 'package:learnit/ui/organisms/pages/explanation/adjective_explanation_page.dart';
+import 'package:learnit/ui/organisms/pages/explanation/adjective/adjective_explanation_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/noun_explanation_page.dart';
 import 'package:learnit/ui/organisms/welcome/welcome_screen.dart';
 import 'package:learnit/ui/organisms/welcome/onboarding_screen.dart';
@@ -27,6 +27,7 @@ import 'package:learnit/ui/organisms/pages/grammer/verbs_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/prepositions_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/conjunctions_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/interjections_page.dart';
+import 'package:learnit/ui/organisms/pages/explanation/adjective/paint_the_cat.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -60,4 +61,5 @@ final Map<String, WidgetBuilder> appRoutes = {
       (context) => const VocabularyDefinitionsPage(),
   '/excercises/image_based_questions':
       (context) => const ImageBasedQuestionsPage(),
+  '/explanation/paint_the_cat': (context) => const PaintTheCatPage(),
 };

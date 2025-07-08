@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'GRAMMER MADE SIMPLE',
+                'GRAMMAR MADE SIMPLE',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.8),
                   fontSize: 16,
