@@ -71,7 +71,10 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
 
     return Scaffold(
       body: Container(
+        margin: const EdgeInsets.all(20),
+
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
           gradient: LinearGradient(
             colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
             begin: Alignment.topCenter,
@@ -163,10 +166,16 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                   ],
                 ),
               ),
-              // Footer instruction
+
               Container(
                 width: double.infinity,
-                color: Colors.deepPurpleAccent,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                  color: Colors.deepPurpleAccent,
+                ),
                 padding: const EdgeInsets.all(12),
                 child: const Text(
                   'Tap an adjective below to transform the cat!',
