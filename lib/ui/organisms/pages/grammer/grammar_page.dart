@@ -11,14 +11,14 @@ class GrammarPage extends StatefulWidget {
 class _GrammarPageState extends State<GrammarPage> {
   final TextEditingController _searchController = TextEditingController();
   final List<Map<String, dynamic>> _topics = [
-    {'title': 'Nouns', 'passed': 0, 'total': 12, 'progress': 0},
-    {'title': 'Pronouns', 'passed': 0, 'total': 10, 'progress': 0},
-    {'title': 'Verbs', 'passed': 0, 'total': 15, 'progress': 0},
-    {'title': 'Adjectives', 'passed': 0, 'total': 8, 'progress': 0},
-    {'title': 'Adverbs', 'passed': 0, 'total': 6, 'progress': 0},
-    {'title': 'Prepositions', 'passed': 0, 'total': 10, 'progress': 0},
-    {'title': 'Conjunctions', 'passed': 0, 'total': 7, 'progress': 0},
-    {'title': 'Interjections', 'passed': 0, 'total': 5, 'progress': 0},
+    {'title': 'Nouns', 'minutes': 5, 'progress': 0},
+    {'title': 'Pronouns', 'minutes': 4, 'progress': 0},
+    {'title': 'Verbs', 'minutes': 6, 'progress': 0},
+    {'title': 'Adjectives', 'minutes': 3, 'progress': 0},
+    {'title': 'Adverbs', 'minutes': 2, 'progress': 0},
+    {'title': 'Prepositions', 'minutes': 4, 'progress': 0},
+    {'title': 'Conjunctions', 'minutes': 3, 'progress': 0},
+    {'title': 'Interjections', 'minutes': 2, 'progress': 0},
   ];
 
   List<Map<String, dynamic>> _filteredTopics = [];
@@ -36,6 +36,15 @@ class _GrammarPageState extends State<GrammarPage> {
               .where(
                 (topic) =>
                     topic['title'].toLowerCase().contains(query.toLowerCase()),
+              )
+              .map(
+                (topic) => {
+                  'title': topic['title'],
+                  'minutes':
+                      topic['minutes'] ?? 0, // Ensure minutes is non-null
+                  'progress':
+                      topic['progress'] ?? 0, // Ensure progress is non-null
+                },
               )
               .toList();
     });
@@ -130,10 +139,9 @@ class _GrammarPageState extends State<GrammarPage> {
                 (topic) => GestureDetector(
                   onTap: () => _navigateToTopic(topic['title']),
                   child: _GrammarTile(
-                    progress: topic['progress'],
+                    progress: topic['progress'] ?? 0,
                     title: topic['title'],
-                    passed: topic['passed'],
-                    total: topic['total'],
+                    minutes: topic['minutes'] ?? 0,
                   ),
                 ),
               ),
@@ -194,14 +202,12 @@ class _TopicCard extends StatelessWidget {
 class _GrammarTile extends StatelessWidget {
   final int progress;
   final String title;
-  final int passed;
-  final int total;
+  final int minutes;
 
   const _GrammarTile({
     required this.progress,
     required this.title,
-    required this.passed,
-    required this.total,
+    required this.minutes,
     Key? key,
   }) : super(key: key);
 
@@ -241,7 +247,7 @@ class _GrammarTile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$passed passed / $total test',
+                  '$minutes minutes to read',
                   style: TextStyle(color: LColors.grey, fontSize: 12),
                 ),
               ],

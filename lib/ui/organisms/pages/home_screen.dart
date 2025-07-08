@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -59,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 color: LColors.blue,
                 icon: Icons.menu_book,
                 title: 'EXPLANATION',
-                subtitle: 'Test & Grammar',
+                subtitle: 'Video Lessons',
                 tag: 'NEW',
                 tagColor: Colors.redAccent,
                 onTap: () => Navigator.pushNamed(context, '/explanation'),
@@ -68,14 +67,14 @@ class HomeScreen extends StatelessWidget {
                     Icon(Icons.check, color: Colors.white, size: 16),
                     SizedBox(width: 4),
                     Text(
-                      '10000 Tests',
+                      'Description',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     SizedBox(width: 12),
                     Icon(Icons.check, color: Colors.white, size: 16),
                     SizedBox(width: 4),
                     Text(
-                      'Explanation',
+                      'Transcript available',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
@@ -145,7 +144,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 
 class _HomeTile extends StatelessWidget {
   final Color color;
