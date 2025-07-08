@@ -108,16 +108,20 @@ class HomeScreen extends StatelessWidget {
               _HomeTile(
                 color: LColors.error,
                 icon: Icons.error_outline,
-                title: 'MISTAKES',
-                subtitle: 'Common English Mistakes',
-                onTap: () => Navigator.pushNamed(context, '/mistakes'),
+                title: 'TESTING 1',
+                subtitle: 'tesing',
+                onTap:
+                    () => Navigator.pushNamed(
+                      context,
+                      '/explanation/paint_the_cat',
+                    ),
               ),
               SizedBox(height: 16),
               _HomeTile(
                 color: LColors.warning,
                 icon: Icons.help_outline,
-                title: 'CONFUSED',
-                subtitle: 'Commonly Confused Words',
+                title: 'TESTING 2',
+                subtitle: 'testing',
                 onTap: () => Navigator.pushNamed(context, '/confused'),
               ),
               SizedBox(height: 32),
