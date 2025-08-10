@@ -124,6 +124,14 @@ class HomeScreen extends StatelessWidget {
                 subtitle: 'testing',
                 onTap: () => Navigator.pushNamed(context, '/confused'),
               ),
+              SizedBox(height: 16),
+              _HomeTile(
+                color: LColors.highlight,
+                icon: Icons.timeline,
+                title: 'STREAK TRACKER',
+                subtitle: 'Test the new streak system',
+                onTap: () => Navigator.pushNamed(context, '/streak_test'),
+              ),
               SizedBox(height: 32),
               // Text(
               //   'Recommended Videos',

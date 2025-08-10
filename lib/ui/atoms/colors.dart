@@ -25,6 +25,20 @@ class LColors {
   // Educational Highlight (optional accent)
   static const Color highlight = Color(0xFF7C3AED);
 
+  // Educational Subject Colors for 6th Grade
+  static const Color grammar = Color(0xFF6366F1); // Indigo for grammar
+  static const Color vocabulary = Color(0xFF8B5CF6); // Purple for vocabulary
+  static const Color exercises = Color(0xFF06B6D4); // Cyan for exercises
+  static const Color stories = Color(0xFF10B981); // Emerald for stories
+  static const Color synectic = Color(
+    0xFFF59E0B,
+  ); // Amber for creative activities
+
+  // Achievement & Gamification Colors
+  static const Color streak = Color(0xFFFF6B35); // Orange-red for streaks
+  static const Color achievement = Color(0xFFFFD700); // Gold for achievements
+  static const Color levelUp = Color(0xFF9333EA); // Purple for level progress
+
   //Icon Colors
   static const Color iconColor = Color(0xFFEFEBE0);
 

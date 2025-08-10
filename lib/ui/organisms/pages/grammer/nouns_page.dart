@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'package:learnit/services/streak_service.dart';
+import 'package:learnit/utils/achievement_helper.dart';
 
 class NounsPage extends StatefulWidget {
   const NounsPage({Key? key}) : super(key: key);
@@ -27,7 +29,39 @@ class _NounsPageState extends State<NounsPage> {
               ? _scrollController.offset /
                   (_scrollController.position.maxScrollExtent)
               : 0.0;
+
+      // Record activity when user reaches 90% completion
+      if (_progress >= 0.9) {
+        _recordLearningActivity();
+      }
     });
+  }
+
+  void _recordLearningActivity() async {
+    try {
+      await StreakService.recordActivity();
+
+      // Check for new achievements
+      await AchievementHelper.checkAndShowAchievements(context);
+
+      // Show completion message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.celebration, color: Colors.white),
+              SizedBox(width: 8),
+              Text('Great job! Learning activity recorded! 🎉'),
+            ],
+          ),
+          backgroundColor: LColors.success,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      );
+    } catch (e) {
+      // Handle silently for better UX
+    }
   }
 
   @override
