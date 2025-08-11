@@ -29,6 +29,8 @@ import 'package:learnit/ui/organisms/pages/assessment/assessment_analytics_page.
 import 'package:learnit/ui/organisms/pages/assessment/assessment_results_page.dart';
 import 'package:learnit/ui/organisms/pages/recent_activities_page.dart';
 import 'package:learnit/ui/organisms/pages/interactive/interactive_games_page.dart';
+import 'package:learnit/ui/organisms/pages/interactive/magical_garden_grower.dart';
+import 'package:learnit/ui/organisms/pages/interactive/adjective_adventure_canvas.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -62,4 +64,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/assessment/analytics': (context) => const AssessmentAnalyticsPage(),
   '/assessment/results': (context) => const AssessmentResultsPage(),
   '/interactive_games': (context) => const InteractiveGamesPage(),
+  '/magical-garden-grower': (context) => const MagicalGardenGrowerPage(),
+
 };

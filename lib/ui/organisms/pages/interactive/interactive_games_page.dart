@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 import 'package:learnit/ui/organisms/pages/interactive/paint_the_cat.dart';
+import 'package:learnit/ui/organisms/pages/interactive/magical_garden_grower.dart';
+
 
 class InteractiveGamesPage extends StatefulWidget {
   const InteractiveGamesPage({Key? key}) : super(key: key);
@@ -24,6 +26,16 @@ class _InteractiveGamesPageState extends State<InteractiveGamesPage> {
       difficulty: 2,
       isAvailable: true,
       route: '/paint-the-cat',
+    ),
+    GameInfo(
+      title: 'Magical Garden Grower',
+      description: 'Grow flowers and plants using descriptive adjectives',
+      grammarTopic: 'Adjective',
+      previewIcon: Icons.local_florist,
+      primaryColor: LColors.success,
+      difficulty: 2,
+      isAvailable: true,
+      route: '/magical-garden-grower',
     ),
     GameInfo(
       title: 'Magical Wardrobe',
@@ -301,10 +313,17 @@ class _InteractiveGamesPageState extends State<InteractiveGamesPage> {
 
   void _navigateToGame(GameInfo game) {
     if (game.isAvailable) {
-      if (game.route == '/paint-the-cat') {
+    if (game.route == '/paint-the-cat') {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const PaintTheCatPage()),
+        );
+      } else if (game.route == '/magical-garden-grower') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MagicalGardenGrowerPage(),
+          ),
         );
       } else {
         Navigator.pushNamed(context, game.route);
