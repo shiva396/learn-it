@@ -89,16 +89,16 @@ class HomeScreen extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, '/grammar'),
               ),
               SizedBox(height: 16),
+              // _HomeTile(
+              //   color: Color(0xFF1DE9B6),
+              //   icon: Icons.book,
+              //   title: 'EXCERCISES',
+              //   subtitle: 'Learn English Excercises',
+              //   onTap: () => Navigator.pushNamed(context, '/excercises'),
+              // ),
+              // SizedBox(height: 16),
               _HomeTile(
                 color: Color(0xFF1DE9B6),
-                icon: Icons.book,
-                title: 'EXCERCISES',
-                subtitle: 'Learn English Excercises',
-                onTap: () => Navigator.pushNamed(context, '/excercises'),
-              ),
-              SizedBox(height: 16),
-              _HomeTile(
-                color: LColors.blueLight,
                 icon: Icons.assignment,
                 title: 'TESTS',
                 subtitle: 'Test Your English Grammar',
@@ -106,15 +106,30 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               _HomeTile(
-                color: LColors.error,
-                icon: Icons.error_outline,
-                title: 'TESTING 1',
-                subtitle: 'tesing',
-                onTap:
-                    () => Navigator.pushNamed(
-                      context,
-                      '/explanation/paint_the_cat',
+                color: LColors.exercises,
+                icon: Icons.games,
+                title: 'INTERACTIVE GAMES',
+                subtitle: 'Fun games to practice grammar',
+                tag: 'NEW',
+                tagColor: Colors.greenAccent,
+                onTap: () => Navigator.pushNamed(context, '/interactive_games'),
+                extra: Row(
+                  children: [
+                    Icon(Icons.category, color: Colors.white, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Multiple topics',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
+                    SizedBox(width: 12),
+                    Icon(Icons.star, color: Colors.white, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Interactive learning',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               _HomeTile(
@@ -127,10 +142,10 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 16),
               _HomeTile(
                 color: LColors.highlight,
-                icon: Icons.timeline,
-                title: 'STREAK TRACKER',
-                subtitle: 'Test the new streak system',
-                onTap: () => Navigator.pushNamed(context, '/streak_test'),
+                icon: Icons.history,
+                title: 'RECENT ACTIVITIES',
+                subtitle: 'Track your learning journey',
+                onTap: () => Navigator.pushNamed(context, '/recent_activities'),
               ),
               SizedBox(height: 32),
               // Text(

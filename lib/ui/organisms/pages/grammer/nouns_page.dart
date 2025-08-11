@@ -3,6 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 import 'package:learnit/services/streak_service.dart';
 import 'package:learnit/utils/achievement_helper.dart';
+import 'package:learnit/services/recent_activities_service.dart';
 
 class NounsPage extends StatefulWidget {
   const NounsPage({Key? key}) : super(key: key);
@@ -68,6 +69,8 @@ class _NounsPageState extends State<NounsPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_updateProgress);
+    // Log grammar learning activity
+    RecentActivitiesService.logGrammarLearned('Nouns');
   }
 
   @override

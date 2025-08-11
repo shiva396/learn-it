@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'package:learnit/services/recent_activities_service.dart';
 import 'dart:async';
 
 class VideoPlayerPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   bool isLandscape = false;
   bool _showControls = true;
   Timer? _hideControlsTimer;
+  bool _hasLoggedActivity = false;
 
   @override
   void initState() {
@@ -44,6 +46,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     _controller.dispose();
     _hideControlsTimer?.cancel();
     super.dispose();
+  }
+
+  void _logVideoActivity() async {
+    await RecentActivitiesService.logVideoWatched(widget.description);
   }
 
   void _toggleOrientation() {
@@ -150,9 +156,16 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _controller.value.isPlaying
-                                    ? _controller.pause()
-                                    : _controller.play();
+                                if (_controller.value.isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  _controller.play();
+                                  // Log video watching activity only once
+                                  if (!_hasLoggedActivity) {
+                                    _logVideoActivity();
+                                    _hasLoggedActivity = true;
+                                  }
+                                }
                               });
                             },
                           ),

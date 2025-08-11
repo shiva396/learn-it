@@ -210,7 +210,9 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
   }
 
   void _logActivity() async {
-    await RecentActivitiesService.logGamePlayed('Paint the Cat', 'Adjective');
+    await RecentActivitiesService.logVideoWatched(
+      'Paint the Cat - Interactive Adjective Learning',
+    );
   }
 
   @override
@@ -390,13 +392,9 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(255, 151, 179, 207),
-              LColors.blueDark,
-            ],
+            colors: [LColors.background, LColors.surface],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: const [0.0, 0.7], // More blue, extends further down
           ),
         ),
         child: SafeArea(
@@ -410,13 +408,13 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
-                      colors: [LColors.blue, LColors.blueDark],
+                      colors: [Colors.white, LColors.greyWhite],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: LColors.blue.withOpacity(0.2),
                         blurRadius: 15,
                         offset: const Offset(0, 8),
                       ),
@@ -486,18 +484,18 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                 ),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: LColors.blue.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  border: Border.all(color: LColors.blue.withOpacity(0.3)),
                 ),
                 child: Column(
                   children: [
                     Text(
                       _buildEnhancedSentence(applied),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: LColors.greyDark,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -539,13 +537,7 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
               // Enhanced instruction footer
               Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [LColors.blue, LColors.blueDark],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
+                decoration: BoxDecoration(color: LColors.blue),
                 padding: const EdgeInsets.all(16),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -580,19 +572,26 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: LColors.blue.withOpacity(0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: LColors.blue.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: LColors.greyDark,
             ),
           ),
           const SizedBox(height: 12),
@@ -619,27 +618,22 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                         gradient: LinearGradient(
                           colors:
                               isSelected
-                                  ? [
-                                    LColors.blue,
-                                    const Color.fromARGB(255, 122, 173, 249),
-                                  ]
-                                  : [
-                                    Colors.white.withOpacity(0.08),
-                                    Colors.white.withOpacity(0.15),
-                                  ],
+                                  ? [LColors.blue, LColors.blueLight]
+                                  : [LColors.greyWhite, Colors.white],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: isSelected ? LColors.blue : LColors.greyLight,
+                          width: 1.5,
+                        ),
                       ),
                       child: Center(
                         child: Text(
                           item['name'],
                           style: TextStyle(
-                            color:
-                                isSelected
-                                    ? Colors.white
-                                    : Colors.white.withOpacity(0.9),
+                            color: isSelected ? Colors.white : LColors.greyDark,
                             fontSize: 14,
                             fontWeight:
                                 isSelected ? FontWeight.bold : FontWeight.w500,

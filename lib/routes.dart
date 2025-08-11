@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learnit/ui/organisms/pages/confused_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/explanation_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/adjective_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/adverb_page.dart';
@@ -9,9 +8,9 @@ import 'package:learnit/ui/organisms/pages/profile/profile_page.dart';
 import 'package:learnit/ui/organisms/pages/profile/profile_details_page.dart';
 import 'package:learnit/ui/organisms/pages/profile/settings_page.dart';
 import 'package:learnit/ui/organisms/pages/profile/about_page.dart';
-import 'package:learnit/ui/organisms/pages/mistakes_page.dart';
-import 'package:learnit/ui/organisms/pages/tests_page.dart';
-import 'package:learnit/ui/organisms/pages/streak_test_page.dart';
+import 'package:learnit/ui/organisms/pages/test_packs/tests_page.dart';
+import 'package:learnit/ui/organisms/pages/test_packs/test_page.dart';
+import 'package:learnit/ui/organisms/pages/test_packs/test_results_page.dart';
 import 'package:learnit/ui/organisms/welcome/splash_screen.dart';
 import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/adjective/adjective_explanation_page.dart';
@@ -23,11 +22,13 @@ import 'package:learnit/ui/organisms/pages/grammer/verbs_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/prepositions_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/conjunctions_page.dart';
 import 'package:learnit/ui/organisms/pages/grammer/interjections_page.dart';
-import 'package:learnit/ui/organisms/pages/explanation/adjective/paint_the_cat.dart';
+import 'package:learnit/ui/organisms/pages/interactive/paint_the_cat.dart';
 import 'package:learnit/ui/organisms/pages/assessment/assessment_intro_page.dart';
 import 'package:learnit/ui/organisms/pages/assessment/assessment_test_page.dart';
 import 'package:learnit/ui/organisms/pages/assessment/assessment_analytics_page.dart';
 import 'package:learnit/ui/organisms/pages/assessment/assessment_results_page.dart';
+import 'package:learnit/ui/organisms/pages/recent_activities_page.dart';
+import 'package:learnit/ui/organisms/pages/interactive/interactive_games_page.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -41,9 +42,9 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/grammar/prepositions': (context) => const PrepositionsPage(),
   '/grammar/conjunctions': (context) => const ConjunctionsPage(),
   '/grammar/interjections': (context) => const InterjectionsPage(),
-  '/tests': (context) => const TestsPage(),
-  '/mistakes': (context) => const MistakesPage(),
-  '/confused': (context) => const ConfusedPage(),
+  '/tests': (context) => const TestPacksPage(),
+  '/test_packs/test': (context) => const TestPackTestPage(),
+  '/test_packs/results': (context) => const TestResultsPage(),
   '/home': (context) => const HomeScreen(),
   '/menu': (context) => const MenuPage(),
   '/explanation/adjective': (context) => const AdjectiveExplanationPage(),
@@ -51,7 +52,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/welcome': (context) => const WelcomeScreen(),
   '/onboarding': (context) => const OnboardingScreen(),
   '/explanation/paint_the_cat': (context) => const PaintTheCatPage(),
-  '/streak_test': (context) => const StreakTestPage(),
+  '/recent_activities': (context) => const RecentActivitiesPage(),
   '/profile/details': (context) => const ProfileDetailsPage(),
   '/profile/settings': (context) => const SettingsPage(),
   '/profile/about': (context) => const AboutPage(),
@@ -60,4 +61,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/assessment/test': (context) => const AssessmentTestPage(),
   '/assessment/analytics': (context) => const AssessmentAnalyticsPage(),
   '/assessment/results': (context) => const AssessmentResultsPage(),
+  '/interactive_games': (context) => const InteractiveGamesPage(),
 };
