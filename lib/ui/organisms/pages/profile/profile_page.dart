@@ -355,6 +355,20 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                         Divider(height: 1, color: LColors.greyLight),
                         ListTile(
+                          leading: Icon(Icons.psychology, color: LColors.vocabulary),
+                          title: Text('Assessment Results'),
+                          subtitle: Text('View your cognitive skills analysis'),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: LColors.grey,
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/assessment/results');
+                          },
+                        ),
+                        Divider(height: 1, color: LColors.greyLight),
+                        ListTile(
                           leading: Icon(Icons.settings, color: LColors.grammar),
                           title: Text('Settings'),
                           subtitle: Text('App preferences and goals'),

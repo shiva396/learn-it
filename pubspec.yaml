@@ -29,5 +29,6 @@ flutter:
     - assets/images/thumbnails/
     - assets/images/onboard/
     - assets/images/gif/
+    - assets/images/assessment/
     - assets/videos/
     - assets/markdown/

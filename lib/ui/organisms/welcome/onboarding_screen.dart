@@ -158,7 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/home',
+                                '/assessment/intro',
                                 (Route<dynamic> route) => false,
                               );
                             },
