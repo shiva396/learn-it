@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learnit/data/test_packs_data/test_packs_data.dart';
 import 'package:learnit/data/test_packs_data/test_pack_models.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'topic_test_packs_page.dart';
 
 class TestPacksPage extends StatefulWidget {
   const TestPacksPage({super.key});
@@ -33,134 +34,12 @@ class _TestPacksPageState extends State<TestPacksPage> {
     });
   }
 
-  void _showDifficultyDialog(TopicInfo topic) {
-    final difficultyInfo = TestPacksData.getDifficultyInfo();
-    Color topicColor = _getTopicColor(topic.color);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Text(topic.emoji, style: const TextStyle(fontSize: 32)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            topic.name,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: topicColor,
-                            ),
-                          ),
-                          Text(
-                            topic.description,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: LColors.greyDark,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Choose Difficulty Level',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: LColors.black,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 1.2,
-                  children:
-                      DifficultyLevel.values.map((difficulty) {
-                        final info = difficultyInfo[difficulty]!;
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(
-                              context,
-                              '/test_packs/test',
-                              arguments: {
-                                'topic': topic.topic,
-                                'difficulty': difficulty,
-                              },
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white,
-                                  topicColor.withOpacity(0.1),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: topicColor.withOpacity(0.3),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: topicColor.withOpacity(0.2),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(info['icon'], color: topicColor, size: 24),
-                                const SizedBox(height: 4),
-                                Text(
-                                  info['name'],
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: topicColor,
-                                  ),
-                                ),
-                                Text(
-                                  '${info['timeInMinutes']} min',
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: LColors.greyDark,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+  void _navigateToTopicTestPacks(TopicInfo topic) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TopicTestPacksPage(topic: topic.topic),
+      ),
     );
   }
 
@@ -245,7 +124,7 @@ class _TestPacksPageState extends State<TestPacksPage> {
               const SizedBox(height: 16),
               ..._filteredTopics.map(
                 (topic) => GestureDetector(
-                  onTap: () => _showDifficultyDialog(topic),
+                  onTap: () => _navigateToTopicTestPacks(topic),
                   child: _TestPackTile(
                     topic: topic,
                     color: _getTopicColor(topic.color),

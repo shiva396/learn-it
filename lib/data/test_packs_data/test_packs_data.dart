@@ -92,26 +92,51 @@ class TestPacksData {
     };
   }
 
-  // Get test pack for specific topic and difficulty
+  // Get test pack for specific topic and difficulty with exactly 10 questions
   static TestPack? getTestPack(GrammarTopic topic, DifficultyLevel difficulty) {
+    TestPack? pack;
     switch (topic) {
       case GrammarTopic.adjective:
-        return _getAdjectiveTestPack(difficulty);
+        pack = _getAdjectiveTestPack(difficulty);
+        break;
       case GrammarTopic.noun:
-        return _getNounTestPack(difficulty);
+        pack = _getNounTestPack(difficulty);
+        break;
       case GrammarTopic.pronoun:
-        return _getPronounTestPack(difficulty);
+        pack = _getPronounTestPack(difficulty);
+        break;
       case GrammarTopic.verb:
-        return _getVerbTestPack(difficulty);
+        pack = _getVerbTestPack(difficulty);
+        break;
       case GrammarTopic.adverb:
-        return _getAdverbTestPack(difficulty);
+        pack = _getAdverbTestPack(difficulty);
+        break;
       case GrammarTopic.preposition:
-        return _getPrepositionTestPack(difficulty);
+        pack = _getPrepositionTestPack(difficulty);
+        break;
       case GrammarTopic.conjunction:
-        return _getConjunctionTestPack(difficulty);
+        pack = _getConjunctionTestPack(difficulty);
+        break;
       case GrammarTopic.interjection:
-        return _getInterjectionTestPack(difficulty);
+        pack = _getInterjectionTestPack(difficulty);
+        break;
     }
+
+    // Ensure exactly 10 questions by shuffling and taking first 10
+    if (pack != null && pack.questions.length > 10) {
+      final shuffledQuestions = List<TestQuestion>.from(pack.questions);
+      shuffledQuestions.shuffle();
+      return TestPack(
+        topic: pack.topic,
+        difficulty: pack.difficulty,
+        title: pack.title,
+        description: pack.description,
+        timeInMinutes: pack.timeInMinutes,
+        questions: shuffledQuestions.take(10).toList(),
+      );
+    }
+
+    return pack;
   }
 
   // Adjective test packs (you'll provide the questions)

@@ -11,10 +11,38 @@ class ProfileDetailsPage extends StatefulWidget {
 
 class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   bool _isLoading = true;
   DateTime? _joinDate;
   String _currentName = '';
+  int _selectedAvatarIndex = 0;
+
+  // Available avatar icons - Nice character emojis
+  final List<String> _avatarEmojis = [
+    '👦', // Boy
+    '👧', // Girl
+    '🦸‍♂️', // Male Superhero (Superman-like)
+    '🦸‍♀️', // Female Superhero
+    '👨‍🎓', // Male Student
+    '👩‍🎓', // Female Student
+    '🧑‍💻', // Technologist
+    '👨‍🏫', // Male Teacher
+    '👩‍🏫', // Female Teacher
+    '🧙‍♂️', // Male Wizard
+    '🧙‍♀️', // Female Wizard
+    '👨‍🚀', // Male Astronaut
+    '👩‍🚀', // Female Astronaut
+    '🦄', // Unicorn
+    '🐱', // Cat
+    '🐶', // Dog
+    '🐸', // Frog
+    '🦊', // Fox
+    '🐺', // Wolf
+    '🐻', // Bear
+    '🐼', // Panda
+    '🐨', // Koala
+    '🦁', // Lion
+    '🐯', // Tiger
+  ];
 
   @override
   void initState() {
@@ -25,7 +53,6 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
   @override
   void dispose() {
     _nameController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
@@ -34,7 +61,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
     setState(() {
       _currentName = prefs.getString('userName') ?? 'Grammar Explorer';
       _nameController.text = _currentName;
-      _emailController.text = prefs.getString('userEmail') ?? '';
+      _selectedAvatarIndex = prefs.getInt('selectedAvatar') ?? 0;
 
       // Get join date or set it if it doesn't exist
       final joinDateString = prefs.getString('joinDate');
@@ -57,7 +84,11 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userName', _nameController.text.trim());
-    await prefs.setString('userEmail', _emailController.text.trim());
+    await prefs.setInt('selectedAvatar', _selectedAvatarIndex);
+
+    setState(() {
+      _currentName = _nameController.text.trim();
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -119,6 +150,89 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
     }
   }
 
+  void _showAvatarSelection() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          height:
+              MediaQuery.of(context).size.height * 0.6, // Set explicit height
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: LColors.greyLight,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Choose Your Avatar',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: LColors.black,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemCount: _avatarEmojis.length,
+                  itemBuilder: (context, index) {
+                    final isSelected = index == _selectedAvatarIndex;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedAvatarIndex = index;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color:
+                              isSelected
+                                  ? LColors.blue.withOpacity(0.2)
+                                  : LColors.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color:
+                                isSelected ? LColors.blue : LColors.greyLight,
+                            width: isSelected ? 2 : 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            _avatarEmojis[index],
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -153,19 +267,19 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          TextButton(
-            onPressed: _saveUserData,
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   TextButton(
+        //     onPressed: _saveUserData,
+        //     child: Text(
+        //       'Save',
+        //       style: TextStyle(
+        //         color: Colors.white,
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 16,
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -176,15 +290,45 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
             Center(
               child: Column(
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: LColors.blue.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: LColors.blue, width: 3),
+                  GestureDetector(
+                    onTap: _showAvatarSelection,
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: LColors.blue.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: LColors.blue, width: 3),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _avatarEmojis[_selectedAvatarIndex],
+                              style: const TextStyle(fontSize: 50),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: LColors.blue,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: Icon(Icons.person, size: 50, color: LColors.blue),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -200,6 +344,15 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     'Member since ${_formatJoinDate()}',
                     style: TextStyle(fontSize: 14, color: LColors.grey),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tap avatar to change',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: LColors.grey.withOpacity(0.8),
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -208,8 +361,10 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
 
             // Profile Form
             Card(
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: LColors.greyLight.withOpacity(0.5)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -221,7 +376,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: LColors.black,
+                        color: LColors.greyDark,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -240,6 +395,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                       controller: _nameController,
                       decoration: InputDecoration(
                         hintText: 'Enter your full name',
+                        hintStyle: TextStyle(color: LColors.grey),
                         prefixIcon: Icon(
                           Icons.person_outline,
                           color: LColors.blue,
@@ -257,45 +413,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           borderSide: BorderSide(color: LColors.blue, width: 2),
                         ),
                         filled: true,
-                        fillColor: LColors.background,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Email Field
-                    Text(
-                      'Email Address (Optional)',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: LColors.greyDark,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email address',
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: LColors.blue,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: LColors.greyLight),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: LColors.greyLight),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: LColors.blue, width: 2),
-                        ),
-                        filled: true,
-                        fillColor: LColors.background,
+                        fillColor: LColors.surface,
                       ),
                     ),
                   ],
@@ -303,27 +421,35 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 22),
 
             // Account Information
             Card(
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: LColors.greyLight.withOpacity(0.5)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Account Information',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: LColors.black,
-                      ),
+                    Row(
+                      children: [
+                        Icon(Icons.info_outline, color: LColors.blue, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Account Information',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: LColors.greyDark,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
 
                     _buildInfoRow(
                       icon: Icons.calendar_today,
@@ -334,7 +460,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                               : 'Unknown',
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
                     _buildInfoRow(
                       icon: Icons.phone_android,
@@ -342,7 +468,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                       value: 'Mobile App',
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
                     _buildInfoRow(
                       icon: Icons.verified_user,
@@ -357,25 +483,42 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
             const SizedBox(height: 32),
 
             // Save Button
-            SizedBox(
+            Container(
               width: double.infinity,
               height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: LColors.blue.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
               child: ElevatedButton(
                 onPressed: _saveUserData,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: LColors.blue,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 3,
+                  elevation: 0,
                 ),
-                child: const Text(
-                  'Save Changes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.save, size: 20),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Save Changes',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -390,28 +533,44 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
     required String label,
     required String value,
   }) {
-    return Row(
-      children: [
-        Icon(icon, color: LColors.blue, size: 20),
-        const SizedBox(width: 12),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            color: LColors.greyDark,
-            fontWeight: FontWeight.w500,
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: LColors.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: LColors.greyLight.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: LColors.blue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(icon, color: LColors.blue, size: 18),
           ),
-        ),
-        const Spacer(),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 14,
-            color: LColors.black,
-            fontWeight: FontWeight.w600,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                color: LColors.greyDark,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
-        ),
-      ],
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14,
+              color: LColors.greyDark,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

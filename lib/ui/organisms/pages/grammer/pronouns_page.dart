@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'package:learnit/services/streak_service.dart';
+import 'package:learnit/utils/achievement_helper.dart';
+import 'package:learnit/services/recent_activities_service.dart';
 
 class PronounsPage extends StatefulWidget {
   const PronounsPage({Key? key}) : super(key: key);
@@ -27,13 +30,33 @@ class _PronounsPageState extends State<PronounsPage> {
               ? _scrollController.offset /
                   (_scrollController.position.maxScrollExtent)
               : 0.0;
+
+      // Record activity when user reaches 90% completion
+      if (_progress >= 0.9) {
+        _recordLearningActivity();
+      }
     });
+  }
+
+  void _recordLearningActivity() async {
+    try {
+      await StreakService.recordActivity();
+
+      // Check for new achievements
+      await AchievementHelper.checkAndShowAchievements(context);
+
+
+    } catch (e) {
+      // Handle silently for better UX
+    }
   }
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_updateProgress);
+    // Log grammar learning activity
+    RecentActivitiesService.logGrammarLearned('Pronouns');
   }
 
   @override

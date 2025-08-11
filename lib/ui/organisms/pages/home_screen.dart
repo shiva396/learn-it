@@ -21,10 +21,10 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        actions: [
-          Icon(Icons.nightlight_round, color: Colors.white),
-          SizedBox(width: 16),
-        ],
+        // actions: [
+        //   Icon(Icons.nightlight_round, color: Colors.white),
+        //   SizedBox(width: 16),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
               // ),
               // SizedBox(height: 16),
               _HomeTile(
-                color: Color(0xFF1DE9B6),
+                color: const Color.fromARGB(255, 27, 208, 196),
                 icon: Icons.assignment,
                 title: 'TESTS',
                 subtitle: 'Test Your English Grammar',
@@ -133,11 +133,11 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               _HomeTile(
-                color: LColors.warning,
+                color: LColors.greyDark,
                 icon: Icons.help_outline,
-                title: 'TESTING 2',
-                subtitle: 'testing',
-                onTap: () => Navigator.pushNamed(context, '/confused'),
+                title: 'Sliding Decks',
+                subtitle: 'under construction',
+                onTap: () {},
               ),
               SizedBox(height: 16),
               _HomeTile(

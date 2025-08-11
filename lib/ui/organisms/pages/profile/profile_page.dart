@@ -17,6 +17,7 @@ class _MenuPageState extends State<MenuPage> {
   Map<String, dynamic> _levelData = {};
   String _userName = 'Guest';
   String _lastLogin = 'Unknown';
+  String _userAvatar = '👦'; // Default avatar
 
   @override
   void initState() {
@@ -31,6 +32,37 @@ class _MenuPageState extends State<MenuPage> {
       final prefs = await SharedPreferences.getInstance();
       _userName = prefs.getString('userName') ?? 'Grammar Explorer';
       _lastLogin = prefs.getString('lastLogin') ?? 'Today';
+
+      // Load selected avatar
+      final selectedAvatarIndex = prefs.getInt('selectedAvatar') ?? 0;
+      const avatarEmojis = [
+        '👦',
+        '👧',
+        '🦸‍♂️',
+        '🦸‍♀️',
+        '👨‍🎓',
+        '👩‍🎓',
+        '🧑‍💻',
+        '👨‍🏫',
+        '👩‍🏫',
+        '🧙‍♂️',
+        '🧙‍♀️',
+        '👨‍🚀',
+        '👩‍🚀',
+        '🦄',
+        '🐱',
+        '🐶',
+        '🐸',
+        '🦊',
+        '🐺',
+        '🐻',
+        '🐼',
+        '🐨',
+        '🦁',
+        '🐯',
+      ];
+      _userAvatar =
+          avatarEmojis[selectedAvatarIndex.clamp(0, avatarEmojis.length - 1)];
 
       // Load streak and level data
       final streakData = await StreakService.getStreakStatus();
@@ -157,7 +189,8 @@ class _MenuPageState extends State<MenuPage> {
             ProfileHeader(
               userName: _userName,
               userLevel: _levelData['title'] ?? 'Learning Explorer',
-              userBadge: _levelData['badge'] ?? '🌱',
+              userBadge:
+                  _userAvatar, // Use selected avatar instead of level badge
               currentStreak: _streakData['currentStreak'] ?? 0,
               streakEmoji: _streakData['streakEmoji'] ?? '🔥',
             ),
@@ -355,7 +388,10 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                         Divider(height: 1, color: LColors.greyLight),
                         ListTile(
-                          leading: Icon(Icons.psychology, color: LColors.vocabulary),
+                          leading: Icon(
+                            Icons.psychology,
+                            color: LColors.vocabulary,
+                          ),
                           title: Text('Assessment Results'),
                           subtitle: Text('View your cognitive skills analysis'),
                           trailing: Icon(
@@ -368,20 +404,7 @@ class _MenuPageState extends State<MenuPage> {
                           },
                         ),
                         Divider(height: 1, color: LColors.greyLight),
-                        ListTile(
-                          leading: Icon(Icons.settings, color: LColors.grammar),
-                          title: Text('Settings'),
-                          subtitle: Text('App preferences and goals'),
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                            color: LColors.grey,
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/profile/settings');
-                          },
-                        ),
-                        Divider(height: 1, color: LColors.greyLight),
+
                         ListTile(
                           leading: Icon(
                             Icons.info_outline,

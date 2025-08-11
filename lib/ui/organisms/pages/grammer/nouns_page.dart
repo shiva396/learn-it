@@ -45,21 +45,7 @@ class _NounsPageState extends State<NounsPage> {
       // Check for new achievements
       await AchievementHelper.checkAndShowAchievements(context);
 
-      // Show completion message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.celebration, color: Colors.white),
-              SizedBox(width: 8),
-              Text('Great job! Learning activity recorded! 🎉'),
-            ],
-          ),
-          backgroundColor: LColors.success,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      );
+ 
     } catch (e) {
       // Handle silently for better UX
     }

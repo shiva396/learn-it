@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'package:learnit/services/streak_service.dart';
+import 'package:learnit/utils/achievement_helper.dart';
+import 'package:learnit/services/recent_activities_service.dart';
 
 class AdjectivePage extends StatefulWidget {
   const AdjectivePage({Key? key}) : super(key: key);
@@ -20,13 +23,55 @@ class _AdjectivePageState extends State<AdjectivePage> {
     });
   }
 
+  void _updateProgress() {
+    setState(() {
+      _progress =
+          _scrollController.hasClients
+              ? _scrollController.offset /
+                  (_scrollController.position.maxScrollExtent)
+              : 0.0;
+
+      // Record activity when user reaches 90% completion
+      if (_progress >= 0.9) {
+        _recordLearningActivity();
+      }
+    });
+  }
+
+  void _recordLearningActivity() async {
+    try {
+      await StreakService.recordActivity();
+
+      // Check for new achievements
+      await AchievementHelper.checkAndShowAchievements(context);
+
+     
+      
+    } catch (e) {
+      // Handle silently for better UX
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_updateProgress);
+    // Log grammar learning activity
+    RecentActivitiesService.logGrammarLearned('Adjectives');
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_updateProgress);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: LColors.blue.withOpacity(
-          _progress > 0.5 ? 1.0 : 0.7,
-        ), // Change color based on progress
+        backgroundColor: LColors.blue,
         elevation: 0,
         title: Text(
           'ADJECTIVE',
@@ -40,11 +85,11 @@ class _AdjectivePageState extends State<AdjectivePage> {
       ),
       body: Column(
         children: [
-          // LinearProgressIndicator(
-          //   value: _progress,
-          //   backgroundColor: LColors.surface,
-          //   color: const Color.fromARGB(255, 171, 90, 14),
-          // ),
+          LinearProgressIndicator(
+            value: _progress,
+            backgroundColor: LColors.surface,
+            color: LColors.blue,
+          ),
           Expanded(
             child: FutureBuilder<String>(
               future: DefaultAssetBundle.of(

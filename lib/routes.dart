@@ -6,7 +6,6 @@ import 'package:learnit/ui/organisms/pages/grammer/grammar_page.dart';
 import 'package:learnit/ui/organisms/pages/home_screen.dart';
 import 'package:learnit/ui/organisms/pages/profile/profile_page.dart';
 import 'package:learnit/ui/organisms/pages/profile/profile_details_page.dart';
-import 'package:learnit/ui/organisms/pages/profile/settings_page.dart';
 import 'package:learnit/ui/organisms/pages/profile/about_page.dart';
 import 'package:learnit/ui/organisms/pages/test_packs/tests_page.dart';
 import 'package:learnit/ui/organisms/pages/test_packs/test_page.dart';
@@ -30,7 +29,6 @@ import 'package:learnit/ui/organisms/pages/assessment/assessment_results_page.da
 import 'package:learnit/ui/organisms/pages/recent_activities_page.dart';
 import 'package:learnit/ui/organisms/pages/interactive/interactive_games_page.dart';
 import 'package:learnit/ui/organisms/pages/interactive/magical_garden_grower.dart';
-import 'package:learnit/ui/organisms/pages/interactive/adjective_adventure_canvas.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -56,7 +54,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/explanation/paint_the_cat': (context) => const PaintTheCatPage(),
   '/recent_activities': (context) => const RecentActivitiesPage(),
   '/profile/details': (context) => const ProfileDetailsPage(),
-  '/profile/settings': (context) => const SettingsPage(),
   '/profile/about': (context) => const AboutPage(),
   // Assessment routes
   '/assessment/intro': (context) => const AssessmentIntroPage(),
@@ -65,5 +62,4 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/assessment/results': (context) => const AssessmentResultsPage(),
   '/interactive_games': (context) => const InteractiveGamesPage(),
   '/magical-garden-grower': (context) => const MagicalGardenGrowerPage(),
-
 };
