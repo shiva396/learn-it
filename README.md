@@ -1,4 +1,3 @@
 # learnit
 
-A new Flutter project.
-"# learn-it" 
+Synetic model based application for teaching grammar to mid school students.
