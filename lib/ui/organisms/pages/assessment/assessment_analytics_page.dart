@@ -214,7 +214,7 @@ class AssessmentAnalyticsPage extends StatelessWidget {
                         children: [
                           const Row(
                             children: [
-                              Icon(Icons.timer, color: LColors.warning, size: 24),
+                              // Icon(Icons.timer, color: LColors.warning, size: 24),
                               SizedBox(width: 8),
                               Text(
                                 "⏰ Your Time Management",
