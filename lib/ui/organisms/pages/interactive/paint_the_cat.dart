@@ -17,48 +17,198 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
     with TickerProviderStateMixin {
   // Enhanced adjective categories with app theme colors
   final List<Map<String, dynamic>> colors = [
-    {'name': 'black', 'color': Colors.black87},
-    {'name': 'white', 'color': Colors.grey[200]},
-    {'name': 'orange', 'color': LColors.warning},
-    {'name': 'grey', 'color': Colors.grey},
-    {'name': 'brown', 'color': Colors.brown},
-    {'name': 'blue', 'color': LColors.blue},
+    {
+      'name': 'black',
+      'color': Colors.black87,
+      'rgb': [30, 30, 35],
+    },
+    {
+      'name': 'white',
+      'color': Colors.grey[200],
+      'rgb': [245, 245, 250],
+    },
+    {
+      'name': 'orange',
+      'color': Colors.orange[600],
+      'rgb': [255, 152, 0],
+    },
+    {
+      'name': 'grey',
+      'color': Colors.grey[600],
+      'rgb': [117, 117, 117],
+    },
+    {
+      'name': 'brown',
+      'color': Colors.brown[400],
+      'rgb': [141, 110, 99],
+    },
+    {
+      'name': 'blue',
+      'color': LColors.blue,
+      'rgb': [10, 132, 255],
+    },
+    {
+      'name': 'calico',
+      'color': Colors.orange[300],
+      'rgb': [255, 183, 77],
+    },
+    {
+      'name': 'tabby',
+      'color': Colors.brown[300],
+      'rgb': [161, 136, 127],
+    },
   ];
 
   final List<Map<String, dynamic>> sizes = [
-    {'name': 'tiny', 'scale': 0.6},
-    {'name': 'small', 'scale': 0.8},
-    {'name': 'normal', 'scale': 1.0},
-    {'name': 'big', 'scale': 1.2},
-    {'name': 'huge', 'scale': 1.6},
-    {'name': 'gigantic', 'scale': 2.0},
+    {'name': 'tiny', 'scale': 0.5, 'description': 'Adorable kitten size'},
+    {'name': 'small', 'scale': 0.7, 'description': 'Young cat size'},
+    {'name': 'normal', 'scale': 1.0, 'description': 'Perfect adult size'},
+    {'name': 'big', 'scale': 1.3, 'description': 'Large and majestic'},
+    {'name': 'huge', 'scale': 1.6, 'description': 'Maine Coon size'},
+    {'name': 'gigantic', 'scale': 2.0, 'description': 'Lion-like presence'},
   ];
 
   final List<Map<String, dynamic>> textures = [
-    {'name': 'fluffy', 'description': 'Soft and puffy'},
-    {'name': 'smooth', 'description': 'Sleek and shiny'},
-    {'name': 'rough', 'description': 'Bumpy and coarse'},
-    {'name': 'spiky', 'description': 'Sharp and pointed'},
-    {'name': 'silky', 'description': 'Ultra smooth'},
-    {'name': 'woolly', 'description': 'Thick and warm'},
+    {'name': 'fluffy', 'description': 'Soft cloud-like fur', 'effect': 'puffy'},
+    {
+      'name': 'smooth',
+      'description': 'Sleek and shiny coat',
+      'effect': 'glossy',
+    },
+    {
+      'name': 'long-haired',
+      'description': 'Luxurious flowing fur',
+      'effect': 'flowing',
+    },
+    {
+      'name': 'short-haired',
+      'description': 'Neat and tidy coat',
+      'effect': 'neat',
+    },
+    {
+      'name': 'silky',
+      'description': 'Ultra smooth and soft',
+      'effect': 'shimmer',
+    },
+    {'name': 'curly', 'description': 'Adorably curled fur', 'effect': 'wavy'},
   ];
 
   final List<Map<String, dynamic>> feelings = [
-    {'name': 'happy', 'description': 'Joyful and content'},
-    {'name': 'sad', 'description': 'Melancholy and down'},
-    {'name': 'angry', 'description': 'Furious and mad'},
-    {'name': 'surprised', 'description': 'Shocked and amazed'},
-    {'name': 'sleepy', 'description': 'Tired and drowsy'},
-    {'name': 'playful', 'description': 'Fun and energetic'},
+    {
+      'name': 'happy',
+      'description': 'Joyful and content',
+      'eyes': 'squinting',
+      'mouth': 'smiling',
+      'ears': 'forward',
+      'tail': 'up',
+      'pose': 'relaxed',
+    },
+    {
+      'name': 'sad',
+      'description': 'Melancholy and down',
+      'eyes': 'droopy',
+      'mouth': 'frown',
+      'ears': 'back',
+      'tail': 'down',
+      'pose': 'hunched',
+    },
+    {
+      'name': 'angry',
+      'description': 'Furious and mad',
+      'eyes': 'narrow',
+      'mouth': 'hissing',
+      'ears': 'flat',
+      'tail': 'puffed',
+      'pose': 'arched',
+    },
+    {
+      'name': 'surprised',
+      'description': 'Shocked and amazed',
+      'eyes': 'wide',
+      'mouth': 'open',
+      'ears': 'alert',
+      'tail': 'straight',
+      'pose': 'alert',
+    },
+    {
+      'name': 'sleepy',
+      'description': 'Tired and drowsy',
+      'eyes': 'closed',
+      'mouth': 'relaxed',
+      'ears': 'relaxed',
+      'tail': 'curled',
+      'pose': 'lying',
+    },
+    {
+      'name': 'playful',
+      'description': 'Fun and energetic',
+      'eyes': 'bright',
+      'mouth': 'open',
+      'ears': 'perked',
+      'tail': 'twitching',
+      'pose': 'crouched',
+    },
+    {
+      'name': 'curious',
+      'description': 'Interested and alert',
+      'eyes': 'wide',
+      'mouth': 'slightly_open',
+      'ears': 'forward',
+      'tail': 'question_mark',
+      'pose': 'sitting',
+    },
+    {
+      'name': 'scared',
+      'description': 'Frightened and nervous',
+      'eyes': 'wide',
+      'mouth': 'closed',
+      'ears': 'back',
+      'tail': 'between_legs',
+      'pose': 'crouched_low',
+    },
   ];
 
   final List<Map<String, dynamic>> personalities = [
-    {'name': 'lazy', 'description': 'Loves to relax'},
-    {'name': 'energetic', 'description': 'Full of energy'},
-    {'name': 'curious', 'description': 'Always exploring'},
-    {'name': 'shy', 'description': 'Quiet and reserved'},
-    {'name': 'brave', 'description': 'Fearless and bold'},
-    {'name': 'mischievous', 'description': 'Playfully naughty'},
+    {
+      'name': 'lazy',
+      'description': 'Loves to relax and nap',
+      'activity': 'sleeping',
+    },
+    {
+      'name': 'energetic',
+      'description': 'Full of energy and life',
+      'activity': 'jumping',
+    },
+    {
+      'name': 'curious',
+      'description': 'Always exploring new things',
+      'activity': 'investigating',
+    },
+    {
+      'name': 'shy',
+      'description': 'Quiet and reserved nature',
+      'activity': 'hiding',
+    },
+    {
+      'name': 'brave',
+      'description': 'Fearless and bold spirit',
+      'activity': 'prowling',
+    },
+    {
+      'name': 'mischievous',
+      'description': 'Playfully naughty',
+      'activity': 'plotting',
+    },
+    {
+      'name': 'gentle',
+      'description': 'Kind and loving heart',
+      'activity': 'purring',
+    },
+    {
+      'name': 'independent',
+      'description': 'Self-reliant and confident',
+      'activity': 'observing',
+    },
   ];
 
   // State variables
@@ -447,12 +597,13 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                             child: AspectRatio(
                               aspectRatio: 1,
                               child: CustomPaint(
-                                painter: EnhancedCatPainter(
+                                painter: RealisticCatPainter(
                                   color: _getColorFromAdjective(selectedColor),
                                   texture: selectedTexture,
                                   feeling: selectedFeeling,
                                   personality: selectedPersonality,
                                   animationValue: _magicAnim.value,
+                                  scale: _getScaleFromSize(selectedSize),
                                 ),
                               ),
                             ),
@@ -765,361 +916,1190 @@ class MagicEffectPainter extends CustomPainter {
 }
 
 /// Enhanced custom painter that draws a stylized cat with dynamic attributes and animations
-class EnhancedCatPainter extends CustomPainter {
+class RealisticCatPainter extends CustomPainter {
   final Color color;
   final String? texture;
   final String? feeling;
   final String? personality;
   final double animationValue;
+  final double scale;
 
-  EnhancedCatPainter({
+  RealisticCatPainter({
     required this.color,
     this.texture,
     this.feeling,
     this.personality,
     required this.animationValue,
+    this.scale = 1.0,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     if (size.width <= 0 || size.height <= 0) return;
 
-    final center = Offset(size.width / 2, size.height / 2 + 20);
-    final paint =
+    final center = Offset(size.width / 2, size.height / 2);
+    final bodyScale = scale * (1.0 + animationValue * 0.15);
+
+    // Enhanced glow effect for magical moments
+    if (animationValue > 0) {
+      _drawMagicalGlow(canvas, center, bodyScale);
+    }
+
+    // Draw cat components in realistic order (back to front)
+    _drawTail(canvas, center, bodyScale);
+    _drawBackLegs(canvas, center, bodyScale);
+    _drawBody(canvas, center, bodyScale);
+    _drawFrontLegs(canvas, center, bodyScale);
+    _drawNeck(canvas, center, bodyScale);
+    _drawHead(canvas, center, bodyScale);
+    _drawEars(canvas, center, bodyScale);
+    _drawFacialFeatures(canvas, center, bodyScale);
+    _drawWhiskers(canvas, center, bodyScale);
+    _drawTexture(canvas, center, bodyScale);
+    _drawPersonalityEffects(canvas, center, bodyScale);
+    _drawEmotionalEffects(canvas, center, bodyScale);
+  }
+
+  void _drawMagicalGlow(Canvas canvas, Offset center, double scale) {
+    final glowIntensity = (animationValue * 0.4).clamp(0.0, 1.0);
+
+    // Outer glow
+    final outerGlow =
+        Paint()
+          ..color = Colors.white.withOpacity(glowIntensity * 0.3)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 25);
+    canvas.drawOval(
+      Rect.fromCenter(center: center, width: 300 * scale, height: 200 * scale),
+      outerGlow,
+    );
+
+    // Inner magical sparkle
+    final innerGlow =
+        Paint()
+          ..color = color.withOpacity(glowIntensity * 0.5)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
+    canvas.drawOval(
+      Rect.fromCenter(center: center, width: 220 * scale, height: 150 * scale),
+      innerGlow,
+    );
+  }
+
+  void _drawBody(Canvas canvas, Offset center, double scale) {
+    final bodyPaint =
         Paint()
           ..color = color
           ..style = PaintingStyle.fill;
 
-    // Add subtle animation glow
-    if (animationValue > 0) {
-      final safeOpacity = (animationValue * 0.3).clamp(0.0, 1.0);
-      final glowPaint =
-          Paint()
-            ..color = const Color(0xFFFFD700).withOpacity(safeOpacity)
-            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-      canvas.drawOval(
-        Rect.fromCenter(center: center, width: 180, height: 120),
-        glowPaint,
-      );
-    }
-
-    // Draw body with animation scale
-    final bodyScale = 1.0 + animationValue * 0.1;
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: center,
-        width: 160 * bodyScale,
-        height: 100 * bodyScale,
-      ),
-      paint,
+    // Main body - more realistic oval shape
+    final bodyRect = Rect.fromCenter(
+      center: center.translate(0, 10 * scale),
+      width: 180 * scale,
+      height: 120 * scale,
     );
+    canvas.drawOval(bodyRect, bodyPaint);
 
-    // Head
-    canvas.drawCircle(Offset(center.dx, center.dy - 60), 40 * bodyScale, paint);
+    // Chest area - lighter color for depth
+    final chestPaint =
+        Paint()
+          ..color = _lightenColor(color, 0.1)
+          ..style = PaintingStyle.fill;
 
-    // Enhanced features
-    _drawEar(canvas, center, true, bodyScale);
-    _drawEar(canvas, center, false, bodyScale);
-    _drawLeg(canvas, center.translate(-30, 40), bodyScale);
-    _drawLeg(canvas, center.translate(30, 40), bodyScale);
-    _drawTail(canvas, center, bodyScale);
-    _drawEnhancedFace(canvas, center, bodyScale);
-    _drawWhiskers(canvas, center, bodyScale);
-    _drawEnhancedTexture(canvas, center, bodyScale);
-    _drawPersonalityFeatures(canvas, center, bodyScale);
+    final chestRect = Rect.fromCenter(
+      center: center.translate(0, -5 * scale),
+      width: 120 * scale,
+      height: 80 * scale,
+    );
+    canvas.drawOval(chestRect, chestPaint);
+
+    // Belly marking (if appropriate)
+    if (color != Colors.white && color != Colors.grey[200]) {
+      final bellyPaint =
+          Paint()
+            ..color = Colors.white.withOpacity(0.8)
+            ..style = PaintingStyle.fill;
+
+      final bellyRect = Rect.fromCenter(
+        center: center.translate(0, 25 * scale),
+        width: 100 * scale,
+        height: 60 * scale,
+      );
+      canvas.drawOval(bellyRect, bellyPaint);
+    }
   }
 
-  void _drawEar(Canvas canvas, Offset c, bool isLeft, double scale) {
-    final offsetX = (isLeft ? -30.0 : 30.0) * scale;
-    final earPaint = Paint()..color = color;
+  void _drawHead(Canvas canvas, Offset center, double scale) {
+    final headCenter = center.translate(0, -80 * scale);
+    final headPaint =
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.fill;
 
+    // Main head - more realistic proportions
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: headCenter,
+        width: 100 * scale,
+        height: 90 * scale,
+      ),
+      headPaint,
+    );
+
+    // Forehead area
+    final foreheadPaint =
+        Paint()
+          ..color = _lightenColor(color, 0.05)
+          ..style = PaintingStyle.fill;
+
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: headCenter.translate(0, -15 * scale),
+        width: 80 * scale,
+        height: 50 * scale,
+      ),
+      foreheadPaint,
+    );
+
+    // Muzzle area
+    _drawMuzzle(canvas, headCenter, scale);
+  }
+
+  void _drawMuzzle(Canvas canvas, Offset headCenter, double scale) {
+    final muzzleCenter = headCenter.translate(0, 20 * scale);
+    final muzzlePaint =
+        Paint()
+          ..color = _lightenColor(color, 0.15)
+          ..style = PaintingStyle.fill;
+
+    // Upper muzzle
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: muzzleCenter.translate(0, -5 * scale),
+        width: 45 * scale,
+        height: 25 * scale,
+      ),
+      muzzlePaint,
+    );
+
+    // Lower muzzle
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: muzzleCenter.translate(0, 8 * scale),
+        width: 35 * scale,
+        height: 20 * scale,
+      ),
+      muzzlePaint,
+    );
+  }
+
+  void _drawEars(Canvas canvas, Offset center, double scale) {
+    final headCenter = center.translate(0, -80 * scale);
+
+    // Left ear
+    _drawRealisticEar(
+      canvas,
+      headCenter.translate(-35 * scale, -35 * scale),
+      scale,
+      true,
+    );
+
+    // Right ear
+    _drawRealisticEar(
+      canvas,
+      headCenter.translate(35 * scale, -35 * scale),
+      scale,
+      false,
+    );
+  }
+
+  void _drawRealisticEar(
+    Canvas canvas,
+    Offset earPos,
+    double scale,
+    bool isLeft,
+  ) {
+    final earPaint = Paint()..color = color;
+    final innerEarPaint = Paint()..color = Colors.pink[200]!;
+
+    // Adjust ear position based on emotion
+    final emotionOffset = _getEarEmotionOffset();
+    final adjustedPos = earPos.translate(
+      emotionOffset.dx * scale,
+      emotionOffset.dy * scale,
+    );
+
+    // Outer ear shape - more realistic triangular shape
     final earPath =
         Path()
-          ..moveTo(c.dx + offsetX, c.dy - 90 * scale)
-          ..lineTo(c.dx + offsetX * 1.3, c.dy - 120 * scale)
-          ..lineTo(c.dx + offsetX * 0.3, c.dy - 100 * scale)
+          ..moveTo(adjustedPos.dx, adjustedPos.dy + 20 * scale)
+          ..lineTo(
+            adjustedPos.dx + (isLeft ? -15 : 15) * scale,
+            adjustedPos.dy - 25 * scale,
+          )
+          ..lineTo(
+            adjustedPos.dx + (isLeft ? 20 : -20) * scale,
+            adjustedPos.dy - 10 * scale,
+          )
           ..close();
     canvas.drawPath(earPath, earPaint);
 
     // Inner ear
-    final innerPaint = Paint()..color = Colors.pink[200]!;
-    final innerPath =
+    final innerEarPath =
         Path()
-          ..moveTo(c.dx + offsetX, c.dy - 95 * scale)
-          ..lineTo(c.dx + offsetX * 1.1, c.dy - 110 * scale)
-          ..lineTo(c.dx + offsetX * 0.5, c.dy - 105 * scale)
+          ..moveTo(adjustedPos.dx, adjustedPos.dy + 15 * scale)
+          ..lineTo(
+            adjustedPos.dx + (isLeft ? -8 : 8) * scale,
+            adjustedPos.dy - 15 * scale,
+          )
+          ..lineTo(
+            adjustedPos.dx + (isLeft ? 12 : -12) * scale,
+            adjustedPos.dy - 5 * scale,
+          )
           ..close();
-    canvas.drawPath(innerPath, innerPaint);
+    canvas.drawPath(innerEarPath, innerEarPaint);
+
+    // Ear tufts for certain textures
+    if (texture == 'fluffy' || texture == 'long-haired') {
+      _drawEarTufts(canvas, adjustedPos, scale, isLeft);
+    }
   }
 
-  void _drawLeg(Canvas canvas, Offset pos, double scale) {
-    final legPaint = Paint()..color = color;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromCenter(center: pos, width: 20 * scale, height: 40 * scale),
-        Radius.circular(10 * scale),
-      ),
-      legPaint,
-    );
-
-    // Add paw details
-    final pawPaint = Paint()..color = Colors.pink[100]!;
-    canvas.drawCircle(Offset(pos.dx, pos.dy + 15 * scale), 6 * scale, pawPaint);
-  }
-
-  void _drawTail(Canvas canvas, Offset c, double scale) {
-    final tailPaint =
+  void _drawEarTufts(Canvas canvas, Offset earPos, double scale, bool isLeft) {
+    final tuftPaint =
         Paint()
           ..color = color
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 8 * scale;
+          ..strokeWidth = 2 * scale;
 
-    final tail =
+    for (int i = 0; i < 3; i++) {
+      final tuftPath =
+          Path()
+            ..moveTo(
+              earPos.dx + (isLeft ? -10 : 10) * scale,
+              earPos.dy - 20 * scale,
+            )
+            ..lineTo(
+              earPos.dx + (isLeft ? -15 : 15) * scale + i * 2,
+              earPos.dy - 30 * scale,
+            );
+      canvas.drawPath(tuftPath, tuftPaint);
+    }
+  }
+
+  void _drawFacialFeatures(Canvas canvas, Offset center, double scale) {
+    final headCenter = center.translate(0, -80 * scale);
+
+    // Draw eyes based on emotion
+    _drawRealisticEyes(canvas, headCenter, scale);
+
+    // Draw nose
+    _drawNose(canvas, headCenter.translate(0, 10 * scale), scale);
+
+    // Draw mouth based on emotion
+    _drawMouth(canvas, headCenter.translate(0, 25 * scale), scale);
+  }
+
+  void _drawRealisticEyes(Canvas canvas, Offset headCenter, double scale) {
+    final eyeStyle = _getEyeStyle();
+    final leftEyePos = headCenter.translate(-20 * scale, -15 * scale);
+    final rightEyePos = headCenter.translate(20 * scale, -15 * scale);
+
+    _drawSingleEye(canvas, leftEyePos, scale, eyeStyle);
+    _drawSingleEye(canvas, rightEyePos, scale, eyeStyle);
+  }
+
+  void _drawSingleEye(
+    Canvas canvas,
+    Offset eyePos,
+    double scale,
+    Map<String, dynamic> style,
+  ) {
+    final eyeWhitePaint = Paint()..color = Colors.white;
+    final eyeColorPaint = Paint()..color = Colors.green[600]!;
+    final pupilPaint = Paint()..color = Colors.black;
+
+    switch (style['type']) {
+      case 'normal':
+        // Almond-shaped eye
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: eyePos,
+            width: 18 * scale,
+            height: 12 * scale,
+          ),
+          eyeWhitePaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: eyePos,
+            width: 12 * scale,
+            height: 12 * scale,
+          ),
+          eyeColorPaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(center: eyePos, width: 4 * scale, height: 8 * scale),
+          pupilPaint,
+        );
+        break;
+
+      case 'wide':
+        // Wide surprised eyes
+        canvas.drawCircle(eyePos, 12 * scale, eyeWhitePaint);
+        canvas.drawCircle(eyePos, 10 * scale, eyeColorPaint);
+        canvas.drawCircle(eyePos, 6 * scale, pupilPaint);
+        break;
+
+      case 'squinting':
+        // Happy squinting eyes
+        final squintPath =
+            Path()
+              ..moveTo(eyePos.dx - 12 * scale, eyePos.dy)
+              ..quadraticBezierTo(
+                eyePos.dx,
+                eyePos.dy - 4 * scale,
+                eyePos.dx + 12 * scale,
+                eyePos.dy,
+              )
+              ..quadraticBezierTo(
+                eyePos.dx,
+                eyePos.dy + 2 * scale,
+                eyePos.dx - 12 * scale,
+                eyePos.dy,
+              );
+        canvas.drawPath(squintPath, eyeColorPaint);
+        break;
+
+      case 'droopy':
+        // Sad droopy eyes
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: eyePos.translate(0, 2 * scale),
+            width: 16 * scale,
+            height: 10 * scale,
+          ),
+          eyeWhitePaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: eyePos.translate(0, 2 * scale),
+            width: 10 * scale,
+            height: 8 * scale,
+          ),
+          eyeColorPaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: eyePos.translate(0, 3 * scale),
+            width: 3 * scale,
+            height: 6 * scale,
+          ),
+          pupilPaint,
+        );
+        break;
+
+      case 'narrow':
+        // Angry narrow eyes
+        canvas.drawOval(
+          Rect.fromCenter(center: eyePos, width: 20 * scale, height: 6 * scale),
+          eyeWhitePaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(center: eyePos, width: 14 * scale, height: 4 * scale),
+          eyeColorPaint,
+        );
+        canvas.drawOval(
+          Rect.fromCenter(center: eyePos, width: 2 * scale, height: 4 * scale),
+          pupilPaint,
+        );
+        break;
+
+      case 'closed':
+        // Sleeping closed eyes
+        final closedPath =
+            Path()
+              ..moveTo(eyePos.dx - 10 * scale, eyePos.dy)
+              ..quadraticBezierTo(
+                eyePos.dx,
+                eyePos.dy + 2 * scale,
+                eyePos.dx + 10 * scale,
+                eyePos.dy,
+              );
+        final eyeLidPaint =
+            Paint()
+              ..color = color
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 3 * scale;
+        canvas.drawPath(closedPath, eyeLidPaint);
+        break;
+    }
+
+    // Add eye shine for living eyes
+    if (style['type'] != 'closed') {
+      final shinePaint = Paint()..color = Colors.white.withOpacity(0.8);
+      canvas.drawCircle(
+        eyePos.translate(-2 * scale, -2 * scale),
+        2 * scale,
+        shinePaint,
+      );
+    }
+  }
+
+  void _drawNose(Canvas canvas, Offset nosePos, double scale) {
+    final nosePaint = Paint()..color = Colors.pink[300]!;
+
+    // Heart-shaped nose
+    final nosePath =
         Path()
-          ..moveTo(c.dx + 70 * scale, c.dy + 10)
+          ..moveTo(nosePos.dx, nosePos.dy + 3 * scale)
           ..quadraticBezierTo(
-            c.dx + 100 * scale,
-            c.dy - 20,
-            c.dx + 80 * scale,
-            c.dy - 40 * scale,
+            nosePos.dx - 4 * scale,
+            nosePos.dy - 2 * scale,
+            nosePos.dx - 2 * scale,
+            nosePos.dy - 4 * scale,
+          )
+          ..quadraticBezierTo(
+            nosePos.dx,
+            nosePos.dy - 6 * scale,
+            nosePos.dx + 2 * scale,
+            nosePos.dy - 4 * scale,
+          )
+          ..quadraticBezierTo(
+            nosePos.dx + 4 * scale,
+            nosePos.dy - 2 * scale,
+            nosePos.dx,
+            nosePos.dy + 3 * scale,
           );
-    canvas.drawPath(tail, tailPaint);
 
-    // Add tail tip
-    final tipPaint = Paint()..color = color;
+    canvas.drawPath(nosePath, nosePaint);
+
+    // Nose highlight
+    final highlightPaint = Paint()..color = Colors.white.withOpacity(0.6);
     canvas.drawCircle(
-      Offset(c.dx + 80 * scale, c.dy - 40 * scale),
-      5 * scale,
-      tipPaint,
+      nosePos.translate(-1 * scale, -2 * scale),
+      1 * scale,
+      highlightPaint,
     );
   }
 
-  void _drawEnhancedFace(Canvas canvas, Offset c, double scale) {
-    final eyePaint = Paint()..color = Colors.white;
-    final pupilPaint = Paint()..color = Colors.black;
+  void _drawMouth(Canvas canvas, Offset mouthPos, double scale) {
+    final mouthStyle = _getMouthStyle();
     final mouthPaint =
         Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 2 * scale;
+          ..strokeWidth = 2 * scale
+          ..strokeCap = StrokeCap.round;
 
-    final eyeY = c.dy - 60 * scale;
-    final dx = 15.0 * scale;
-
-    // Enhanced eyes based on feeling
-    double eyeHeight = 12 * scale;
-    if (feeling == 'sleepy') eyeHeight = 6 * scale;
-    if (feeling == 'surprised') eyeHeight = 16 * scale;
-
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(c.dx - dx, eyeY),
-        width: 15 * scale,
-        height: eyeHeight,
-      ),
-      eyePaint,
-    );
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(c.dx + dx, eyeY),
-        width: 15 * scale,
-        height: eyeHeight,
-      ),
-      eyePaint,
-    );
-
-    // Enhanced pupils
-    double pupilSize = 4 * scale;
-    if (feeling == 'surprised') pupilSize = 2 * scale;
-    if (feeling == 'sleepy') pupilSize = 1 * scale;
-
-    canvas.drawCircle(Offset(c.dx - dx, eyeY), pupilSize, pupilPaint);
-    canvas.drawCircle(Offset(c.dx + dx, eyeY), pupilSize, pupilPaint);
-
-    // Enhanced mouth expressions
-    _drawMouthExpression(canvas, c, scale, mouthPaint);
-
-    // Add nose
-    final nosePaint = Paint()..color = Colors.pink;
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(c.dx, c.dy - 50 * scale),
-        width: 6 * scale,
-        height: 4 * scale,
-      ),
-      nosePaint,
-    );
-  }
-
-  void _drawMouthExpression(
-    Canvas canvas,
-    Offset c,
-    double scale,
-    Paint mouthPaint,
-  ) {
-    switch (feeling) {
-      case 'happy':
-        final path =
+    switch (mouthStyle) {
+      case 'smiling':
+        // Happy curved mouth
+        final smilePath =
             Path()
-              ..moveTo(c.dx - 10 * scale, c.dy - 45 * scale)
+              ..moveTo(mouthPos.dx - 8 * scale, mouthPos.dy)
               ..quadraticBezierTo(
-                c.dx,
-                c.dy - 30 * scale,
-                c.dx + 10 * scale,
-                c.dy - 45 * scale,
+                mouthPos.dx,
+                mouthPos.dy + 4 * scale,
+                mouthPos.dx + 8 * scale,
+                mouthPos.dy,
               );
-        canvas.drawPath(path, mouthPaint);
+        canvas.drawPath(smilePath, mouthPaint);
         break;
-      case 'sad':
-        final path =
+
+      case 'frown':
+        // Sad frown
+        final frownPath =
             Path()
-              ..moveTo(c.dx - 10 * scale, c.dy - 40 * scale)
+              ..moveTo(mouthPos.dx - 6 * scale, mouthPos.dy + 3 * scale)
               ..quadraticBezierTo(
-                c.dx,
-                c.dy - 50 * scale,
-                c.dx + 10 * scale,
-                c.dy - 40 * scale,
+                mouthPos.dx,
+                mouthPos.dy - 2 * scale,
+                mouthPos.dx + 6 * scale,
+                mouthPos.dy + 3 * scale,
               );
-        canvas.drawPath(path, mouthPaint);
+        canvas.drawPath(frownPath, mouthPaint);
         break;
-      case 'surprised':
-        final surprisedPaint = Paint()..color = Colors.black;
-        canvas.drawCircle(
-          Offset(c.dx, c.dy - 45 * scale),
-          5 * scale,
-          surprisedPaint,
-        );
-        break;
-      case 'playful':
-        // Draw tongue out
-        final tonguePaint = Paint()..color = Colors.pink;
+
+      case 'open':
+        // Surprised/playful open mouth
         canvas.drawOval(
           Rect.fromCenter(
-            center: Offset(c.dx + 3 * scale, c.dy - 40 * scale),
-            width: 8 * scale,
-            height: 6 * scale,
+            center: mouthPos,
+            width: 6 * scale,
+            height: 8 * scale,
           ),
-          tonguePaint,
+          Paint()..color = Colors.black,
         );
         break;
+
+      case 'hissing':
+        // Angry hissing
+        final hissPath =
+            Path()
+              ..moveTo(mouthPos.dx - 10 * scale, mouthPos.dy)
+              ..lineTo(mouthPos.dx - 3 * scale, mouthPos.dy - 3 * scale)
+              ..lineTo(mouthPos.dx, mouthPos.dy)
+              ..lineTo(mouthPos.dx + 3 * scale, mouthPos.dy - 3 * scale)
+              ..lineTo(mouthPos.dx + 10 * scale, mouthPos.dy);
+        canvas.drawPath(hissPath, mouthPaint);
+        break;
+
       default:
-        // Simple line mouth
+        // Neutral mouth
         canvas.drawLine(
-          Offset(c.dx - 6 * scale, c.dy - 42 * scale),
-          Offset(c.dx + 6 * scale, c.dy - 42 * scale),
+          mouthPos.translate(-4 * scale, 0),
+          mouthPos.translate(4 * scale, 0),
           mouthPaint,
         );
     }
   }
 
-  void _drawWhiskers(Canvas canvas, Offset c, double scale) {
+  void _drawWhiskers(Canvas canvas, Offset center, double scale) {
+    final headCenter = center.translate(0, -80 * scale);
     final whiskerPaint =
         Paint()
-          ..color = Colors.black87
-          ..strokeWidth = 1.5 * scale;
+          ..color = Colors.black.withOpacity(0.7)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5 * scale
+          ..strokeCap = StrokeCap.round;
 
-    for (int sign in [1, -1]) {
-      // Multiple whiskers on each side
-      for (int i = 0; i < 3; i++) {
-        final yOffset = i * 6 - 6;
-        canvas.drawLine(
-          Offset(c.dx + sign * 15 * scale, c.dy - 45 * scale + yOffset),
-          Offset(c.dx + sign * 35 * scale, c.dy - 40 * scale + yOffset),
-          whiskerPaint,
-        );
-      }
+    // Left whiskers
+    for (int i = 0; i < 3; i++) {
+      final startY = headCenter.dy + (i - 1) * 8 * scale;
+      canvas.drawLine(
+        Offset(headCenter.dx - 25 * scale, startY),
+        Offset(headCenter.dx - 55 * scale, startY + (i - 1) * 3 * scale),
+        whiskerPaint,
+      );
+    }
+
+    // Right whiskers
+    for (int i = 0; i < 3; i++) {
+      final startY = headCenter.dy + (i - 1) * 8 * scale;
+      canvas.drawLine(
+        Offset(headCenter.dx + 25 * scale, startY),
+        Offset(headCenter.dx + 55 * scale, startY + (i - 1) * 3 * scale),
+        whiskerPaint,
+      );
     }
   }
 
-  void _drawEnhancedTexture(Canvas canvas, Offset c, double scale) {
+  void _drawNeck(Canvas canvas, Offset center, double scale) {
+    final neckPaint = Paint()..color = color;
+
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: center.translate(0, -40 * scale),
+        width: 60 * scale,
+        height: 40 * scale,
+      ),
+      neckPaint,
+    );
+  }
+
+  void _drawFrontLegs(Canvas canvas, Offset center, double scale) {
+    _drawRealisticLeg(canvas, center.translate(-40 * scale, 35 * scale), scale);
+    _drawRealisticLeg(canvas, center.translate(-15 * scale, 40 * scale), scale);
+  }
+
+  void _drawBackLegs(Canvas canvas, Offset center, double scale) {
+    _drawRealisticLeg(canvas, center.translate(15 * scale, 40 * scale), scale);
+    _drawRealisticLeg(canvas, center.translate(40 * scale, 35 * scale), scale);
+  }
+
+  void _drawRealisticLeg(Canvas canvas, Offset legPos, double scale) {
+    final legPaint = Paint()..color = color;
+    final pawPaint = Paint()..color = _darkenColor(color, 0.1);
+
+    // Upper leg
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: legPos.translate(0, -10 * scale),
+        width: 18 * scale,
+        height: 35 * scale,
+      ),
+      legPaint,
+    );
+
+    // Lower leg/paw
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: legPos.translate(0, 15 * scale),
+        width: 15 * scale,
+        height: 25 * scale,
+      ),
+      legPaint,
+    );
+
+    // Paw pad
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: legPos.translate(0, 25 * scale),
+        width: 12 * scale,
+        height: 8 * scale,
+      ),
+      pawPaint,
+    );
+
+    // Toe beans
+    final toePaint = Paint()..color = Colors.pink[200]!;
+    for (int i = 0; i < 4; i++) {
+      final toeX = legPos.dx + (i - 1.5) * 3 * scale;
+      canvas.drawCircle(
+        Offset(toeX, legPos.dy + 22 * scale),
+        1.5 * scale,
+        toePaint,
+      );
+    }
+  }
+
+  void _drawTail(Canvas canvas, Offset center, double scale) {
+    final tailPosition = _getTailPosition();
+    final tailPaint =
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 12 * scale
+          ..strokeCap = StrokeCap.round;
+
+    Path tailPath;
+
+    switch (tailPosition) {
+      case 'up':
+        // Happy high tail
+        tailPath =
+            Path()
+              ..moveTo(center.dx + 80 * scale, center.dy + 20 * scale)
+              ..quadraticBezierTo(
+                center.dx + 100 * scale,
+                center.dy - 40 * scale,
+                center.dx + 90 * scale,
+                center.dy - 80 * scale,
+              );
+        break;
+
+      case 'down':
+        // Sad low tail
+        tailPath =
+            Path()
+              ..moveTo(center.dx + 80 * scale, center.dy + 20 * scale)
+              ..quadraticBezierTo(
+                center.dx + 120 * scale,
+                center.dy + 60 * scale,
+                center.dx + 140 * scale,
+                center.dy + 80 * scale,
+              );
+        break;
+
+      case 'puffed':
+        // Angry puffed tail
+        final puffedPaint =
+            Paint()
+              ..color = color
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 20 * scale
+              ..strokeCap = StrokeCap.round;
+        tailPath =
+            Path()
+              ..moveTo(center.dx + 80 * scale, center.dy + 20 * scale)
+              ..quadraticBezierTo(
+                center.dx + 110 * scale,
+                center.dy - 10 * scale,
+                center.dx + 130 * scale,
+                center.dy - 20 * scale,
+              );
+        canvas.drawPath(tailPath, puffedPaint);
+        return;
+
+      case 'question_mark':
+        // Curious question mark tail
+        tailPath =
+            Path()
+              ..moveTo(center.dx + 80 * scale, center.dy + 20 * scale)
+              ..quadraticBezierTo(
+                center.dx + 100 * scale,
+                center.dy - 30 * scale,
+                center.dx + 85 * scale,
+                center.dy - 50 * scale,
+              )
+              ..quadraticBezierTo(
+                center.dx + 70 * scale,
+                center.dy - 60 * scale,
+                center.dx + 75 * scale,
+                center.dy - 70 * scale,
+              );
+        break;
+
+      default:
+        // Normal relaxed tail
+        tailPath =
+            Path()
+              ..moveTo(center.dx + 80 * scale, center.dy + 20 * scale)
+              ..quadraticBezierTo(
+                center.dx + 120 * scale,
+                center.dy + 10 * scale,
+                center.dx + 140 * scale,
+                center.dy + 30 * scale,
+              );
+    }
+
+    canvas.drawPath(tailPath, tailPaint);
+
+    // Add tail rings for tabby patterns
+    if (color == Colors.brown[400] || texture == 'tabby') {
+      _drawTailRings(canvas, tailPath, scale);
+    }
+  }
+
+  void _drawTailRings(Canvas canvas, Path tailPath, double scale) {
+    final ringPaint =
+        Paint()
+          ..color = _darkenColor(color, 0.2)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 3 * scale;
+
+    // Draw rings along the tail
+    for (int i = 0; i < 3; i++) {
+      final ringPath = Path();
+      ringPath.addOval(
+        Rect.fromCircle(
+          center: Offset(0, -20.0 * scale * (i + 1)),
+          radius: 8 * scale,
+        ),
+      );
+      canvas.drawPath(ringPath, ringPaint);
+    }
+  }
+
+  void _drawTexture(Canvas canvas, Offset center, double scale) {
     switch (texture) {
       case 'fluffy':
-        final paint = Paint()..color = Colors.white.withOpacity(0.5);
-        for (double a = 0; a < 360; a += 20) {
-          final ang = a * pi / 180;
-          final r = (60 + sin(a / 30) * 8) * scale;
-          final x = c.dx + r * cos(ang);
-          final y = c.dy + r * sin(ang);
-          canvas.drawCircle(Offset(x, y), 4 * scale, paint);
-        }
+        _drawFluffyTexture(canvas, center, scale);
+        break;
+      case 'smooth':
+        _drawSmoothTexture(canvas, center, scale);
+        break;
+      case 'long-haired':
+        _drawLongHairTexture(canvas, center, scale);
         break;
       case 'silky':
-        final paint =
-            Paint()
-              ..color = Colors.white.withOpacity(0.3)
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 1.5 * scale;
-        for (int i = 0; i < 3; i++) {
-          canvas.drawOval(
-            Rect.fromCenter(
-              center: c,
-              width: (120 + i * 15) * scale,
-              height: (80 + i * 10) * scale,
-            ),
-            paint,
-          );
-        }
+        _drawSilkyTexture(canvas, center, scale);
         break;
-      case 'woolly':
-        final paint = Paint()..color = Colors.grey.withOpacity(0.4);
-        for (int i = 0; i < 20; i++) {
-          final x = c.dx - 60 * scale + (i % 8) * 15 * scale;
-          final y = c.dy - 30 * scale + (i ~/ 8) * 15 * scale;
-          canvas.drawCircle(Offset(x, y), 3 * scale, paint);
-        }
+      case 'curly':
+        _drawCurlyTexture(canvas, center, scale);
         break;
     }
   }
 
-  void _drawPersonalityFeatures(Canvas canvas, Offset c, double scale) {
+  void _drawFluffyTexture(Canvas canvas, Offset center, double scale) {
+    final fluffPaint =
+        Paint()
+          ..color = _lightenColor(color, 0.1)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1 * scale;
+
+    final random = Random(42);
+    for (int i = 0; i < 30; i++) {
+      final angle = random.nextDouble() * 2 * pi;
+      final radius = 40 + random.nextDouble() * 60;
+      final startPoint = center.translate(
+        cos(angle) * radius * scale,
+        sin(angle) * radius * scale,
+      );
+      final endPoint = startPoint.translate(
+        cos(angle) * 8 * scale,
+        sin(angle) * 8 * scale,
+      );
+      canvas.drawLine(startPoint, endPoint, fluffPaint);
+    }
+  }
+
+  void _drawSmoothTexture(Canvas canvas, Offset center, double scale) {
+    // Add subtle shine lines
+    final shinePaint =
+        Paint()
+          ..color = Colors.white.withOpacity(0.2)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * scale;
+
+    for (int i = 0; i < 3; i++) {
+      final y = center.dy - 20 + i * 20;
+      canvas.drawLine(
+        Offset(center.dx - 60 * scale, y * scale),
+        Offset(center.dx + 60 * scale, y * scale),
+        shinePaint,
+      );
+    }
+  }
+
+  void _drawLongHairTexture(Canvas canvas, Offset center, double scale) {
+    final hairPaint =
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * scale;
+
+    // Draw flowing hair strands
+    for (int i = 0; i < 15; i++) {
+      final startX = center.dx - 80 + i * 12;
+      final hairPath =
+          Path()
+            ..moveTo(startX * scale, center.dy * scale)
+            ..quadraticBezierTo(
+              (startX + 5) * scale,
+              (center.dy + 20) * scale,
+              (startX + 10) * scale,
+              (center.dy + 30) * scale,
+            );
+      canvas.drawPath(hairPath, hairPaint);
+    }
+  }
+
+  void _drawSilkyTexture(Canvas canvas, Offset center, double scale) {
+    // Add subtle gradient effect
+    final gradientPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [color, _lightenColor(color, 0.3), color],
+          ).createShader(
+            Rect.fromCenter(
+              center: center,
+              width: 200 * scale,
+              height: 150 * scale,
+            ),
+          );
+
+    canvas.drawOval(
+      Rect.fromCenter(center: center, width: 180 * scale, height: 120 * scale),
+      gradientPaint,
+    );
+  }
+
+  void _drawCurlyTexture(Canvas canvas, Offset center, double scale) {
+    final curlPaint =
+        Paint()
+          ..color = _darkenColor(color, 0.1)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * scale;
+
+    // Draw curly patterns
+    for (int i = 0; i < 20; i++) {
+      final x = center.dx + (i % 5 - 2) * 25 * scale;
+      final y = center.dy + (i ~/ 5 - 2) * 20 * scale;
+
+      final curlPath =
+          Path()
+            ..moveTo(x, y)
+            ..quadraticBezierTo(x + 5 * scale, y - 5 * scale, x + 10 * scale, y)
+            ..quadraticBezierTo(
+              x + 15 * scale,
+              y + 5 * scale,
+              x + 20 * scale,
+              y,
+            );
+
+      canvas.drawPath(curlPath, curlPaint);
+    }
+  }
+
+  void _drawPersonalityEffects(Canvas canvas, Offset center, double scale) {
     switch (personality) {
       case 'lazy':
-        // Draw sleepy lines around eyes
-        final sleepPaint =
-            Paint()
-              ..color = Colors.black54
-              ..strokeWidth = 1.5 * scale;
-        for (int i = 0; i < 3; i++) {
-          canvas.drawLine(
-            Offset(c.dx - 25 * scale, c.dy - 70 * scale + i * 4),
-            Offset(c.dx - 20 * scale, c.dy - 65 * scale + i * 4),
-            sleepPaint,
-          );
-        }
+        _drawSleepyZzz(canvas, center, scale);
         break;
       case 'energetic':
-        // Draw energy sparks
-        final sparkPaint =
-            Paint()
-              ..color = const Color(0xFFFFD700)
-              ..strokeWidth = 2 * scale;
-        for (int i = 0; i < 6; i++) {
-          final angle = i * pi / 3;
-          final startX = c.dx + 45 * scale * cos(angle);
-          final startY = c.dy - 45 * scale + 30 * scale * sin(angle);
-          final endX = startX + 10 * scale * cos(angle);
-          final endY = startY + 10 * scale * sin(angle);
-          canvas.drawLine(
-            Offset(startX, startY),
-            Offset(endX, endY),
-            sparkPaint,
-          );
-        }
+        _drawEnergyLines(canvas, center, scale);
+        break;
+      case 'mischievous':
+        _drawMischievousGlint(canvas, center, scale);
         break;
       case 'brave':
-        // Draw a cape
-        final capePaint =
-            Paint()..color = const Color(0xFFEF4444).withOpacity(0.8);
-        final capePath =
-            Path()
-              ..moveTo(c.dx - 25 * scale, c.dy - 45 * scale)
-              ..lineTo(c.dx - 50 * scale, c.dy + 30 * scale)
-              ..lineTo(c.dx - 35 * scale, c.dy + 40 * scale)
-              ..lineTo(c.dx - 15 * scale, c.dy + 15 * scale)
-              ..close();
-        canvas.drawPath(capePath, capePaint);
+        _drawConfidentAura(canvas, center, scale);
         break;
     }
+  }
+
+  void _drawEmotionalEffects(Canvas canvas, Offset center, double scale) {
+    switch (feeling) {
+      case 'happy':
+        _drawHappySparkles(canvas, center, scale);
+        break;
+      case 'angry':
+        _drawAngerLines(canvas, center, scale);
+        break;
+      case 'sad':
+        _drawTears(canvas, center, scale);
+        break;
+      case 'surprised':
+        _drawShockLines(canvas, center, scale);
+        break;
+    }
+  }
+
+  void _drawSleepyZzz(Canvas canvas, Offset center, double scale) {
+    final zzzPaint =
+        Paint()
+          ..color = Colors.blue[300]!.withOpacity(0.6)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * scale;
+
+    for (int i = 0; i < 3; i++) {
+      final zPos = center.translate(
+        30 * scale + i * 15 * scale,
+        -60 * scale + i * 10 * scale,
+      );
+      final zPath =
+          Path()
+            ..moveTo(zPos.dx, zPos.dy)
+            ..lineTo(zPos.dx + 8 * scale, zPos.dy)
+            ..lineTo(zPos.dx, zPos.dy + 8 * scale)
+            ..lineTo(zPos.dx + 8 * scale, zPos.dy + 8 * scale);
+      canvas.drawPath(zPath, zzzPaint);
+    }
+  }
+
+  void _drawEnergyLines(Canvas canvas, Offset center, double scale) {
+    final energyPaint =
+        Paint()
+          ..color = Colors.yellow[600]!.withOpacity(0.7)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 3 * scale;
+
+    for (int i = 0; i < 8; i++) {
+      final angle = i * pi / 4;
+      final start = center.translate(
+        cos(angle) * 100 * scale,
+        sin(angle) * 100 * scale,
+      );
+      final end = center.translate(
+        cos(angle) * 120 * scale,
+        sin(angle) * 120 * scale,
+      );
+      canvas.drawLine(start, end, energyPaint);
+    }
+  }
+
+  void _drawMischievousGlint(Canvas canvas, Offset center, double scale) {
+    final glintPaint = Paint()..color = Colors.white.withOpacity(0.8);
+
+    // Eye glint
+    final eyePos = center.translate(0, -95 * scale);
+    canvas.drawCircle(eyePos.translate(-20 * scale, 0), 3 * scale, glintPaint);
+    canvas.drawCircle(eyePos.translate(20 * scale, 0), 3 * scale, glintPaint);
+  }
+
+  void _drawConfidentAura(Canvas canvas, Offset center, double scale) {
+    final auraPaint =
+        Paint()
+          ..color = Colors.orange[300]!.withOpacity(0.3)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
+
+    canvas.drawOval(
+      Rect.fromCenter(center: center, width: 250 * scale, height: 180 * scale),
+      auraPaint,
+    );
+  }
+
+  void _drawHappySparkles(Canvas canvas, Offset center, double scale) {
+    final sparklePaint = Paint()..color = Colors.yellow[400]!.withOpacity(0.8);
+
+    for (int i = 0; i < 6; i++) {
+      final sparklePos = center.translate(
+        (50 + i * 20) * scale * cos(i * pi / 3),
+        (50 + i * 20) * scale * sin(i * pi / 3),
+      );
+      _drawSparkle(canvas, sparklePos, scale, sparklePaint);
+    }
+  }
+
+  void _drawAngerLines(Canvas canvas, Offset center, double scale) {
+    final angerPaint =
+        Paint()
+          ..color = Colors.red[400]!.withOpacity(0.7)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 3 * scale;
+
+    // Anger marks above head
+    final headCenter = center.translate(0, -80 * scale);
+    for (int i = 0; i < 4; i++) {
+      final markPos = headCenter.translate((i - 1.5) * 15 * scale, -50 * scale);
+      final markPath =
+          Path()
+            ..moveTo(markPos.dx, markPos.dy)
+            ..lineTo(markPos.dx + 5 * scale, markPos.dy - 10 * scale)
+            ..moveTo(markPos.dx + 5 * scale, markPos.dy)
+            ..lineTo(markPos.dx, markPos.dy - 10 * scale);
+      canvas.drawPath(markPath, angerPaint);
+    }
+  }
+
+  void _drawTears(Canvas canvas, Offset center, double scale) {
+    final tearPaint = Paint()..color = Colors.blue[200]!.withOpacity(0.8);
+
+    final eyePos = center.translate(0, -95 * scale);
+
+    // Left tear
+    final leftTear =
+        Path()
+          ..moveTo(eyePos.dx - 25 * scale, eyePos.dy)
+          ..quadraticBezierTo(
+            eyePos.dx - 25 * scale,
+            eyePos.dy + 5 * scale,
+            eyePos.dx - 20 * scale,
+            eyePos.dy + 15 * scale,
+          )
+          ..quadraticBezierTo(
+            eyePos.dx - 25 * scale,
+            eyePos.dy + 20 * scale,
+            eyePos.dx - 25 * scale,
+            eyePos.dy + 25 * scale,
+          );
+    canvas.drawPath(leftTear, tearPaint);
+
+    // Right tear
+    final rightTear =
+        Path()
+          ..moveTo(eyePos.dx + 25 * scale, eyePos.dy)
+          ..quadraticBezierTo(
+            eyePos.dx + 25 * scale,
+            eyePos.dy + 5 * scale,
+            eyePos.dx + 20 * scale,
+            eyePos.dy + 15 * scale,
+          )
+          ..quadraticBezierTo(
+            eyePos.dx + 25 * scale,
+            eyePos.dy + 20 * scale,
+            eyePos.dx + 25 * scale,
+            eyePos.dy + 25 * scale,
+          );
+    canvas.drawPath(rightTear, tearPaint);
+  }
+
+  void _drawShockLines(Canvas canvas, Offset center, double scale) {
+    final shockPaint =
+        Paint()
+          ..color = Colors.white
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * scale;
+
+    for (int i = 0; i < 6; i++) {
+      final angle = i * pi / 3;
+      final start = center.translate(
+        cos(angle) * 80 * scale,
+        sin(angle) * 80 * scale,
+      );
+      final end = center.translate(
+        cos(angle) * 100 * scale,
+        sin(angle) * 100 * scale,
+      );
+      canvas.drawLine(start, end, shockPaint);
+    }
+  }
+
+  void _drawSparkle(Canvas canvas, Offset pos, double scale, Paint paint) {
+    // 4-pointed star sparkle
+    final sparklePath =
+        Path()
+          ..moveTo(pos.dx, pos.dy - 4 * scale)
+          ..lineTo(pos.dx + 1 * scale, pos.dy - 1 * scale)
+          ..lineTo(pos.dx + 4 * scale, pos.dy)
+          ..lineTo(pos.dx + 1 * scale, pos.dy + 1 * scale)
+          ..lineTo(pos.dx, pos.dy + 4 * scale)
+          ..lineTo(pos.dx - 1 * scale, pos.dy + 1 * scale)
+          ..lineTo(pos.dx - 4 * scale, pos.dy)
+          ..lineTo(pos.dx - 1 * scale, pos.dy - 1 * scale)
+          ..close();
+
+    canvas.drawPath(sparklePath, paint);
+  }
+
+  // Helper methods for emotional states
+  Map<String, dynamic> _getEyeStyle() {
+    switch (feeling) {
+      case 'happy':
+        return {'type': 'squinting'};
+      case 'sad':
+        return {'type': 'droopy'};
+      case 'angry':
+        return {'type': 'narrow'};
+      case 'surprised':
+        return {'type': 'wide'};
+      case 'sleepy':
+        return {'type': 'closed'};
+      case 'curious':
+        return {'type': 'wide'};
+      case 'scared':
+        return {'type': 'wide'};
+      default:
+        return {'type': 'normal'};
+    }
+  }
+
+  String _getMouthStyle() {
+    switch (feeling) {
+      case 'happy':
+        return 'smiling';
+      case 'sad':
+        return 'frown';
+      case 'angry':
+        return 'hissing';
+      case 'surprised':
+        return 'open';
+      case 'playful':
+        return 'open';
+      case 'curious':
+        return 'slightly_open';
+      default:
+        return 'neutral';
+    }
+  }
+
+  String _getTailPosition() {
+    switch (feeling) {
+      case 'happy':
+        return 'up';
+      case 'sad':
+        return 'down';
+      case 'angry':
+        return 'puffed';
+      case 'curious':
+        return 'question_mark';
+      case 'playful':
+        return 'up';
+      case 'scared':
+        return 'between_legs';
+      default:
+        return 'normal';
+    }
+  }
+
+  Offset _getEarEmotionOffset() {
+    switch (feeling) {
+      case 'angry':
+        return const Offset(0, 5); // Ears back
+      case 'scared':
+        return const Offset(0, 8); // Ears flat
+      case 'curious':
+        return const Offset(0, -3); // Ears forward
+      case 'surprised':
+        return const Offset(0, -5); // Ears alert
+      default:
+        return const Offset(0, 0);
+    }
+  }
+
+  // Color manipulation helpers
+  Color _lightenColor(Color color, double amount) {
+    final hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness + amount).clamp(0.0, 1.0))
+        .toColor();
+  }
+
+  Color _darkenColor(Color color, double amount) {
+    final hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness - amount).clamp(0.0, 1.0))
+        .toColor();
   }
 
   @override

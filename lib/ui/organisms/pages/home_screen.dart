@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String userName = 'Student';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName') ?? 'Student';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +42,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        // actions: [
-        //   Icon(Icons.nightlight_round, color: Colors.white),
-        //   SizedBox(width: 16),
-        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -57,6 +74,35 @@ class HomeScreen extends StatelessWidget {
               _HomeTile(
                 color: LColors.blue,
                 icon: Icons.menu_book,
+                title: 'GRAMMAR',
+                subtitle: 'Improve Your Grammar Skills',
+                onTap: () => Navigator.pushNamed(context, '/grammar'),
+                extra: Row(
+                  children: [
+                    Icon(Icons.article, color: Colors.white, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Articles',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    SizedBox(width: 12),
+                    Icon(
+                      Icons.dashboard_customize,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      'Text customization',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16),
+              _HomeTile(
+                color: LColors.blueLight,
+                icon: Icons.video_library,
                 title: 'EXPLANATION',
                 subtitle: 'Video Lessons',
                 tag: 'NEW',
@@ -79,30 +125,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 16),
-              _HomeTile(
-                color: LColors.blueLight,
-                icon: Icons.menu_book,
-                title: 'GRAMMAR',
-                subtitle: 'Improve Your Grammar Skills',
-                onTap: () => Navigator.pushNamed(context, '/grammar'),
-              ),
-              SizedBox(height: 16),
-              // _HomeTile(
-              //   color: Color(0xFF1DE9B6),
-              //   icon: Icons.book,
-              //   title: 'EXCERCISES',
-              //   subtitle: 'Learn English Excercises',
-              //   onTap: () => Navigator.pushNamed(context, '/excercises'),
-              // ),
-              // SizedBox(height: 16),
-              _HomeTile(
-                color: const Color.fromARGB(255, 27, 208, 196),
-                icon: Icons.assignment,
-                title: 'TESTS',
-                subtitle: 'Test Your English Grammar',
-                onTap: () => Navigator.pushNamed(context, '/tests'),
               ),
               SizedBox(height: 16),
               _HomeTile(
@@ -131,6 +153,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
               SizedBox(height: 16),
               _HomeTile(
                 color: LColors.greyDark,
@@ -138,6 +161,15 @@ class HomeScreen extends StatelessWidget {
                 title: 'Sliding Decks',
                 subtitle: 'under construction',
                 onTap: () {},
+              ),
+              SizedBox(height: 16),
+
+              _HomeTile(
+                color: const Color.fromARGB(255, 27, 208, 196),
+                icon: Icons.assignment,
+                title: 'TESTS',
+                subtitle: 'Test Your English Grammar',
+                onTap: () => Navigator.pushNamed(context, '/tests'),
               ),
               SizedBox(height: 16),
               _HomeTile(

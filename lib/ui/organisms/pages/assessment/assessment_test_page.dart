@@ -29,7 +29,8 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
 
   void _initializeCurrentSection() {
     if (_currentSectionIndex < _testSections.length) {
-      _timeRemainingSeconds = _testSections[_currentSectionIndex].timeInMinutes * 60;
+      _timeRemainingSeconds =
+          _testSections[_currentSectionIndex].timeInMinutes * 60;
       _sectionStartTime = DateTime.now();
       _startTimer();
     }
@@ -55,7 +56,8 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
   }
 
   void _saveTimeSpent() {
-    if (_sectionStartTime != null && _currentSectionIndex < _testSections.length) {
+    if (_sectionStartTime != null &&
+        _currentSectionIndex < _testSections.length) {
       final currentSection = _testSections[_currentSectionIndex];
       final timeSpent = DateTime.now().difference(_sectionStartTime!).inSeconds;
       _timeSpent[currentSection.type] = timeSpent;
@@ -66,29 +68,37 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.timer_off, color: LColors.warning),
-            SizedBox(width: 8),
-            Text("Time's Up!"),
-          ],
-        ),
-        content: const Text("Don't worry! Let's move to the next challenge."),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _nextSection();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: LColors.blue,
-              foregroundColor: Colors.white,
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: LColors.warning, width: 1),
             ),
-            child: const Text("Continue"),
+            title: const Row(
+              children: [
+                Icon(Icons.timer_off, color: LColors.warning),
+                SizedBox(width: 8),
+                Text("Time's Up!"),
+              ],
+            ),
+            content: const Text(
+              "Don't worry! Let's move to the next challenge.",
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _nextSection();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: LColors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text("Continue"),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -112,7 +122,7 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
   void _nextSection() {
     _timer?.cancel();
     _saveTimeSpent();
-    
+
     if (_currentSectionIndex < _testSections.length - 1) {
       setState(() {
         _currentSectionIndex++;
@@ -126,16 +136,16 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
 
   void _completeAssessment() async {
     _timer?.cancel();
-    
+
     // Calculate results
     final result = _calculateResults();
-    
+
     // Save result to storage
     await AssessmentData.saveAssessmentResult(result);
-    
+
     // Navigate to analytics page
     Navigator.pushReplacementNamed(
-      context, 
+      context,
       '/assessment/analytics',
       arguments: result,
     );
@@ -160,7 +170,7 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
     }
 
     final overallPercentage = (totalScore / totalPossible) * 100;
-    
+
     final result = AssessmentResult(
       studentId: "student_001", // This would come from auth
       completedAt: DateTime.now(),
@@ -172,13 +182,16 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
       cognitiveAnalysis: {},
     );
 
-    result.cognitiveAnalysis.addAll(AssessmentData.calculateCognitiveAnalysis(result));
-    
+    result.cognitiveAnalysis.addAll(
+      AssessmentData.calculateCognitiveAnalysis(result),
+    );
+
     return result;
   }
 
   TestSection _getCurrentSection() => _testSections[_currentSectionIndex];
-  AssessmentQuestion _getCurrentQuestion() => _getCurrentSection().questions[_currentQuestionIndex];
+  AssessmentQuestion _getCurrentQuestion() =>
+      _getCurrentSection().questions[_currentQuestionIndex];
 
   String _formatTime(int seconds) {
     final minutes = seconds ~/ 60;
@@ -195,14 +208,15 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
   @override
   Widget build(BuildContext context) {
     if (_currentSectionIndex >= _testSections.length) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final currentSection = _getCurrentSection();
     final currentQuestion = _getCurrentQuestion();
-    final progress = (_currentSectionIndex + (_currentQuestionIndex + 1) / currentSection.questions.length) / _testSections.length;
+    final progress =
+        (_currentSectionIndex +
+            (_currentQuestionIndex + 1) / currentSection.questions.length) /
+        _testSections.length;
 
     return Scaffold(
       backgroundColor: LColors.background,
@@ -229,7 +243,11 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(currentSection.icon, color: currentSection.themeColor, size: 24),
+                          Icon(
+                            currentSection.icon,
+                            color: currentSection.themeColor,
+                            size: 24,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             currentSection.title,
@@ -242,14 +260,21 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
-                          color: _timeRemainingSeconds <= 60 
-                              ? LColors.error.withOpacity(0.1)
-                              : LColors.success.withOpacity(0.1),
+                          color:
+                              _timeRemainingSeconds <= 60
+                                  ? LColors.error.withOpacity(0.1)
+                                  : LColors.success.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: _timeRemainingSeconds <= 60 ? LColors.error : LColors.success,
+                            color:
+                                _timeRemainingSeconds <= 60
+                                    ? LColors.error
+                                    : LColors.success,
                             width: 1,
                           ),
                         ),
@@ -259,7 +284,10 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                             Icon(
                               Icons.timer,
                               size: 16,
-                              color: _timeRemainingSeconds <= 60 ? LColors.error : LColors.success,
+                              color:
+                                  _timeRemainingSeconds <= 60
+                                      ? LColors.error
+                                      : LColors.success,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -267,7 +295,10 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: _timeRemainingSeconds <= 60 ? LColors.error : LColors.success,
+                                color:
+                                    _timeRemainingSeconds <= 60
+                                        ? LColors.error
+                                        : LColors.success,
                               ),
                             ),
                           ],
@@ -282,7 +313,9 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                         child: LinearProgressIndicator(
                           value: progress,
                           backgroundColor: LColors.greyLight,
-                          valueColor: AlwaysStoppedAnimation<Color>(currentSection.themeColor),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            currentSection.themeColor,
+                          ),
                           minHeight: 6,
                         ),
                       ),
@@ -318,7 +351,7 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Question
                     Container(
                       width: double.infinity,
@@ -346,7 +379,7 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          
+
                           // Image if present
                           if (currentQuestion.imagePath != null) ...[
                             Container(
@@ -355,37 +388,43 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                               decoration: BoxDecoration(
                                 color: LColors.greyLight,
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: LColors.grey.withOpacity(0.3)),
+                                border: Border.all(
+                                  color: LColors.grey.withOpacity(0.3),
+                                ),
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.image,
-                                    size: 48,
-                                    color: LColors.grey,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Image will be here",
-                                    style: TextStyle(
-                                      color: LColors.grey,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    currentQuestion.imagePath!,
-                                    style: TextStyle(
-                                      color: LColors.grey,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ],
+                              child: Image.asset(
+                                currentQuestion.imagePath!,
+                                fit: BoxFit.fitWidth,
                               ),
+                              // Column(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     Icon(
+                              //       Icons.image,
+                              //       size: 48,
+                              //       color: LColors.grey,
+                              //     ),
+                              //     const SizedBox(height: 8),
+                              //     Text(
+                              //       "Image will be here",
+                              //       style: TextStyle(
+                              //         color: LColors.grey,
+                              //         fontSize: 12,
+                              //       ),
+                              //     ),
+                              //     Text(
+                              //       currentQuestion.imagePath!,
+                              //       style: TextStyle(
+                              //         color: LColors.grey,
+                              //         fontSize: 10,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ),
                             const SizedBox(height: 16),
                           ],
-                          
+
                           Text(
                             currentQuestion.question,
                             style: const TextStyle(
@@ -398,15 +437,16 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Answer Options
                     Expanded(
                       child: ListView.builder(
                         itemCount: currentQuestion.options.length,
                         itemBuilder: (context, index) {
-                          final isSelected = _userAnswers[currentQuestion.id] == index;
+                          final isSelected =
+                              _userAnswers[currentQuestion.id] == index;
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: GestureDetector(
@@ -415,14 +455,17 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  color: isSelected 
-                                      ? currentSection.themeColor.withOpacity(0.1)
-                                      : Colors.white,
+                                  color:
+                                      isSelected
+                                          ? currentSection.themeColor
+                                              .withOpacity(0.1)
+                                          : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: isSelected 
-                                        ? currentSection.themeColor
-                                        : LColors.greyLight,
+                                    color:
+                                        isSelected
+                                            ? currentSection.themeColor
+                                            : LColors.greyLight,
                                     width: 2,
                                   ),
                                   boxShadow: [
@@ -440,23 +483,26 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                                       height: 24,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: isSelected 
-                                            ? currentSection.themeColor
-                                            : Colors.transparent,
+                                        color:
+                                            isSelected
+                                                ? currentSection.themeColor
+                                                : Colors.transparent,
                                         border: Border.all(
-                                          color: isSelected 
-                                              ? currentSection.themeColor
-                                              : LColors.grey,
+                                          color:
+                                              isSelected
+                                                  ? currentSection.themeColor
+                                                  : LColors.grey,
                                           width: 2,
                                         ),
                                       ),
-                                      child: isSelected
-                                          ? const Icon(
-                                              Icons.check,
-                                              size: 16,
-                                              color: Colors.white,
-                                            )
-                                          : null,
+                                      child:
+                                          isSelected
+                                              ? const Icon(
+                                                Icons.check,
+                                                size: 16,
+                                                color: Colors.white,
+                                              )
+                                              : null,
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
@@ -464,7 +510,10 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                                         "${String.fromCharCode(65 + index)}. ${currentQuestion.options[index]}",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                                          fontWeight:
+                                              isSelected
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w400,
                                           color: LColors.black,
                                         ),
                                       ),
@@ -524,16 +573,17 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                         ),
                       ),
                     ),
-                  
+
                   if (_currentQuestionIndex > 0 || _currentSectionIndex > 0)
                     const SizedBox(width: 12),
-                  
+
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
-                      onPressed: _userAnswers.containsKey(currentQuestion.id) 
-                          ? _nextQuestion 
-                          : null,
+                      onPressed:
+                          _userAnswers.containsKey(currentQuestion.id)
+                              ? _nextQuestion
+                              : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: currentSection.themeColor,
                         foregroundColor: Colors.white,
@@ -545,9 +595,10 @@ class _AssessmentTestPageState extends State<AssessmentTestPage> {
                         elevation: 3,
                       ),
                       child: Text(
-                        _currentQuestionIndex == currentSection.questions.length - 1
-                            ? (_currentSectionIndex == _testSections.length - 1 
-                                ? "Finish Assessment" 
+                        _currentQuestionIndex ==
+                                currentSection.questions.length - 1
+                            ? (_currentSectionIndex == _testSections.length - 1
+                                ? "Finish Assessment"
                                 : "Next Section")
                             : "Next Question",
                         style: const TextStyle(

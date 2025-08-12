@@ -195,16 +195,16 @@ class _MenuPageState extends State<MenuPage> {
               streakEmoji: _streakData['streakEmoji'] ?? '🔥',
             ),
 
-            // Motivation Message
-            if (_streakData['motivationMessage'] != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: MotivationCard(
-                  message: _streakData['motivationMessage'],
-                  icon: Icons.lightbulb,
-                  color: LColors.highlight,
-                ),
-              ),
+            // // Motivation Message
+            // if (_streakData['motivationMessage'] != null)
+            //   Padding(
+            //     padding: const EdgeInsets.only(bottom: 16),
+            //     child: MotivationCard(
+            //       message: _streakData['motivationMessage'],
+            //       icon: Icons.lightbulb,
+            //       color: LColors.highlight,
+            //     ),
+            //   ),
 
             // Stats Grid
             Padding(
@@ -290,7 +290,7 @@ class _MenuPageState extends State<MenuPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.emoji_events, color: LColors.achievement),
+                          Icon(Icons.emoji_events, color: LColors.blue),
                           const SizedBox(width: 8),
                           Text(
                             'Achievements',
@@ -307,7 +307,7 @@ class _MenuPageState extends State<MenuPage> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: LColors.achievement.withOpacity(0.1),
+                              color: LColors.blue.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -315,7 +315,7 @@ class _MenuPageState extends State<MenuPage> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: LColors.achievement,
+                                color: LColors.blue,
                               ),
                             ),
                           ),
@@ -436,8 +436,13 @@ class _MenuPageState extends State<MenuPage> {
                           context: context,
                           builder:
                               (context) => AlertDialog(
+                                backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
+                                  side: BorderSide(
+                                    color: LColors.blue,
+                                    width: 1,
+                                  ),
                                 ),
                                 title: Text('Logout'),
                                 content: Text(

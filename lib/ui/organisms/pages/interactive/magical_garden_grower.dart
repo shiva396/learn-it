@@ -416,7 +416,7 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
                                   _getScaleFromSize(selectedSize) *
                                   (0.3 + _growthAnim.value * 0.7),
                               child: CustomPaint(
-                                painter: PlantPainter(
+                                painter: RealisticPlantPainter(
                                   plantType: selectedPlantType,
                                   color: _getColorFromAdjective(selectedColor),
                                   shape: selectedShape,
@@ -1820,8 +1820,8 @@ class SparkleEffectPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-/// Plant painter for drawing different plants with attributes
-class PlantPainter extends CustomPainter {
+/// Plant painter for drawing different plants with attributes - ENHANCED REALISTIC VERSION
+class RealisticPlantPainter extends CustomPainter {
   final String plantType;
   final Color color;
   final String? shape;
@@ -1829,7 +1829,7 @@ class PlantPainter extends CustomPainter {
   final double growthValue;
   final double bloomValue;
 
-  PlantPainter({
+  RealisticPlantPainter({
     required this.plantType,
     required this.color,
     this.shape,
@@ -1842,389 +1842,1010 @@ class PlantPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.width <= 0 || size.height <= 0 || growthValue <= 0) return;
 
-    final stemPaint = Paint()..color = Colors.green;
-    final leafPaint = Paint()..color = Colors.green[300]!;
-    final flowerPaint = Paint()..color = color;
-
     final center = Offset(size.width / 2, size.height);
     final stemHeight = size.height * 0.7 * growthValue;
 
-    // Draw stem
-    canvas.drawLine(
-      center,
-      center.translate(0, -stemHeight),
-      stemPaint..strokeWidth = 4,
-    );
+    // Draw enhanced stem with realistic texture
+    _drawRealisticStem(canvas, center, stemHeight);
 
-    // Draw leaves
+    // Draw realistic leaves with detailed texture
     if (growthValue > 0.3) {
-      _drawLeaf(canvas, center.translate(-15, -stemHeight * 0.3), leafPaint);
-      _drawLeaf(canvas, center.translate(15, -stemHeight * 0.6), leafPaint);
+      _drawRealisticLeaves(canvas, center, stemHeight);
     }
 
-    // Draw flower based on type and bloom value
+    // Draw highly detailed realistic flower
     if (growthValue > 0.7 && bloomValue > 0) {
       final flowerCenter = center.translate(0, -stemHeight);
-      _drawFlower(canvas, flowerCenter, flowerPaint, bloomValue);
+      _drawRealisticFlower(canvas, flowerCenter, bloomValue);
     }
 
-    // Draw atmosphere effects
+    // Enhanced atmosphere effects
     if (atmosphere != null && bloomValue > 0.5) {
-      _drawAtmosphereEffect(
+      _drawEnhancedAtmosphereEffect(
         canvas,
         center.translate(0, -stemHeight),
         atmosphere!,
       );
     }
 
-    // Draw enhanced visual glow effect
+    // Magical glow effect for fully bloomed flowers
     if (bloomValue > 0.8) {
-      _drawGlowEffect(canvas, center.translate(0, -stemHeight));
+      _drawEnhancedGlowEffect(canvas, center.translate(0, -stemHeight));
     }
   }
 
-  void _drawLeaf(Canvas canvas, Offset center, Paint paint) {
-    final leafPath =
-        Path()
-          ..moveTo(center.dx, center.dy)
-          ..quadraticBezierTo(
-            center.dx - 10,
-            center.dy - 5,
-            center.dx - 8,
-            center.dy - 12,
-          )
-          ..quadraticBezierTo(
-            center.dx,
-            center.dy - 10,
-            center.dx + 8,
-            center.dy - 12,
-          )
-          ..quadraticBezierTo(
-            center.dx + 10,
-            center.dy - 5,
-            center.dx,
-            center.dy,
-          )
-          ..close();
+  void _drawRealisticStem(Canvas canvas, Offset center, double stemHeight) {
+    // Enhanced stem with gradient and texture
+    final stemPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              Colors.green[800]!,
+              Colors.green[600]!,
+              Colors.green[400]!,
+            ],
+            stops: const [0.0, 0.5, 1.0],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ).createShader(
+            Rect.fromPoints(center, center.translate(0, -stemHeight)),
+          );
 
-    canvas.drawPath(leafPath, paint);
+    // Main stem with proper thickness
+    canvas.drawLine(
+      center,
+      center.translate(0, -stemHeight),
+      stemPaint..strokeWidth = 8,
+    );
+
+    // Add stem texture lines
+    final texturePaint =
+        Paint()
+          ..color = Colors.green[700]!
+          ..strokeWidth = 1;
+
+    for (int i = 0; i < (stemHeight / 15).round(); i++) {
+      final y = center.dy - (i * 15);
+      canvas.drawLine(
+        Offset(center.dx - 2, y),
+        Offset(center.dx + 2, y),
+        texturePaint,
+      );
+    }
   }
 
-  void _drawFlower(Canvas canvas, Offset center, Paint paint, double bloom) {
-    final petalSize = 15 * bloom;
+  void _drawRealisticLeaves(Canvas canvas, Offset center, double stemHeight) {
+    // Large, detailed leaves with realistic shape and texture
+    _drawDetailedLeaf(
+      canvas,
+      center.translate(-25, -stemHeight * 0.3),
+      -0.3,
+      1.2,
+    );
+    _drawDetailedLeaf(
+      canvas,
+      center.translate(25, -stemHeight * 0.6),
+      0.3,
+      1.0,
+    );
+    _drawDetailedLeaf(
+      canvas,
+      center.translate(-20, -stemHeight * 0.8),
+      -0.2,
+      0.8,
+    );
+  }
+
+  void _drawDetailedLeaf(
+    Canvas canvas,
+    Offset center,
+    double rotation,
+    double scale,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(rotation);
+    canvas.scale(scale);
+
+    // Leaf gradient paint
+    final leafPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              Colors.green[800]!,
+              Colors.green[600]!,
+              Colors.green[400]!,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ).createShader(
+            Rect.fromCenter(center: Offset.zero, width: 30, height: 50),
+          );
+
+    // Main leaf shape
+    final leafPath =
+        Path()
+          ..moveTo(0, 25)
+          ..quadraticBezierTo(-15, 10, -12, -10)
+          ..quadraticBezierTo(-8, -20, 0, -25)
+          ..quadraticBezierTo(8, -20, 12, -10)
+          ..quadraticBezierTo(15, 10, 0, 25)
+          ..close();
+
+    canvas.drawPath(leafPath, leafPaint);
+
+    // Leaf vein details
+    final veinPaint =
+        Paint()
+          ..color = Colors.green[800]!
+          ..strokeWidth = 1.5;
+
+    // Central vein
+    canvas.drawLine(Offset(0, 25), Offset(0, -25), veinPaint);
+
+    // Side veins
+    for (int i = 0; i < 5; i++) {
+      final y = 20 - i * 10;
+      final width = 8 - i * 1.5;
+      canvas.drawLine(
+        Offset(0, y.toDouble()),
+        Offset(-width, y - 5.0),
+        veinPaint,
+      );
+      canvas.drawLine(
+        Offset(0, y.toDouble()),
+        Offset(width, y - 5.0),
+        veinPaint,
+      );
+    }
+
+    canvas.restore();
+  }
+
+  void _drawRealisticFlower(Canvas canvas, Offset center, double bloom) {
+    // Scale up flowers significantly for realistic size
+    final baseSize = 40 * bloom; // Much larger base size
 
     switch (plantType) {
       case 'sunflower':
-        _drawSunflower(canvas, center, paint, petalSize, bloom);
+        _drawRealisticSunflower(canvas, center, baseSize, bloom);
         break;
       case 'rose':
-        _drawRose(canvas, center, paint, petalSize, bloom);
+        _drawRealisticRose(canvas, center, baseSize, bloom);
         break;
       case 'tulip':
-        _drawTulip(canvas, center, paint, petalSize, bloom);
+        _drawRealisticTulip(canvas, center, baseSize, bloom);
         break;
       case 'daisy':
-        _drawDaisy(canvas, center, paint, petalSize, bloom);
+        _drawRealisticDaisy(canvas, center, baseSize, bloom);
         break;
       case 'violet':
-        _drawViolet(canvas, center, paint, petalSize, bloom);
+        _drawRealisticViolet(canvas, center, baseSize, bloom);
         break;
       case 'lily':
-        _drawLily(canvas, center, paint, petalSize, bloom);
+        _drawRealisticLily(canvas, center, baseSize, bloom);
         break;
     }
   }
 
-  void _drawSunflower(
+  void _drawRealisticSunflower(
     Canvas canvas,
     Offset center,
-    Paint paint,
     double size,
     double bloom,
   ) {
-    // Center
-    final centerPaint = Paint()..color = Colors.brown[800]!;
-    canvas.drawCircle(center, size * 0.3, centerPaint);
+    // Large realistic sunflower center
+    final centerPaint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              Colors.brown[900]!,
+              Colors.brown[700]!,
+              Colors.orange[800]!,
+            ],
+            stops: const [0.0, 0.7, 1.0],
+          ).createShader(Rect.fromCircle(center: center, radius: size * 0.4));
 
-    // Petals
-    for (int i = 0; i < 12; i++) {
-      final angle = i * pi * 2 / 12;
-      final petalCenter = Offset(
-        center.dx + cos(angle) * size * 0.5,
-        center.dy + sin(angle) * size * 0.5,
+    canvas.drawCircle(center, size * 0.4, centerPaint);
+
+    // Add seed pattern in center
+    final seedPaint = Paint()..color = Colors.brown[900]!;
+    for (int ring = 0; ring < 3; ring++) {
+      final ringRadius = (ring + 1) * size * 0.1;
+      final seedCount = (ring + 1) * 8;
+      for (int i = 0; i < seedCount; i++) {
+        final angle = i * pi * 2 / seedCount;
+        final seedPos = center.translate(
+          cos(angle) * ringRadius,
+          sin(angle) * ringRadius,
+        );
+        canvas.drawCircle(seedPos, 1.5, seedPaint);
+      }
+    }
+
+    // Large realistic petals with gradient
+    for (int i = 0; i < 20; i++) {
+      final angle = i * pi * 2 / 20;
+      final petalCenter = center.translate(
+        cos(angle) * size * 0.65,
+        sin(angle) * size * 0.65,
       );
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: petalCenter,
-          width: size * 0.8,
-          height: size * 0.3,
-        ),
-        paint,
-      );
+
+      _drawSunflowerPetal(canvas, petalCenter, angle, size * 0.6, color);
     }
   }
 
-  void _drawRose(
+  void _drawSunflowerPetal(
     Canvas canvas,
     Offset center,
-    Paint paint,
+    double angle,
+    double size,
+    Color petalColor,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(angle);
+
+    final petalPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              _darkenColor(petalColor, 0.3),
+              petalColor,
+              _lightenColor(petalColor, 0.2),
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: size * 0.4,
+              height: size,
+            ),
+          );
+
+    final petalPath =
+        Path()
+          ..moveTo(0, 0)
+          ..quadraticBezierTo(
+            -size * 0.2,
+            -size * 0.3,
+            -size * 0.15,
+            -size * 0.8,
+          )
+          ..quadraticBezierTo(0, -size, size * 0.15, -size * 0.8)
+          ..quadraticBezierTo(size * 0.2, -size * 0.3, 0, 0)
+          ..close();
+
+    canvas.drawPath(petalPath, petalPaint);
+
+    // Add petal vein
+    final veinPaint =
+        Paint()
+          ..color = _darkenColor(petalColor, 0.2)
+          ..strokeWidth = 1;
+    canvas.drawLine(Offset(0, 0), Offset(0, -size * 0.7), veinPaint);
+
+    canvas.restore();
+  }
+
+  void _drawRealisticRose(
+    Canvas canvas,
+    Offset center,
     double size,
     double bloom,
   ) {
-    // Layered petals
-    for (int layer = 3; layer > 0; layer--) {
-      final layerSize = size * (layer / 3.0);
-      final layerPaint = Paint()..color = color.withOpacity(0.7 + layer * 0.1);
+    // Multi-layered rose with realistic depth
+    final layers = 4;
 
-      for (int i = 0; i < 6; i++) {
-        final angle = i * pi * 2 / 6 + layer * 0.3;
-        final petalCenter = Offset(
-          center.dx + cos(angle) * layerSize * 0.3,
-          center.dy + sin(angle) * layerSize * 0.3,
+    for (int layer = layers; layer >= 1; layer--) {
+      final layerSize = size * (layer / layers.toDouble()) * 0.8;
+      final petalsInLayer = 5 + layer;
+      final layerOpacity = 0.7 + (layer / layers.toDouble()) * 0.3;
+
+      for (int i = 0; i < petalsInLayer; i++) {
+        final angle = (i * pi * 2 / petalsInLayer) + (layer * 0.3);
+        final petalDistance = layerSize * 0.3 * (layer / layers.toDouble());
+        final petalCenter = center.translate(
+          cos(angle) * petalDistance,
+          sin(angle) * petalDistance,
         );
-        canvas.drawOval(
-          Rect.fromCenter(
-            center: petalCenter,
-            width: layerSize,
-            height: layerSize * 0.6,
-          ),
-          layerPaint,
+
+        _drawRosePetal(
+          canvas,
+          petalCenter,
+          angle,
+          layerSize,
+          color.withOpacity(layerOpacity),
         );
       }
     }
+
+    // Rose center
+    final centerPaint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [_darkenColor(color, 0.4), _darkenColor(color, 0.2)],
+          ).createShader(Rect.fromCircle(center: center, radius: size * 0.15));
+
+    canvas.drawCircle(center, size * 0.15, centerPaint);
   }
 
-  void _drawTulip(
+  void _drawRosePetal(
     Canvas canvas,
     Offset center,
-    Paint paint,
+    double angle,
+    double size,
+    Color petalColor,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(angle);
+
+    final petalPaint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              _lightenColor(petalColor, 0.3),
+              petalColor,
+              _darkenColor(petalColor, 0.2),
+            ],
+            stops: const [0.0, 0.6, 1.0],
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: size,
+              height: size * 0.8,
+            ),
+          );
+
+    final petalPath =
+        Path()
+          ..moveTo(0, size * 0.1)
+          ..quadraticBezierTo(
+            -size * 0.4,
+            -size * 0.1,
+            -size * 0.3,
+            -size * 0.5,
+          )
+          ..quadraticBezierTo(-size * 0.1, -size * 0.7, 0, -size * 0.6)
+          ..quadraticBezierTo(size * 0.1, -size * 0.7, size * 0.3, -size * 0.5)
+          ..quadraticBezierTo(size * 0.4, -size * 0.1, 0, size * 0.1)
+          ..close();
+
+    canvas.drawPath(petalPath, petalPaint);
+    canvas.restore();
+  }
+
+  void _drawRealisticTulip(
+    Canvas canvas,
+    Offset center,
     double size,
     double bloom,
   ) {
+    // Large tulip with realistic shape and gradient
+    final tulipPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              _darkenColor(color, 0.3),
+              color,
+              _lightenColor(color, 0.3),
+              color,
+              _darkenColor(color, 0.1),
+            ],
+            stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ).createShader(
+            Rect.fromCenter(
+              center: center,
+              width: size * 1.2,
+              height: size * 1.5,
+            ),
+          );
+
+    // Main tulip shape - larger and more detailed
     final tulipPath =
         Path()
-          ..moveTo(center.dx, center.dy + size * 0.5)
+          ..moveTo(center.dx, center.dy + size * 0.6)
           ..quadraticBezierTo(
-            center.dx - size * 0.6,
-            center.dy,
-            center.dx - size * 0.3,
+            center.dx - size * 0.7,
+            center.dy + size * 0.2,
+            center.dx - size * 0.4,
             center.dy - size * 0.8,
           )
           ..quadraticBezierTo(
+            center.dx - size * 0.2,
+            center.dy - size * 1.2,
             center.dx,
-            center.dy - size,
-            center.dx + size * 0.3,
+            center.dy - size * 1.1,
+          )
+          ..quadraticBezierTo(
+            center.dx + size * 0.2,
+            center.dy - size * 1.2,
+            center.dx + size * 0.4,
             center.dy - size * 0.8,
           )
           ..quadraticBezierTo(
-            center.dx + size * 0.6,
-            center.dy,
+            center.dx + size * 0.7,
+            center.dy + size * 0.2,
             center.dx,
-            center.dy + size * 0.5,
+            center.dy + size * 0.6,
           )
           ..close();
 
-    canvas.drawPath(tulipPath, paint);
+    canvas.drawPath(tulipPath, tulipPaint);
+
+    // Add tulip divisions
+    final divisionPaint =
+        Paint()
+          ..color = _darkenColor(color, 0.3)
+          ..strokeWidth = 2;
+
+    canvas.drawLine(
+      center.translate(-size * 0.3, -size * 0.5),
+      center.translate(0, center.dy + size * 0.4 - center.dy),
+      divisionPaint,
+    );
+    canvas.drawLine(
+      center.translate(size * 0.3, -size * 0.5),
+      center.translate(0, center.dy + size * 0.4 - center.dy),
+      divisionPaint,
+    );
+
+    // Add inner highlights
+    final highlightPaint =
+        Paint()
+          ..color = _lightenColor(color, 0.4)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5;
+
+    final innerPath =
+        Path()
+          ..moveTo(center.dx - size * 0.2, center.dy - size * 0.3)
+          ..quadraticBezierTo(
+            center.dx,
+            center.dy - size * 0.7,
+            center.dx + size * 0.2,
+            center.dy - size * 0.3,
+          );
+
+    canvas.drawPath(innerPath, highlightPaint);
   }
 
-  void _drawDaisy(
+  void _drawRealisticDaisy(
     Canvas canvas,
     Offset center,
-    Paint paint,
     double size,
     double bloom,
   ) {
-    // Center
-    final centerPaint = Paint()..color = Colors.yellow;
-    canvas.drawCircle(center, size * 0.2, centerPaint);
+    // Large realistic daisy center
+    final centerPaint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              Colors.yellow[400]!,
+              Colors.yellow[600]!,
+              Colors.orange[300]!,
+            ],
+          ).createShader(Rect.fromCircle(center: center, radius: size * 0.25));
 
-    // Simple petals
+    canvas.drawCircle(center, size * 0.25, centerPaint);
+
+    // Add center texture
+    final texturePaint = Paint()..color = Colors.orange[400]!;
     for (int i = 0; i < 8; i++) {
-      final angle = i * pi * 2 / 8;
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: center.translate(
-            cos(angle) * size * 0.5,
-            sin(angle) * size * 0.5,
-          ),
-          width: size * 0.3,
-          height: size * 0.8,
-        ),
-        paint,
+      final angle = i * pi / 4;
+      final texturePos = center.translate(
+        cos(angle) * size * 0.15,
+        sin(angle) * size * 0.15,
       );
+      canvas.drawCircle(texturePos, 1.5, texturePaint);
+    }
+
+    // Large realistic white petals
+    for (int i = 0; i < 16; i++) {
+      final angle = i * pi * 2 / 16;
+      final petalCenter = center.translate(
+        cos(angle) * size * 0.6,
+        sin(angle) * size * 0.6,
+      );
+
+      _drawDaisyPetal(canvas, petalCenter, angle, size * 0.7, color);
     }
   }
 
-  void _drawViolet(
+  void _drawDaisyPetal(
     Canvas canvas,
     Offset center,
-    Paint paint,
+    double angle,
+    double size,
+    Color petalColor,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(angle);
+
+    final petalPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              _lightenColor(petalColor, 0.2),
+              petalColor,
+              _darkenColor(petalColor, 0.1),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: size * 0.3,
+              height: size,
+            ),
+          );
+
+    final petalPath =
+        Path()
+          ..moveTo(0, 0)
+          ..quadraticBezierTo(
+            -size * 0.15,
+            -size * 0.3,
+            -size * 0.1,
+            -size * 0.9,
+          )
+          ..quadraticBezierTo(0, -size, size * 0.1, -size * 0.9)
+          ..quadraticBezierTo(size * 0.15, -size * 0.3, 0, 0)
+          ..close();
+
+    canvas.drawPath(petalPath, petalPaint);
+    canvas.restore();
+  }
+
+  void _drawRealisticViolet(
+    Canvas canvas,
+    Offset center,
     double size,
     double bloom,
   ) {
-    // Heart-shaped petals
+    // Violet with heart-shaped petals - enhanced size and detail
     for (int i = 0; i < 5; i++) {
       final angle = i * pi * 2 / 5;
-      final petalCenter = Offset(
-        center.dx + cos(angle) * size * 0.3,
-        center.dy + sin(angle) * size * 0.3,
+      final petalCenter = center.translate(
+        cos(angle) * size * 0.4,
+        sin(angle) * size * 0.4,
       );
 
-      final heartPath =
-          Path()
-            ..moveTo(petalCenter.dx, petalCenter.dy + size * 0.2)
-            ..quadraticBezierTo(
-              petalCenter.dx - size * 0.2,
-              petalCenter.dy - size * 0.1,
-              petalCenter.dx,
-              petalCenter.dy,
-            )
-            ..quadraticBezierTo(
-              petalCenter.dx + size * 0.2,
-              petalCenter.dy - size * 0.1,
-              petalCenter.dx,
-              petalCenter.dy + size * 0.2,
-            )
-            ..close();
+      _drawVioletPetal(canvas, petalCenter, angle, size * 0.8, color);
+    }
 
-      canvas.drawPath(heartPath, paint);
+    // Violet center with detailed stamens
+    final centerPaint = Paint()..color = Colors.yellow[200]!;
+    canvas.drawCircle(center, size * 0.1, centerPaint);
+
+    // Add small stamens
+    final stamenPaint = Paint()..color = Colors.orange[300]!;
+    for (int i = 0; i < 5; i++) {
+      final angle = i * pi * 2 / 5;
+      final stamenPos = center.translate(
+        cos(angle) * size * 0.05,
+        sin(angle) * size * 0.05,
+      );
+      canvas.drawCircle(stamenPos, 1, stamenPaint);
     }
   }
 
-  void _drawLily(
+  void _drawVioletPetal(
     Canvas canvas,
     Offset center,
-    Paint paint,
+    double angle,
+    double size,
+    Color petalColor,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(angle);
+
+    final petalPaint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              _lightenColor(petalColor, 0.4),
+              petalColor,
+              _darkenColor(petalColor, 0.3),
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: size,
+              height: size * 0.8,
+            ),
+          );
+
+    // Enhanced heart shape
+    final heartPath =
+        Path()
+          ..moveTo(0, size * 0.3)
+          ..quadraticBezierTo(
+            -size * 0.3,
+            size * 0.1,
+            -size * 0.25,
+            -size * 0.1,
+          )
+          ..quadraticBezierTo(-size * 0.1, -size * 0.3, 0, -size * 0.2)
+          ..quadraticBezierTo(size * 0.1, -size * 0.3, size * 0.25, -size * 0.1)
+          ..quadraticBezierTo(size * 0.3, size * 0.1, 0, size * 0.3)
+          ..close();
+
+    canvas.drawPath(heartPath, petalPaint);
+
+    // Add petal veining
+    final veinPaint =
+        Paint()
+          ..color = _darkenColor(petalColor, 0.4)
+          ..strokeWidth = 0.8;
+
+    canvas.drawLine(Offset(0, size * 0.2), Offset(0, -size * 0.1), veinPaint);
+    canvas.drawLine(
+      Offset(-size * 0.1, 0),
+      Offset(-size * 0.15, -size * 0.05),
+      veinPaint,
+    );
+    canvas.drawLine(
+      Offset(size * 0.1, 0),
+      Offset(size * 0.15, -size * 0.05),
+      veinPaint,
+    );
+
+    canvas.restore();
+  }
+
+  void _drawRealisticLily(
+    Canvas canvas,
+    Offset center,
     double size,
     double bloom,
   ) {
-    // Star-shaped petals
+    // Large lily with 6 detailed petals
     for (int i = 0; i < 6; i++) {
       final angle = i * pi * 2 / 6;
-      final petalPath =
-          Path()
-            ..moveTo(center.dx, center.dy)
-            ..lineTo(
-              center.dx + cos(angle) * size * 1.2,
-              center.dy + sin(angle) * size * 1.2,
-            )
-            ..lineTo(
-              center.dx + cos(angle + 0.3) * size * 0.3,
-              center.dy + sin(angle + 0.3) * size * 0.3,
-            )
-            ..close();
+      final petalCenter = center.translate(
+        cos(angle) * size * 0.3,
+        sin(angle) * size * 0.3,
+      );
 
-      canvas.drawPath(petalPath, paint);
+      _drawLilyPetal(canvas, petalCenter, angle, size * 1.2, color);
     }
+
+    // Large prominent stamens
+    for (int i = 0; i < 6; i++) {
+      final angle = i * pi * 2 / 6;
+      final stamenBase = center.translate(
+        cos(angle) * size * 0.15,
+        sin(angle) * size * 0.15,
+      );
+      final stamenTip = center.translate(
+        cos(angle) * size * 0.4,
+        sin(angle) * size * 0.4,
+      );
+
+      // Stamen filament
+      final filamentPaint =
+          Paint()
+            ..color = Colors.green[300]!
+            ..strokeWidth = 2;
+      canvas.drawLine(stamenBase, stamenTip, filamentPaint);
+
+      // Anther
+      final antherPaint = Paint()..color = Colors.orange[600]!;
+      canvas.drawOval(
+        Rect.fromCenter(center: stamenTip, width: 4, height: 8),
+        antherPaint,
+      );
+    }
+
+    // Central pistil
+    final pistilPaint = Paint()..color = Colors.green[400]!;
+    canvas.drawCircle(center, size * 0.08, pistilPaint);
   }
 
-  void _drawAtmosphereEffect(Canvas canvas, Offset center, String atmosphere) {
+  void _drawLilyPetal(
+    Canvas canvas,
+    Offset center,
+    double angle,
+    double size,
+    Color petalColor,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(angle);
+
+    final petalPaint =
+        Paint()
+          ..shader = LinearGradient(
+            colors: [
+              _lightenColor(petalColor, 0.3),
+              petalColor,
+              _darkenColor(petalColor, 0.2),
+              petalColor,
+              _lightenColor(petalColor, 0.1),
+            ],
+            stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: size * 0.6,
+              height: size,
+            ),
+          );
+
+    // Star-shaped lily petal with curves
+    final petalPath =
+        Path()
+          ..moveTo(0, size * 0.1)
+          ..quadraticBezierTo(
+            -size * 0.2,
+            -size * 0.2,
+            -size * 0.15,
+            -size * 0.7,
+          )
+          ..quadraticBezierTo(-size * 0.1, -size * 1.0, 0, -size * 0.95)
+          ..quadraticBezierTo(size * 0.1, -size * 1.0, size * 0.15, -size * 0.7)
+          ..quadraticBezierTo(size * 0.2, -size * 0.2, 0, size * 0.1)
+          ..close();
+
+    canvas.drawPath(petalPath, petalPaint);
+
+    // Add spots for tiger lily effect (if orange/red color)
+    if (petalColor.red > 200 && petalColor.green < 150) {
+      final spotPaint = Paint()..color = Colors.brown[800]!;
+      for (int i = 0; i < 5; i++) {
+        final spotY = -size * 0.3 - (i * size * 0.1);
+        final spotX = (i.isEven ? -1 : 1) * size * 0.05;
+        canvas.drawCircle(Offset(spotX, spotY), 2, spotPaint);
+      }
+    }
+
+    canvas.restore();
+  }
+
+  void _drawEnhancedAtmosphereEffect(
+    Canvas canvas,
+    Offset center,
+    String atmosphere,
+  ) {
     switch (atmosphere) {
       case 'moonlit':
       case 'starry':
-        // Silver moonlight glow
+        // Enhanced silver moonlight glow
         final moonlightPaint =
             Paint()
-              ..color = Colors.grey[300]!.withOpacity(0.4)
-              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-        canvas.drawCircle(center, 30, moonlightPaint);
+              ..shader = RadialGradient(
+                colors: [
+                  Colors.grey[200]!.withOpacity(0.6),
+                  Colors.grey[300]!.withOpacity(0.3),
+                  Colors.transparent,
+                ],
+              ).createShader(Rect.fromCircle(center: center, radius: 60));
+        canvas.drawCircle(center, 60, moonlightPaint);
 
-        // Add small stars around the flower
-        final starPaint = Paint()..color = Colors.white.withOpacity(0.6);
-        for (int i = 0; i < 6; i++) {
-          final angle = i * pi / 3;
-          final starPos = Offset(
-            center.dx + cos(angle) * 35,
-            center.dy + sin(angle) * 35,
-          );
-          _drawSmallStar(canvas, starPos, starPaint);
+        // Larger stars around the flower
+        final starPaint = Paint()..color = Colors.white.withOpacity(0.8);
+        for (int i = 0; i < 12; i++) {
+          final angle = i * pi / 6;
+          final starPos = center.translate(cos(angle) * 70, sin(angle) * 70);
+          _drawEnhancedStar(canvas, starPos, starPaint, 5);
         }
         break;
 
       case 'winter':
-        // Frost effect
-        final frostPaint = Paint()..color = Colors.white.withOpacity(0.5);
-        for (int i = 0; i < 12; i++) {
-          final angle = i * pi * 2 / 12;
-          final frostPos = Offset(
-            center.dx + cos(angle) * 25,
-            center.dy + sin(angle) * 25,
-          );
-          canvas.drawCircle(frostPos, 2, frostPaint);
+        // Enhanced frost effect with ice crystals
+        final frostPaint = Paint()..color = Colors.white.withOpacity(0.7);
+        for (int i = 0; i < 20; i++) {
+          final angle = i * pi * 2 / 20;
+          final frostPos = center.translate(cos(angle) * 45, sin(angle) * 45);
+          _drawIceCrystal(canvas, frostPos, frostPaint);
         }
         break;
 
       case 'sunset':
-        // Golden hour glow
+        // Enhanced golden hour glow
         final goldenPaint =
             Paint()
-              ..color = Colors.orange[300]!.withOpacity(0.4)
-              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
-        canvas.drawCircle(center, 35, goldenPaint);
+              ..shader = RadialGradient(
+                colors: [
+                  Colors.orange[200]!.withOpacity(0.6),
+                  Colors.yellow[200]!.withOpacity(0.4),
+                  Colors.transparent,
+                ],
+              ).createShader(Rect.fromCircle(center: center, radius: 80));
+        canvas.drawCircle(center, 80, goldenPaint);
         break;
 
       case 'rainy':
-        // Water droplets
-        final dropPaint = Paint()..color = Colors.blue[200]!.withOpacity(0.6);
-        for (int i = 0; i < 8; i++) {
-          final angle = i * pi / 4;
-          final dropPos = Offset(
-            center.dx + cos(angle) * 20,
-            center.dy + sin(angle) * 20,
-          );
-          canvas.drawOval(
-            Rect.fromCenter(center: dropPos, width: 3, height: 5),
-            dropPaint,
-          );
+        // Enhanced water droplets with reflections
+        final dropPaint = Paint()..color = Colors.blue[300]!.withOpacity(0.7);
+        for (int i = 0; i < 15; i++) {
+          final angle = i * pi * 2 / 15;
+          final dropPos = center.translate(cos(angle) * 35, sin(angle) * 35);
+          _drawRainDrop(canvas, dropPos, dropPaint);
         }
         break;
 
       default: // sunny
-        // Warm sunlight effect
+        // Enhanced warm sunlight effect
         final sunlightPaint =
             Paint()
-              ..color = Colors.yellow[200]!.withOpacity(0.3)
-              ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
-        canvas.drawCircle(center, 32, sunlightPaint);
+              ..shader = RadialGradient(
+                colors: [
+                  Colors.yellow[100]!.withOpacity(0.5),
+                  Colors.orange[100]!.withOpacity(0.3),
+                  Colors.transparent,
+                ],
+              ).createShader(Rect.fromCircle(center: center, radius: 70));
+        canvas.drawCircle(center, 70, sunlightPaint);
+
+        // Sun rays
+        final rayPaint =
+            Paint()
+              ..color = Colors.yellow[200]!.withOpacity(0.4)
+              ..strokeWidth = 2;
+        for (int i = 0; i < 8; i++) {
+          final angle = i * pi / 4;
+          canvas.drawLine(
+            center.translate(cos(angle) * 40, sin(angle) * 40),
+            center.translate(cos(angle) * 65, sin(angle) * 65),
+            rayPaint,
+          );
+        }
     }
   }
 
-  void _drawSmallStar(Canvas canvas, Offset center, Paint paint) {
-    // Draw a small 4-pointed star
-    canvas.drawLine(
-      center.translate(-3, 0),
-      center.translate(3, 0),
-      paint..strokeWidth = 1,
-    );
-    canvas.drawLine(center.translate(0, -3), center.translate(0, 3), paint);
+  void _drawEnhancedStar(
+    Canvas canvas,
+    Offset center,
+    Paint paint,
+    double size,
+  ) {
+    // Draw a detailed 5-pointed star
+    final path = Path();
+    for (int i = 0; i < 5; i++) {
+      final angle = i * pi * 2 / 5 - pi / 2;
+      final outerRadius = size;
+      final innerRadius = size * 0.4;
+
+      final outerX = center.dx + cos(angle) * outerRadius;
+      final outerY = center.dy + sin(angle) * outerRadius;
+
+      final innerAngle = angle + pi / 5;
+      final innerX = center.dx + cos(innerAngle) * innerRadius;
+      final innerY = center.dy + sin(innerAngle) * innerRadius;
+
+      if (i == 0) {
+        path.moveTo(outerX, outerY);
+      } else {
+        path.lineTo(outerX, outerY);
+      }
+      path.lineTo(innerX, innerY);
+    }
+    path.close();
+    canvas.drawPath(path, paint);
   }
 
-  void _drawGlowEffect(Canvas canvas, Offset center) {
-    // Create a beautiful glow effect around the flower
-    final glowPaint =
-        Paint()
-          ..color = color.withOpacity(0.3)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 20);
-
-    // Multiple glow layers for enhanced effect
-    canvas.drawCircle(center, 40, glowPaint);
-
-    final innerGlow =
-        Paint()
-          ..color = Colors.white.withOpacity(0.2)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
-    canvas.drawCircle(center, 25, innerGlow);
-
-    // Sparkle points around the flower
-    final sparklePaint = Paint()..color = Colors.white.withOpacity(0.8);
-    for (int i = 0; i < 12; i++) {
-      final angle = i * pi * 2 / 12;
-      final sparklePos = Offset(
-        center.dx + cos(angle) * 35,
-        center.dy + sin(angle) * 35,
+  void _drawIceCrystal(Canvas canvas, Offset center, Paint paint) {
+    // Draw a 6-pointed ice crystal
+    for (int i = 0; i < 6; i++) {
+      final angle = i * pi / 3;
+      canvas.drawLine(
+        center,
+        center.translate(cos(angle) * 6, sin(angle) * 6),
+        paint..strokeWidth = 1.5,
       );
-      canvas.drawCircle(sparklePos, 2, sparklePaint);
+
+      // Add side branches
+      final midPoint = center.translate(cos(angle) * 3, sin(angle) * 3);
+      canvas.drawLine(
+        midPoint,
+        midPoint.translate(cos(angle + pi / 3) * 2, sin(angle + pi / 3) * 2),
+        paint..strokeWidth = 1,
+      );
+      canvas.drawLine(
+        midPoint,
+        midPoint.translate(cos(angle - pi / 3) * 2, sin(angle - pi / 3) * 2),
+        paint..strokeWidth = 1,
+      );
     }
+  }
+
+  void _drawRainDrop(Canvas canvas, Offset center, Paint paint) {
+    // Draw a realistic water droplet
+    final dropPath =
+        Path()
+          ..moveTo(center.dx, center.dy + 6)
+          ..quadraticBezierTo(
+            center.dx - 3,
+            center.dy + 2,
+            center.dx - 2,
+            center.dy - 2,
+          )
+          ..quadraticBezierTo(
+            center.dx,
+            center.dy - 4,
+            center.dx + 2,
+            center.dy - 2,
+          )
+          ..quadraticBezierTo(
+            center.dx + 3,
+            center.dy + 2,
+            center.dx,
+            center.dy + 6,
+          )
+          ..close();
+
+    canvas.drawPath(dropPath, paint);
+
+    // Add highlight
+    final highlightPaint = Paint()..color = Colors.white.withOpacity(0.6);
+    canvas.drawCircle(center.translate(-1, -1), 1, highlightPaint);
+  }
+
+  void _drawEnhancedGlowEffect(Canvas canvas, Offset center) {
+    // Multiple layers of enhanced glow
+    final glowPaint1 =
+        Paint()
+          ..color = color.withOpacity(0.15)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 30);
+    canvas.drawCircle(center, 80, glowPaint1);
+
+    final glowPaint2 =
+        Paint()
+          ..color = color.withOpacity(0.25)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 20);
+    canvas.drawCircle(center, 60, glowPaint2);
+
+    final glowPaint3 =
+        Paint()
+          ..color = Colors.white.withOpacity(0.3)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
+    canvas.drawCircle(center, 40, glowPaint3);
+
+    // Enhanced sparkle ring
+    final sparklePaint = Paint()..color = Colors.white.withOpacity(0.9);
+    for (int i = 0; i < 16; i++) {
+      final angle = i * pi * 2 / 16;
+      final sparklePos = center.translate(cos(angle) * 65, sin(angle) * 65);
+      canvas.drawCircle(sparklePos, 2.5, sparklePaint);
+
+      // Add twinkle effect
+      canvas.drawLine(
+        sparklePos.translate(-4, 0),
+        sparklePos.translate(4, 0),
+        sparklePaint..strokeWidth = 1,
+      );
+      canvas.drawLine(
+        sparklePos.translate(0, -4),
+        sparklePos.translate(0, 4),
+        sparklePaint,
+      );
+    }
+  }
+
+  // Color manipulation helpers
+  Color _lightenColor(Color color, double amount) {
+    final hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness + amount).clamp(0.0, 1.0))
+        .toColor();
+  }
+
+  Color _darkenColor(Color color, double amount) {
+    final hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness - amount).clamp(0.0, 1.0))
+        .toColor();
   }
 
   @override

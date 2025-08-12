@@ -41,7 +41,7 @@ Column splashCard(BuildContext context) {
             baseColor: Colors.white,
             highlightColor: const Color.fromARGB(255, 105, 172, 227),
             child: Text(
-              ' GRAMMER - MADE - SIMPLE ',
+              ' GRAMMAR - MADE - SIMPLE ',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: asp * 30,

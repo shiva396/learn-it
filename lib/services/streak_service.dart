@@ -202,20 +202,20 @@ class StreakService {
     String streakEmoji;
 
     if (currentStreak == 0) {
-      motivationMessage = "Start your learning journey today! 🚀";
+      motivationMessage = "Start your learning journey today! ";
       streakEmoji = "🌱";
     } else if (currentStreak < 3) {
-      motivationMessage = "Great start! Keep the momentum going! 💪";
+      motivationMessage = "Great start! Keep the momentum going! ";
       streakEmoji = "🔥";
     } else if (currentStreak < 7) {
-      motivationMessage = "You're on fire! Amazing progress! 🎯";
+      motivationMessage = "You're on fire! Amazing progress! ";
       streakEmoji = "🔥";
     } else if (currentStreak < 14) {
       motivationMessage =
-          "Incredible dedication! You're a grammar champion! 🏆";
+          "Incredible dedication! You're a grammar champion! ";
       streakEmoji = "🚀";
     } else {
-      motivationMessage = "WOW! You're a learning superstar! 🌟";
+      motivationMessage = "WOW! You're a learning superstar! ";
       streakEmoji = "⭐";
     }
 

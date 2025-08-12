@@ -80,7 +80,9 @@ class AssessmentResult {
     return {
       'studentId': studentId,
       'completedAt': completedAt.toIso8601String(),
-      'sectionScores': sectionScores.map((key, value) => MapEntry(key.name, value)),
+      'sectionScores': sectionScores.map(
+        (key, value) => MapEntry(key.name, value),
+      ),
       'timeSpent': timeSpent.map((key, value) => MapEntry(key.name, value)),
       'totalScore': totalScore,
       'totalPossibleScore': totalPossibleScore,
@@ -95,10 +97,16 @@ class AssessmentResult {
       studentId: json['studentId'],
       completedAt: DateTime.parse(json['completedAt']),
       sectionScores: (json['sectionScores'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(TestType.values.firstWhere((e) => e.name == key), value as int),
+        (key, value) => MapEntry(
+          TestType.values.firstWhere((e) => e.name == key),
+          value as int,
+        ),
       ),
       timeSpent: (json['timeSpent'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(TestType.values.firstWhere((e) => e.name == key), value as int),
+        (key, value) => MapEntry(
+          TestType.values.firstWhere((e) => e.name == key),
+          value as int,
+        ),
       ),
       totalScore: json['totalScore'],
       totalPossibleScore: json['totalPossibleScore'],
@@ -737,41 +745,41 @@ class AssessmentData {
 
   static String _getLanguageFeedback(double percentage) {
     if (percentage >= 80)
-      return "Excellent vocabulary and word skills! Keep reading! 📚";
+      return "Excellent vocabulary and word skills! Keep reading! ";
     if (percentage >= 60)
-      return "Good language skills! Try reading more stories! 📖";
+      return "Good language skills! Try reading more stories! ";
     if (percentage >= 40)
-      return "Keep practicing with word games and reading! 💪";
-    return "Let's work on building vocabulary together! 🌟";
+      return "Keep practicing with word games and reading! ";
+    return "Let's work on building vocabulary together! ";
   }
 
   static String _getReasoningFeedback(double percentage) {
     if (percentage >= 80)
-      return "Amazing logical thinking! You're a pattern detective! 🕵️";
-    if (percentage >= 60) return "Good reasoning skills! Try more puzzles! 🧩";
-    if (percentage >= 40) return "Keep practicing logical thinking games! 🎯";
-    return "Let's practice with fun logic puzzles! 🎪";
+      return "Amazing logical thinking! You're a pattern detective! ";
+    if (percentage >= 60) return "Good reasoning skills! Try more puzzles! ";
+    if (percentage >= 40) return "Keep practicing logical thinking games! ";
+    return "Let's practice with fun logic puzzles! ";
   }
 
   static String _getMathFeedback(double percentage) {
-    if (percentage >= 80) return "Math superstar! You're great with numbers! ⭐";
-    if (percentage >= 60) return "Good math skills! Practice makes perfect! 🔢";
-    if (percentage >= 40) return "Keep working on math problems! 📊";
-    return "Let's make math fun with games and practice! 🎲";
+    if (percentage >= 80) return "Math superstar! You're great with numbers! ";
+    if (percentage >= 60) return "Good math skills! Practice makes perfect! ";
+    if (percentage >= 40) return "Keep working on math problems! ";
+    return "Let's make math fun with games and practice! ";
   }
 
   static String _getVisualFeedback(double percentage) {
-    if (percentage >= 80) return "Sharp eyes! You notice everything! 👀";
-    if (percentage >= 60) return "Good observation skills! 🔍";
-    if (percentage >= 40) return "Practice looking at details! 🎨";
-    return "Let's play visual games to improve! 🖼️";
+    if (percentage >= 80) return "Sharp eyes! You notice everything! ";
+    if (percentage >= 60) return "Good observation skills! ";
+    if (percentage >= 40) return "Practice looking at details! ";
+    return "Let's play visual games to improve! ";
   }
 
   static String _getTimeFeedback(double percentage) {
-    if (percentage >= 80) return "Great time management! You're efficient! ⏰";
-    if (percentage >= 60) return "Good timing! Keep practicing! ⏱️";
-    if (percentage >= 40) return "Work on solving problems faster! 🚀";
-    return "Take your time, but try to be quicker! 🐇";
+    if (percentage >= 80) return "Great time management! You're efficient! ";
+    if (percentage >= 60) return "Good timing! Keep practicing! ⏱";
+    if (percentage >= 40) return "Work on solving problems faster! ";
+    return "Take your time, but try to be quicker! ";
   }
 
   // Data persistence methods
@@ -781,15 +789,15 @@ class AssessmentData {
   static Future<void> saveAssessmentResult(AssessmentResult result) async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> existingResults = prefs.getStringList(_resultsKey) ?? [];
-    
+
     // Add new result
     existingResults.add(jsonEncode(result.toJson()));
-    
+
     // Keep only last 10 results to prevent storage overflow
     if (existingResults.length > 10) {
       existingResults.removeAt(0);
     }
-    
+
     await prefs.setStringList(_resultsKey, existingResults);
   }
 
@@ -797,7 +805,7 @@ class AssessmentData {
   static Future<List<AssessmentResult>> loadAssessmentResults() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> resultsJson = prefs.getStringList(_resultsKey) ?? [];
-    
+
     return resultsJson.map((jsonString) {
       final Map<String, dynamic> json = jsonDecode(jsonString);
       return AssessmentResult.fromJson(json);
@@ -808,7 +816,7 @@ class AssessmentData {
   static Future<AssessmentResult?> getLatestResult() async {
     final results = await loadAssessmentResults();
     if (results.isEmpty) return null;
-    
+
     // Sort by completion date and get latest
     results.sort((a, b) => b.completedAt.compareTo(a.completedAt));
     return results.first;
