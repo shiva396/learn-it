@@ -48,3 +48,4 @@ app.*.map.json
 *.bashrc
 *.keystore
 key.properties
+lib/archive/firebase_options.dart
