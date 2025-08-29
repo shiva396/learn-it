@@ -1,6 +1,6 @@
 name: learnit
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -28,6 +28,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/thumbnails/
+    - assets/images/slides/
     - assets/images/onboard/
     - assets/images/gif/
     - assets/images/assessment/

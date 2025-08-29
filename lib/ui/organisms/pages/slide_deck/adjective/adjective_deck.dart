@@ -89,64 +89,142 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
   late Animation<double> _slideAnimation;
   late Animation<double> _pulseAnimation;
 
-  // Slide data structure
+  // Enhanced slide data structure with cat story
   List<Map<String, dynamic>> get _slideData => [
     {
-      'title': 'What are Adjectives?',
-      'icon': Icons.lightbulb_outline,
+      'title': 'Welcome, Young Explorer! 🌟',
+      'icon': Icons.celebration,
       'color': LColors.blue,
+      'showImage': false,
       'description':
-          'Adjectives are special words that describe nouns (people, places, animals, or things).',
+          'Get ready for an amazing adventure into the world of words! Today, we\'re going to discover something magical that makes our language colorful and exciting.',
       'keyPoints': [
-        'They make our writing more interesting and colorful',
-        'They help us paint pictures with words',
-        'They answer questions like "What kind?" or "How many?"',
+        '🎯 You\'re about to learn about ADJECTIVES!',
+        '✨ These special words make stories come alive',
+        '🚀 By the end, you\'ll be a word wizard!',
+        '🎉 Let\'s start this incredible journey together!',
       ],
-      'example':
-          'Look at this plain sentence: "The cat sat." Now with adjectives: "The fluffy, orange cat sat quietly."',
+      'motivationalText':
+          'Every great writer started just like you - curious and eager to learn!',
+      'type': 'welcome',
     },
     {
-      'title': 'Types of Adjectives',
-      'icon': Icons.category,
-      'color': LColors.success,
-      'description':
-          'There are different types of adjectives that describe different things about nouns.',
-      'keyPoints': [
-        'Color adjectives: red, blue, green, purple',
-        'Size adjectives: big, small, tiny, huge',
-        'Shape adjectives: round, square, long, short',
-        'Feeling adjectives: happy, sad, excited, calm',
-      ],
-      'example':
-          'In "The small, round, red ball bounced high," we have three adjectives: small (size), round (shape), and red (color).',
-    },
-    {
-      'title': 'Finding Adjectives',
-      'icon': Icons.search,
+      'title': 'What are Nouns? 🏷️',
+      'icon': Icons.label_outline,
       'color': LColors.warning,
+      'showImage': true,
+      'imagePath': 'assets/images/slides/abstract_cute_cat.png',
       'description':
-          'Let\'s practice finding adjectives in sentences. Look for words that describe nouns!',
+          'Before we learn adjectives, let\'s understand NOUNS. Nouns are words that name people, places, animals, or things.',
       'keyPoints': [
-        'Ask yourself: "What kind of _____ is it?"',
-        'Look for descriptive words before nouns',
-        'Remember: adjectives make sentences more vivid',
+        '👤 People: teacher, student, friend',
+        '🏠 Places: school, park, home',
+        '🐱 Animals: cat, dog, bird',
+        '📚 Things: book, pen, computer',
       ],
       'example':
-          'Try this: "The brave knight rode his white horse through the dark forest." Can you find the adjectives? (Answer: brave, white, dark)',
+          'Look at this shape. It\'s a "cat" - that\'s a NOUN! It names an animal.',
+      'question':
+          'But wait... can you imagine how this cat might look in real life? 🤔',
+      'type': 'noun_intro',
     },
     {
-      'title': 'You\'re Ready!',
-      'icon': Icons.school,
-      'color': LColors.achievement,
+      'title': 'Ta-Da! Meet Our Real Cat! 😻',
+      'icon': Icons.pets,
+      'color': LColors.success,
+      'showImage': true,
+      'imagePath': 'assets/images/slides/cute_cat.png',
       'description':
-          'Congratulations! You now understand how adjectives work and can spot them in sentences.',
+          'SURPRISE! Here\'s how our cat actually looks! Isn\'t it amazing how different it is from the simple shape?',
+      'surpriseText': 'WOW! Look how BEAUTIFUL this cat is! 🌈',
       'keyPoints': [
-        'You learned what adjectives are and why they\'re important',
-        'You discovered different types of adjectives',
-        'You practiced finding adjectives in sentences',
+        '😍 Notice how much more interesting this cat looks!',
+        '🎨 We can see its colors, fur, and features',
+        '✨ The simple noun "cat" became something wonderful!',
+        '🔍 What words can describe this adorable cat?',
+      ],
+      'type': 'surprise_reveal',
+    },
+    {
+      'title': 'The Magic of Adjectives! ✨',
+      'icon': Icons.auto_fix_high,
+      'color': LColors.achievement,
+      'showImage': true,
+      'imagePath': 'assets/images/slides/cute_cat.png',
+      'description':
+          'Those describing words are called ADJECTIVES! They make nouns come alive with details, colors, and feelings.',
+      'adjectiveExamples': [
+        {
+          'word': 'FLUFFY',
+          'color': LColors.blue,
+          'description': 'describes the texture',
+        },
+        {
+          'word': 'ORANGE',
+          'color': LColors.warning,
+          'description': 'describes the color',
+        },
+        {
+          'word': 'CUTE',
+          'color': LColors.success,
+          'description': 'describes how it looks',
+        },
+        {
+          'word': 'SMALL',
+          'color': LColors.highlight,
+          'description': 'describes the size',
+        },
+      ],
+      'keyPoints': [
+        '🎨 Adjectives add COLOR to our words',
+        '📏 They tell us SIZE, SHAPE, and TEXTURE',
+        '😊 They share FEELINGS and EMOTIONS',
+        '⭐ They make writing EXCITING and VIVID!',
       ],
       'example':
-          'Now you\'re ready to watch the video lesson and learn even more about using adjectives in your own writing!',
+          'Simple: "A cat sat." → Amazing: "A fluffy, orange, cute cat sat peacefully."',
+      'type': 'adjective_magic',
+    },
+    {
+      'title': 'Your Turn to Shine! 🌟',
+      'icon': Icons.quiz,
+      'color': LColors.highlight,
+      'showImage': true,
+      'imagePath': 'assets/images/slides/cute_cat.png',
+      'description':
+          'Now you know the secret! You can spot adjectives everywhere. Let\'s practice with our furry friend.',
+      'practiceText':
+          'Look at our cat again. Can you think of MORE adjectives to describe it?',
+      'keyPoints': [
+        '🤔 Think: What COLOR do you see?',
+        '✋ Feel: How would its FUR feel?',
+        '👀 Observe: What SIZE is it?',
+        '💕 Emotions: How does it make you FEEL?',
+      ],
+      'interactiveChallenge':
+          'Challenge: Find 3 adjectives that describe this cat!',
+      'hints': ['Hint: Look at its fur, eyes, and expression! 🔍'],
+      'type': 'practice',
+    },
+    {
+      'title': 'Ready for More Magic? 🎬',
+      'icon': Icons.play_circle_filled,
+      'color': LColors.blue,
+      'showImage': false,
+      'description':
+          'Fantastic work! You\'ve discovered the power of adjectives and how they transform simple nouns into vivid pictures.',
+      'achievementBadge': true,
+      'keyPoints': [
+        '🎉 You learned what adjectives are',
+        '🐱 You saw how they describe our cat',
+        '✨ You practiced finding descriptive words',
+        '🚀 You\'re ready for the next level!',
+      ],
+      'motivationalText':
+          'You\'re becoming a true word wizard! Ready to discover even more secrets?',
+      'videoCallText':
+          'Let\'s dive deeper and watch an amazing video that will teach you everything about adjectives!',
+      'type': 'video_transition',
     },
   ];
 
@@ -246,7 +324,7 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
 
                   // Engaging description
                   Text(
-                    'Before we dive into the video, let\'s take a quick journey through ${_slideData.length} fun slides about adjectives!',
+                    'Join us on an exciting adventure! We\'ll meet a mysterious cat, discover the magic of words, and become adjective wizards together! 🎭',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 16,
@@ -254,7 +332,6 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                       height: 1.4,
                     ),
                   ),
-
                   const SizedBox(height: 16),
 
                   // Benefits container
@@ -292,10 +369,12 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                         ),
                         const SizedBox(height: 8),
                         ...[
-                          '✨ What makes adjectives so special',
-                          '🎨 Different types of descriptive words',
-                          '🔍 How to spot adjectives like a pro',
-                          '🎯 Get ready for the main video lesson!',
+                          '🎉 Welcome adventure & encouragement',
+                          '�️ Meet our mysterious abstract cat',
+                          '😻 SURPRISE! See the real fluffy cat',
+                          '✨ Discover the magic of adjectives',
+                          '🎯 Practice with our cute furry friend',
+                          '� Get ready for the amazing video!',
                         ].map(
                           (benefit) => Padding(
                             padding: const EdgeInsets.only(bottom: 4),
@@ -746,32 +825,57 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Slide Header with Icon
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  slide['color'] as Color,
-                  (slide['color'] as Color).withOpacity(0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          Row(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      slide['color'] as Color,
+                      (slide['color'] as Color).withOpacity(0.7),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (slide['color'] as Color).withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  slide['icon'] as IconData,
+                  size: 40,
+                  color: Colors.white,
+                ),
               ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: (slide['color'] as Color).withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
+
+              if (slide['achievementBadge'] == true) ...[
+                const SizedBox(width: 16),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [LColors.achievement, LColors.success],
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: LColors.achievement.withOpacity(0.4),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.stars, color: Colors.white, size: 32),
                 ),
               ],
-            ),
-            child: Icon(
-              slide['icon'] as IconData,
-              size: 40,
-              color: Colors.white,
-            ),
+            ],
           ),
 
           const SizedBox(height: 24),
@@ -795,6 +899,80 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Surprise Text for reveal slide
+                  if (slide['surpriseText'] != null) ...[
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            LColors.success.withOpacity(0.2),
+                            LColors.achievement.withOpacity(0.2),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: LColors.success, width: 2),
+                      ),
+                      child: Text(
+                        slide['surpriseText'] as String,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: LColors.success,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // Image Display
+                  if (slide['showImage'] == true &&
+                      slide['imagePath'] != null) ...[
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 15,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            slide['imagePath'] as String,
+                            height: slide['type'] == 'noun_intro' ? 150 : 200,
+                            width: slide['type'] == 'noun_intro' ? 150 : 200,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: LColors.greyLight,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: const Icon(
+                                  Icons.image,
+                                  size: 60,
+                                  color: LColors.greyDark,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
                   // Description
                   Text(
                     slide['description'] as String,
@@ -804,6 +982,145 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                       height: 1.6,
                     ),
                   ),
+
+                  // Motivational Text for welcome slide
+                  if (slide['motivationalText'] != null) ...[
+                    const SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            LColors.highlight.withOpacity(0.15),
+                            LColors.blue.withOpacity(0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: LColors.highlight.withOpacity(0.3),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.favorite,
+                            color: LColors.highlight,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              slide['motivationalText'] as String,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: LColors.greyDark,
+                                fontStyle: FontStyle.italic,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // Adjective Examples (for adjective magic slide)
+                  if (slide['adjectiveExamples'] != null) ...[
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Row(
+                            children: [
+                              Icon(
+                                Icons.psychology,
+                                color: LColors.achievement,
+                                size: 24,
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Adjectives in Action:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: LColors.achievement,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          ...(slide['adjectiveExamples']
+                                  as List<Map<String, dynamic>>)
+                              .map(
+                                (adj) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: (adj['color'] as Color)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: adj['color'] as Color,
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: adj['color'] as Color,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            adj['word'] as String,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            adj['description'] as String,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: adj['color'] as Color,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        ],
+                      ),
+                    ),
+                  ],
 
                   // Key Points Section
                   if (slide['keyPoints'] != null) ...[
@@ -833,7 +1150,9 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'Key Points:',
+                                slide['type'] == 'practice'
+                                    ? 'Practice Time:'
+                                    : 'Key Points:',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -875,6 +1194,156 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                               ),
                             ),
                           )),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // Interactive Challenge for practice slide
+                  if (slide['interactiveChallenge'] != null) ...[
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            LColors.highlight.withOpacity(0.15),
+                            LColors.warning.withOpacity(0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: LColors.highlight, width: 2),
+                      ),
+                      child: Column(
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.lightbulb,
+                                color: LColors.highlight,
+                                size: 24,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Challenge Time!',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: LColors.highlight,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            slide['interactiveChallenge'] as String,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: LColors.greyDark,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          if (slide['hints'] != null) ...[
+                            const SizedBox(height: 8),
+                            ...(slide['hints'] as List<String>).map(
+                              (hint) => Text(
+                                hint,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: LColors.greyDark,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // Question for noun intro slide
+                  if (slide['question'] != null) ...[
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            LColors.warning.withOpacity(0.15),
+                            LColors.highlight.withOpacity(0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: LColors.warning.withOpacity(0.5),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.help_outline,
+                            color: LColors.warning,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              slide['question'] as String,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: LColors.warning,
+                                fontWeight: FontWeight.bold,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // Practice Text for practice slide
+                  if (slide['practiceText'] != null) ...[
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            LColors.highlight.withOpacity(0.1),
+                            LColors.blue.withOpacity(0.05),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: LColors.highlight.withOpacity(0.3),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.emoji_objects,
+                            color: LColors.highlight,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              slide['practiceText'] as String,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: LColors.greyDark,
+                                fontWeight: FontWeight.w600,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -934,8 +1403,8 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                     ),
                   ],
 
-                  // Motivational Footer for Final Slide
-                  if (_currentSlideIndex == _slideData.length - 1) ...[
+                  // Video Call to Action for final slide
+                  if (slide['videoCallText'] != null) ...[
                     const SizedBox(height: 24),
                     Container(
                       width: double.infinity,
@@ -943,40 +1412,49 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            LColors.success.withOpacity(0.1),
-                            LColors.blue.withOpacity(0.1),
+                            LColors.blue.withOpacity(0.15),
+                            LColors.achievement.withOpacity(0.1),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: LColors.success.withOpacity(0.3),
+                          color: LColors.blue.withOpacity(0.3),
                         ),
                       ),
-                      child: const Column(
+                      child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.celebration,
-                                color: LColors.success,
-                                size: 28,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [LColors.blue, LColors.achievement],
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: const Icon(
+                                  Icons.play_circle_filled,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
                               ),
-                              SizedBox(width: 12),
-                              Text(
-                                'You\'re Ready!',
+                              const SizedBox(width: 12),
+                              const Text(
+                                'Next Adventure Awaits!',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: LColors.success,
+                                  color: LColors.blue,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           Text(
-                            'Great job completing the preview! Now let\'s dive into the full video lesson to become an adjective expert! 🌟',
-                            style: TextStyle(
+                            slide['videoCallText'] as String,
+                            style: const TextStyle(
                               fontSize: 14,
                               color: LColors.greyDark,
                               height: 1.4,
