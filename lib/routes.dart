@@ -29,6 +29,7 @@ import 'package:learnit/ui/organisms/pages/assessment/assessment_results_page.da
 import 'package:learnit/ui/organisms/pages/recent_activities_page.dart';
 import 'package:learnit/ui/organisms/pages/interactive/interactive_games_page.dart';
 import 'package:learnit/ui/organisms/pages/interactive/magical_garden_grower.dart';
+import 'package:learnit/ui/organisms/pages/slide_deck/slide_decks_page.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const Splash(),
@@ -62,4 +63,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/assessment/results': (context) => const AssessmentResultsPage(),
   '/interactive_games': (context) => const InteractiveGamesPage(),
   '/magical-garden-grower': (context) => const MagicalGardenGrowerPage(),
+  '/slide_decks': (context) => const SlideDecksPage(),
 };

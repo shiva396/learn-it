@@ -46,7 +46,7 @@ class AdjectiveExplanationPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder:
                         (context) => VideoPlayerPage(
-                          videoPath: 'assets/videos/adjective.mp4',
+                          videoPath: video.videoPath,
                           description: video.title,
                         ),
                   ),

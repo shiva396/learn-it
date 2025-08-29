@@ -1,100 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
+import 'adjective/adjective_deck.dart';
 
-class GrammarPage extends StatefulWidget {
-  const GrammarPage({Key? key}) : super(key: key);
+class SlideDecksPage extends StatefulWidget {
+  const SlideDecksPage({super.key});
 
   @override
-  _GrammarPageState createState() => _GrammarPageState();
+  State<SlideDecksPage> createState() => _SlideDecksPageState();
 }
 
-class _GrammarPageState extends State<GrammarPage>
+class _SlideDecksPageState extends State<SlideDecksPage>
     with TickerProviderStateMixin {
   late AnimationController _listAnimationController;
   late Animation<double> _fadeAnimation;
 
-  final TextEditingController _searchController = TextEditingController();
-  final List<GrammarTopic> _topics = [
-    GrammarTopic(
-      id: 'nouns',
-      title: 'Nouns',
-      subtitle: 'Naming Words',
-      description: 'Learn about people, places, and things',
-      icon: Icons.home,
-      color: Colors.blue,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'pronouns',
-      title: 'Pronouns',
-      subtitle: 'Replacement Words',
-      description: 'Words that replace nouns',
-      icon: Icons.swap_horiz,
-      color: Colors.purple,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'verbs',
-      title: 'Verbs',
-      subtitle: 'Action Words',
-      description: 'Words that show action or state',
-      icon: Icons.directions_run,
-      color: Colors.green,
-      progress: 0.0,
-    ),
-    GrammarTopic(
+  final List<SlideModule> _slideModules = [
+    SlideModule(
       id: 'adjectives',
       title: 'Adjectives',
       subtitle: 'Describing Words',
-      description: 'Words that describe nouns',
+      description:
+          'Learn how adjectives make nouns more colorful and interesting!',
       icon: Icons.palette,
       color: Colors.orange,
+      isCompleted: false,
       progress: 0.0,
     ),
-    GrammarTopic(
-      id: 'adverbs',
-      title: 'Adverbs',
-      subtitle: 'Modifying Words',
-      description: 'Words that modify verbs and adjectives',
-      icon: Icons.speed,
-      color: Colors.red,
+    SlideModule(
+      id: 'verbs',
+      title: 'Verbs',
+      subtitle: 'Action Words',
+      description: 'Discover action words that bring sentences to life!',
+      icon: Icons.directions_run,
+      color: Colors.green,
+      isCompleted: false,
       progress: 0.0,
+      isComingSoon: true,
     ),
-    GrammarTopic(
-      id: 'prepositions',
-      title: 'Prepositions',
-      subtitle: 'Position Words',
-      description: 'Words that show relationships',
-      icon: Icons.place,
-      color: Colors.teal,
+    SlideModule(
+      id: 'nouns',
+      title: 'Nouns',
+      subtitle: 'Naming Words',
+      description:
+          'Master the building blocks of sentences - people, places, and things!',
+      icon: Icons.home,
+      color: Colors.blue,
+      isCompleted: false,
       progress: 0.0,
+      isComingSoon: true,
     ),
-    GrammarTopic(
-      id: 'conjunctions',
-      title: 'Conjunctions',
-      subtitle: 'Connecting Words',
-      description: 'Words that join other words',
-      icon: Icons.link,
-      color: Colors.indigo,
+    SlideModule(
+      id: 'pronouns',
+      title: 'Pronouns',
+      subtitle: 'Replacement Words',
+      description:
+          'Learn words that replace nouns to make sentences flow better!',
+      icon: Icons.swap_horiz,
+      color: Colors.purple,
+      isCompleted: false,
       progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'interjections',
-      title: 'Interjections',
-      subtitle: 'Emotion Words',
-      description: 'Words that express emotions',
-      icon: Icons.emoji_emotions,
-      color: Colors.pink,
-      progress: 0.0,
+      isComingSoon: true,
     ),
   ];
-
-  List<GrammarTopic> _filteredTopics = [];
 
   @override
   void initState() {
     super.initState();
-    _filteredTopics = _topics;
     _initializeAnimations();
     _startEntryAnimation();
   }
@@ -124,21 +95,92 @@ class _GrammarPageState extends State<GrammarPage>
     super.dispose();
   }
 
-  void _filterTopics(String query) {
-    setState(() {
-      _filteredTopics =
-          _topics
-              .where(
-                (topic) =>
-                    topic.title.toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
-    });
+  void _openSlideModule(SlideModule module) {
+    if (module.isComingSoon) {
+      _showComingSoonDialog(module);
+    } else {
+      // Navigate to the specific slide module
+      switch (module.id) {
+        case 'adjectives':
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => SlideModulePage(
+                    moduleType: 'adjectives',
+                    onComplete: () {
+                      setState(() {
+                        module.isCompleted = true;
+                        module.progress = 1.0;
+                      });
+                    },
+                  ),
+            ),
+          );
+          break;
+        default:
+          _showComingSoonDialog(module);
+      }
+    }
   }
 
-  void _navigateToTopic(String topic) {
-    String topicLower = topic.toLowerCase().replaceAll(' ', '_');
-    Navigator.pushNamed(context, '/grammar/$topicLower');
+  void _showComingSoonDialog(SlideModule module) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Row(
+              children: [
+                Icon(module.icon, color: module.color, size: 30),
+                const SizedBox(width: 12),
+                Text(
+                  module.title,
+                  style: TextStyle(
+                    color: module.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.construction,
+                  size: 50,
+                  color: Colors.orange.shade300,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Coming Soon!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'This ${module.title.toLowerCase()} module is currently under development. Stay tuned for more amazing learning experiences!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey.shade600, height: 1.4),
+                ),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: module.color,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('Got it!'),
+              ),
+            ],
+          ),
+    );
   }
 
   @override
@@ -153,7 +195,7 @@ class _GrammarPageState extends State<GrammarPage>
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          'Grammar Topics',
+          'Slide Deck Modules',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -198,7 +240,7 @@ class _GrammarPageState extends State<GrammarPage>
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Icon(
-                                Icons.book,
+                                Icons.slideshow,
                                 color: Colors.white,
                                 size: 30,
                               ),
@@ -209,7 +251,7 @@ class _GrammarPageState extends State<GrammarPage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    'Grammar Learning',
+                                    'Interactive Learning',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -217,7 +259,7 @@ class _GrammarPageState extends State<GrammarPage>
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Master the building blocks of English language',
+                                    'Explore grammar concepts through engaging visual presentations',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey.shade600,
@@ -230,41 +272,17 @@ class _GrammarPageState extends State<GrammarPage>
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      // Search Bar
-                      TextField(
-                        controller: _searchController,
-                        onChanged: _filterTopics,
-                        decoration: InputDecoration(
-                          hintText: 'Search topics...',
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey.shade500,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
 
-                // Topics List
+                // Modules List
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: _filteredTopics.length,
+                    itemCount: _slideModules.length,
                     itemBuilder: (context, index) {
-                      final topic = _filteredTopics[index];
+                      final module = _slideModules[index];
                       return TweenAnimationBuilder<double>(
                         duration: Duration(milliseconds: 800 + (index * 200)),
                         tween: Tween(begin: 0.0, end: 1.0),
@@ -274,7 +292,7 @@ class _GrammarPageState extends State<GrammarPage>
                             offset: Offset(0, 50 * (1 - value)),
                             child: Opacity(
                               opacity: value.clamp(0.0, 1.0),
-                              child: _buildTopicCard(topic, index),
+                              child: _buildModuleCard(module, index),
                             ),
                           );
                         },
@@ -290,20 +308,20 @@ class _GrammarPageState extends State<GrammarPage>
     );
   }
 
-  Widget _buildTopicCard(GrammarTopic topic, int index) {
+  Widget _buildModuleCard(SlideModule module, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
-        onTap: () => _navigateToTopic(topic.title),
+        onTap: () => _openSlideModule(module),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: topic.color,
+            color: module.color,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: topic.color.withOpacity(0.3),
+                color: module.color.withOpacity(0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -318,7 +336,7 @@ class _GrammarPageState extends State<GrammarPage>
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(topic.icon, size: 24, color: Colors.white),
+                child: Icon(module.icon, size: 24, color: Colors.white),
               ),
 
               const SizedBox(width: 16),
@@ -328,17 +346,42 @@ class _GrammarPageState extends State<GrammarPage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      topic.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          module.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        if (module.isComingSoon) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Soon',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      topic.subtitle,
+                      module.subtitle,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.white.withOpacity(0.9),
@@ -357,7 +400,11 @@ class _GrammarPageState extends State<GrammarPage>
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
-                  topic.progress > 0 ? Icons.check_circle : Icons.play_arrow,
+                  module.isCompleted
+                      ? Icons.check_circle
+                      : module.isComingSoon
+                      ? Icons.schedule
+                      : Icons.play_arrow,
                   color: Colors.white,
                   size: 20,
                 ),
@@ -371,22 +418,26 @@ class _GrammarPageState extends State<GrammarPage>
 }
 
 // Data Model
-class GrammarTopic {
+class SlideModule {
   final String id;
   final String title;
   final String subtitle;
   final String description;
   final IconData icon;
   final Color color;
+  bool isCompleted;
   double progress;
+  final bool isComingSoon;
 
-  GrammarTopic({
+  SlideModule({
     required this.id,
     required this.title,
     required this.subtitle,
     required this.description,
     required this.icon,
     required this.color,
+    this.isCompleted = false,
     this.progress = 0.0,
+    this.isComingSoon = false,
   });
 }

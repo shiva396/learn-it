@@ -156,11 +156,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 16),
               _HomeTile(
-                color: LColors.greyDark,
-                icon: Icons.help_outline,
+                color: const Color(0xFF6366F1),
+                icon: Icons.slideshow,
                 title: 'Sliding Decks',
-                subtitle: 'under construction',
-                onTap: () {},
+                subtitle: 'Interactive slide presentations',
+                onTap: () => Navigator.pushNamed(context, '/slide_decks'),
               ),
               SizedBox(height: 16),
 
