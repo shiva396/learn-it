@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 
@@ -80,36 +79,37 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
 
   int _currentSlideIndex = 0;
   bool _showingPreview = true;
+  bool _isSpeaking = false;
 
   // Animation controllers
   late AnimationController _slideAnimationController;
-  late AnimationController _pulseController;
 
   // Animations
   late Animation<double> _slideAnimation;
-  late Animation<double> _pulseAnimation;
 
-  // Enhanced slide data structure with cat story
+  // Enhanced slide data structure with cat story and speech content
   List<Map<String, dynamic>> get _slideData => [
     {
-      'title': 'Welcome, Young Explorer! 🌟',
+      'title': 'Welcome, Young Explorer!',
       'icon': Icons.celebration,
       'color': LColors.blue,
       'showImage': false,
       'description':
           'Get ready for an amazing adventure into the world of words! Today, we\'re going to discover something magical that makes our language colorful and exciting.',
       'keyPoints': [
-        '🎯 You\'re about to learn about ADJECTIVES!',
-        '✨ These special words make stories come alive',
-        '🚀 By the end, you\'ll be a word wizard!',
-        '🎉 Let\'s start this incredible journey together!',
+        'You\'re about to learn about ADJECTIVES!',
+        'These special words make stories come alive',
+        'By the end, you\'ll be a word wizard!',
+        'Let\'s start this incredible journey together!',
       ],
       'motivationalText':
           'Every great writer started just like you - curious and eager to learn!',
+      'speechText':
+          'Hello there, young explorer! Welcome to our exciting adventure into the world of words. I\'m so glad you\'re here with me today. We\'re going to discover something truly magical that makes our language colorful and exciting. You\'re about to learn about adjectives - these are special words that make stories come alive. By the end of our journey together, you\'ll be a real word wizard! So, are you ready? Let\'s start this incredible adventure together!',
       'type': 'welcome',
     },
     {
-      'title': 'What are Nouns? 🏷️',
+      'title': 'What are Nouns?',
       'icon': Icons.label_outline,
       'color': LColors.warning,
       'showImage': true,
@@ -117,36 +117,40 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       'description':
           'Before we learn adjectives, let\'s understand NOUNS. Nouns are words that name people, places, animals, or things.',
       'keyPoints': [
-        '👤 People: teacher, student, friend',
-        '🏠 Places: school, park, home',
-        '🐱 Animals: cat, dog, bird',
-        '📚 Things: book, pen, computer',
+        'People: teacher, student, friend',
+        'Places: school, park, home',
+        'Animals: cat, dog, bird',
+        'Things: book, pen, computer',
       ],
       'example':
           'Look at this shape. It\'s a "cat" - that\'s a NOUN! It names an animal.',
       'question':
-          'But wait... can you imagine how this cat might look in real life? 🤔',
+          'But wait... can you imagine how this cat might look in real life?',
+      'speechText':
+          'Now, before we dive into adjectives, let\'s first understand what nouns are. Look at the screen - can you see this interesting shape? Nouns are words that name people, places, animals, or things. For example, people like teacher, student, or friend. Places like school, park, or home. Animals like cat, dog, or bird. And things like book, pen, or computer. This shape you see here is a cat - and cat is a noun because it names an animal. But wait, I have a question for you. Can you imagine how this cat might look in real life? What do you think it would be like? Keep that thought in your mind!',
       'type': 'noun_intro',
     },
     {
-      'title': 'Ta-Da! Meet Our Real Cat! 😻',
+      'title': 'Ta-Da! Meet Our Real Cat!',
       'icon': Icons.pets,
       'color': LColors.success,
       'showImage': true,
       'imagePath': 'assets/images/slides/cute_cat.png',
       'description':
           'SURPRISE! Here\'s how our cat actually looks! Isn\'t it amazing how different it is from the simple shape?',
-      'surpriseText': 'WOW! Look how BEAUTIFUL this cat is! 🌈',
+      'surpriseText': 'WOW! Look how BEAUTIFUL this cat is!',
       'keyPoints': [
-        '😍 Notice how much more interesting this cat looks!',
-        '🎨 We can see its colors, fur, and features',
-        '✨ The simple noun "cat" became something wonderful!',
-        '🔍 What words can describe this adorable cat?',
+        'Notice how much more interesting this cat looks!',
+        'We can see its colors, fur, and features',
+        'The simple noun "cat" became something wonderful!',
+        'What words can describe this adorable cat?',
       ],
+      'speechText':
+          'Ta-da! Surprise! Here\'s how our cat actually looks in real life! Isn\'t this amazing? Look how different and beautiful this cat is compared to the simple shape we saw before. Notice how much more interesting this real cat looks. We can see its colors, its fluffy fur, and all its wonderful features. The simple noun "cat" has now become something truly wonderful and alive! Now, I want you to think - what words can you use to describe this adorable cat? What do you notice about its appearance? This is where our adventure with adjectives begins!',
       'type': 'surprise_reveal',
     },
     {
-      'title': 'The Magic of Adjectives! ✨',
+      'title': 'The Magic of Adjectives!',
       'icon': Icons.auto_fix_high,
       'color': LColors.achievement,
       'showImage': true,
@@ -176,17 +180,19 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
         },
       ],
       'keyPoints': [
-        '🎨 Adjectives add COLOR to our words',
-        '📏 They tell us SIZE, SHAPE, and TEXTURE',
-        '😊 They share FEELINGS and EMOTIONS',
-        '⭐ They make writing EXCITING and VIVID!',
+        'Adjectives add COLOR to our words',
+        'They tell us SIZE, SHAPE, and TEXTURE',
+        'They share FEELINGS and EMOTIONS',
+        'They make writing EXCITING and VIVID!',
       ],
       'example':
           'Simple: "A cat sat." → Amazing: "A fluffy, orange, cute cat sat peacefully."',
+      'speechText':
+          'Now here comes the magic! Those describing words you were thinking about are called ADJECTIVES! Adjectives are special words that make nouns come alive with details, colors, and feelings. Let me show you some examples with our beautiful cat. We can say it\'s FLUFFY - that describes its texture, how it feels. We can call it ORANGE - that describes its color, what it looks like. We can say it\'s CUTE - that describes how it appears to us. And we might say it\'s SMALL - that describes its size. See how adjectives add color to our words? They tell us about size, shape, and texture. They help us share feelings and emotions too. Most importantly, they make our writing exciting and vivid! Listen to this difference: Simple sentence - A cat sat. Now with adjectives - A fluffy, orange, cute cat sat peacefully. Can you hear how much more interesting that sounds?',
       'type': 'adjective_magic',
     },
     {
-      'title': 'Your Turn to Shine! 🌟',
+      'title': 'Your Turn to Shine!',
       'icon': Icons.quiz,
       'color': LColors.highlight,
       'showImage': true,
@@ -196,34 +202,35 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       'practiceText':
           'Look at our cat again. Can you think of MORE adjectives to describe it?',
       'keyPoints': [
-        '🤔 Think: What COLOR do you see?',
-        '✋ Feel: How would its FUR feel?',
-        '👀 Observe: What SIZE is it?',
-        '💕 Emotions: How does it make you FEEL?',
+        'Think: What COLOR do you see?',
+        'Feel: How would its FUR feel?',
+        'Observe: What SIZE is it?',
+        'Emotions: How does it make you FEEL?',
       ],
       'interactiveChallenge':
           'Challenge: Find 3 adjectives that describe this cat!',
-      'hints': ['Hint: Look at its fur, eyes, and expression! 🔍'],
+      'hints': ['Hint: Look at its fur, eyes, and expression!'],
+      'speechText':
+          'Excellent! Now you know the secret of adjectives. You can spot them everywhere once you know what to look for. It\'s your turn to shine! Let\'s practice together with our furry friend. Look at our cat again carefully. Can you think of MORE adjectives to describe it? Here\'s how to think about it: First, what color do you see? Next, imagine touching it - how would its fur feel? Then observe - what size is it compared to other cats you might know? And finally, think about emotions - how does looking at this cat make you feel? Happy? Calm? Excited? Here\'s a challenge for you: try to find three adjectives that describe this cat. Take your time and really look at its fur, its eyes, and its expression. You\'ve got this!',
       'type': 'practice',
     },
     {
-      'title': 'Ready for More Magic? 🎬',
+      'title': 'Ready for More Magic?',
       'icon': Icons.play_circle_filled,
       'color': LColors.blue,
       'showImage': false,
       'description':
-          'Fantastic work! You\'ve discovered the power of adjectives and how they transform simple nouns into vivid pictures.',
-      'achievementBadge': true,
-      'keyPoints': [
-        '🎉 You learned what adjectives are',
-        '🐱 You saw how they describe our cat',
-        '✨ You practiced finding descriptive words',
-        '🚀 You\'re ready for the next level!',
-      ],
-      'motivationalText':
-          'You\'re becoming a true word wizard! Ready to discover even more secrets?',
-      'videoCallText':
           'Let\'s dive deeper and watch an amazing video that will teach you everything about adjectives!',
+      // 'keyPoints': [
+      //   'You learned what adjectives are',
+      //   'You saw how they describe our cat',
+      //   'You practiced finding descriptive words',
+      //   'You\'re ready for the next level!',
+      // ],
+      'motivationalText':
+          'You\'re doing awesome! Get ready to learn even more cool things about adjectives!',
+      'speechText':
+          'You\'re truly becoming a word wizard! Are you ready to discover even more secrets about adjectives? Let\'s dive deeper together and watch an amazing video that will teach you everything you need to know about using adjectives in your own writing. This is going to be exciting!',
       'type': 'video_transition',
     },
   ];
@@ -234,11 +241,13 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
     _initializeAnimations();
     _initializeTTS();
 
-    // Show preview dialog after first frame
+    // Start slideshow directly without preview
+    setState(() {
+      _showingPreview = false;
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_showingPreview) {
-        _showPreviewDialog();
-      }
+      _startSlideshow();
     });
   }
 
@@ -248,245 +257,35 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       vsync: this,
     );
 
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
     _slideAnimation = CurvedAnimation(
       parent: _slideAnimationController,
       curve: Curves.easeInOut,
     );
 
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-
     _slideAnimationController.forward();
-    _pulseController.repeat(reverse: true);
   }
 
   void _initializeTTS() async {
     await _flutterTts.setLanguage("en-US");
     await _flutterTts.setSpeechRate(0.5);
     await _flutterTts.setVolume(0.8);
-    await _flutterTts.setPitch(1.0);
-  }
+    await _flutterTts.setPitch(1.1);
 
-  void _showPreviewDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder:
-          (context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Engaging header with animation
-                  ScaleTransition(
-                    scale: _pulseAnimation,
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [LColors.blue, LColors.blue.withOpacity(0.7)],
-                        ),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: const Icon(
-                        Icons.auto_stories,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Exciting title
-                  const Text(
-                    'Ready for an Adventure? 🚀',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: LColors.black,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  // Engaging description
-                  Text(
-                    'Join us on an exciting adventure! We\'ll meet a mysterious cat, discover the magic of words, and become adjective wizards together! 🎭',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: LColors.greyDark,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Benefits container
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          LColors.highlight.withOpacity(0.1),
-                          LColors.blue.withOpacity(0.1),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: LColors.blue.withOpacity(0.2)),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.emoji_objects,
-                              color: LColors.warning,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'What you\'ll discover:',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: LColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        ...[
-                          '🎉 Welcome adventure & encouragement',
-                          '�️ Meet our mysterious abstract cat',
-                          '😻 SURPRISE! See the real fluffy cat',
-                          '✨ Discover the magic of adjectives',
-                          '🎯 Practice with our cute furry friend',
-                          '� Get ready for the amazing video!',
-                        ].map(
-                          (benefit) => Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Text(
-                                    benefit,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: LColors.greyDark,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Action buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            _skipToVideo();
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: LColors.greyLight),
-                            ),
-                          ),
-                          child: const Text(
-                            'Skip to Video',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: LColors.greyDark,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 12),
-
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            setState(() {
-                              _showingPreview = false;
-                            });
-                            _startSlideshow();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: LColors.blue,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            elevation: 2,
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.play_arrow, size: 20),
-                              SizedBox(width: 8),
-                              Text(
-                                'Let\'s Explore!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-    );
+    // Set a pleasant voice
+    await _flutterTts.setVoice({
+      "name": "en-us-x-sfg#female_2-local",
+      "locale": "en-US",
+    });
   }
 
   void _startSlideshow() {
-    // Add some haptic feedback for engagement
-    HapticFeedback.lightImpact();
-
     // Start animations
     _slideAnimationController.forward();
-  }
 
-  void _skipToVideo() {
-    HapticFeedback.mediumImpact();
-    Navigator.of(context).pop();
-    if (widget.onComplete != null) {
-      widget.onComplete!();
-    }
+    // Start speaking the first slide
+    Future.delayed(const Duration(milliseconds: 800), () {
+      _speakSlideContent();
+    });
   }
 
   void _nextSlide() {
@@ -498,7 +297,9 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
       );
-      HapticFeedback.lightImpact();
+
+      // Speak the current slide content
+      _speakSlideContent();
     } else {
       _completeSlideShow();
     }
@@ -513,152 +314,59 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
       );
-      HapticFeedback.lightImpact();
+
+      // Speak the current slide content
+      _speakSlideContent();
+    }
+  }
+
+  void _speakSlideContent() async {
+    final currentSlide = _slideData[_currentSlideIndex];
+    final speechText = currentSlide['speechText'] as String?;
+
+    if (speechText != null) {
+      await _flutterTts.stop(); // Stop any current speech
+      setState(() {
+        _isSpeaking = true;
+      });
+
+      Future.delayed(const Duration(milliseconds: 500), () async {
+        await _flutterTts.speak(speechText);
+      });
+
+      // Listen for speech completion
+      _flutterTts.setCompletionHandler(() {
+        if (mounted) {
+          setState(() {
+            _isSpeaking = false;
+          });
+        }
+      });
+    }
+  }
+
+  void _toggleSpeech() {
+    if (_isSpeaking) {
+      _flutterTts.stop();
+      setState(() {
+        _isSpeaking = false;
+      });
+    } else {
+      _speakSlideContent();
     }
   }
 
   void _completeSlideShow() {
-    HapticFeedback.mediumImpact();
-
-    // Show completion animation/dialog
-    _showCompletionDialog();
-  }
-
-  void _showCompletionDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder:
-          (context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Celebration icon
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [LColors.success, LColors.achievement],
-                      ),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: const Icon(
-                      Icons.celebration,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  const Text(
-                    'Awesome Job! 🎉',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: LColors.black,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  const Text(
-                    'You\'ve completed the adjective preview! Now you\'re ready to dive deeper with the video lesson.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: LColors.greyDark,
-                      height: 1.4,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Motivation box
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          LColors.success.withOpacity(0.1),
-                          LColors.blue.withOpacity(0.1),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.school, color: LColors.success, size: 24),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Keep up the great work! Learning is a journey, and you\'re doing fantastic!',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: LColors.success,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                        if (widget.onComplete != null) {
-                          widget.onComplete!();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: LColors.success,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3,
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.play_arrow, size: 20),
-                          SizedBox(width: 8),
-                          Text(
-                            'Start Video Lesson',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-    );
+    // Directly go to video lesson
+    Navigator.of(context).pop();
+    if (widget.onComplete != null) {
+      widget.onComplete!();
+    }
   }
 
   @override
   void dispose() {
     _slideAnimationController.dispose();
-    _pulseController.dispose();
     _pageController.dispose();
     _flutterTts.stop();
     super.dispose();
@@ -696,6 +404,19 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
         ),
         centerTitle: true,
         actions: [
+          // Speech control button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: _toggleSpeech,
+              icon: Icon(
+                _isSpeaking ? Icons.volume_up : Icons.volume_off,
+                color: Colors.white,
+              ),
+              tooltip: _isSpeaking ? 'Stop Speech' : 'Play Speech',
+            ),
+          ),
+
           Container(
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -740,7 +461,6 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                 setState(() {
                   _currentSlideIndex = index;
                 });
-                HapticFeedback.selectionClick();
               },
               itemCount: _slideData.length,
               itemBuilder: (context, index) {
@@ -820,41 +540,40 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
 
   Widget _buildSlideContent(Map<String, dynamic> slide) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Slide Header with Icon
           Row(
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      slide['color'] as Color,
-                      (slide['color'] as Color).withOpacity(0.7),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (slide['color'] as Color).withOpacity(0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  slide['icon'] as IconData,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
-
+              // Container(
+              //   width: 80,
+              //   height: 80,
+              //   decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //       colors: [
+              //         slide['color'] as Color,
+              //         (slide['color'] as Color).withOpacity(0.7),
+              //       ],
+              //       begin: Alignment.topLeft,
+              //       end: Alignment.bottomRight,
+              //     ),
+              //     borderRadius: BorderRadius.circular(20),
+              //     boxShadow: [
+              //       BoxShadow(
+              //         color: (slide['color'] as Color).withOpacity(0.3),
+              //         blurRadius: 8,
+              //         offset: const Offset(0, 4),
+              //       ),
+              //     ],
+              //   ),
+              //   child: Icon(
+              //     slide['icon'] as IconData,
+              //     size: 40,
+              //     color: Colors.white,
+              //   ),
+              // ),
               if (slide['achievementBadge'] == true) ...[
                 const SizedBox(width: 16),
                 Container(
