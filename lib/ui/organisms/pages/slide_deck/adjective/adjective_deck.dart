@@ -221,12 +221,6 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       'showImage': false,
       'description':
           'Let\'s dive deeper and watch an amazing video that will teach you everything about adjectives!',
-      // 'keyPoints': [
-      //   'You learned what adjectives are',
-      //   'You saw how they describe our cat',
-      //   'You practiced finding descriptive words',
-      //   'You\'re ready for the next level!',
-      // ],
       'motivationalText':
           'You\'re doing awesome! Get ready to learn even more cool things about adjectives!',
       'speechText':
