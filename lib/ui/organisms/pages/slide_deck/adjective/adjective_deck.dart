@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:learnit/ui/atoms/colors.dart';
@@ -80,6 +81,13 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
   int _currentSlideIndex = 0;
   bool _showingPreview = true;
   bool _isSpeaking = false;
+  String _currentCaption = '';
+  bool _showCaptions = true;
+  int _currentSentenceIndex = 0;
+  List<String> _speechSentences = [];
+  Timer? _captionTimer;
+  int _totalWords = 0;
+  int _currentWordCount = 0;
 
   // Animation controllers
   late AnimationController _slideAnimationController;
@@ -270,6 +278,60 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       "name": "en-us-x-sfg#female_2-local",
       "locale": "en-US",
     });
+
+    // Set up TTS handlers for better synchronization
+    _flutterTts.setStartHandler(() {
+      if (mounted) {
+        setState(() {
+          _isSpeaking = true;
+        });
+      }
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      if (mounted) {
+        _captionTimer?.cancel();
+        setState(() {
+          _isSpeaking = false;
+          _currentCaption = '';
+          _currentSentenceIndex = 0;
+          _currentWordCount = 0;
+        });
+      }
+    });
+
+    _flutterTts.setPauseHandler(() {
+      if (mounted) {
+        setState(() {
+          _isSpeaking = false;
+        });
+      }
+    });
+
+    _flutterTts.setContinueHandler(() {
+      if (mounted) {
+        setState(() {
+          _isSpeaking = true;
+        });
+      }
+    });
+
+    // Enable progress tracking if available (not all TTS engines support this)
+    try {
+      _flutterTts.setProgressHandler((
+        String text,
+        int start,
+        int end,
+        String word,
+      ) {
+        if (mounted && _isSpeaking) {
+          _updateCaptionWithProgress(text, start, end, word);
+        }
+      });
+    } catch (e) {
+      // Progress handler not supported, will use fallback timing
+      print('TTS Progress handler not supported, using fallback timing');
+    }
   }
 
   void _startSlideshow() {
@@ -306,7 +368,7 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       });
       _pageController.previousPage(
         duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,  
+        curve: Curves.easeInOut,
       );
 
       // Speak the current slide content
@@ -320,9 +382,33 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
 
     if (speechText != null) {
       await _flutterTts.stop(); // Stop any current speech
+      _captionTimer?.cancel(); // Cancel any existing timer
+
+      // Split text into sentences for better synchronization
+      _speechSentences = _splitIntoSentences(speechText);
+      _currentSentenceIndex = 0;
+      _totalWords = speechText.split(' ').length;
+      _currentWordCount = 0;
+
       setState(() {
         _isSpeaking = true;
+        _currentCaption = ''; // Start with empty caption
       });
+
+      // Set up TTS progress callback
+      _flutterTts.setProgressHandler((
+        String text,
+        int start,
+        int end,
+        String word,
+      ) {
+        if (mounted && _isSpeaking) {
+          _updateCaptionWithProgress(text, start, end, word);
+        }
+      });
+
+      // Start progressive captions with sentence-based approach
+      _startSentenceBasedCaptions();
 
       Future.delayed(const Duration(milliseconds: 500), () async {
         await _flutterTts.speak(speechText);
@@ -331,19 +417,140 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       // Listen for speech completion
       _flutterTts.setCompletionHandler(() {
         if (mounted) {
+          _captionTimer?.cancel();
           setState(() {
             _isSpeaking = false;
+            _currentCaption = ''; // Clear caption when speech ends
+            _currentSentenceIndex = 0;
+            _currentWordCount = 0;
           });
         }
       });
     }
   }
 
+  List<String> _splitIntoSentences(String text) {
+    // Split by sentence markers and clean up
+    List<String> sentences =
+        text
+            .split(RegExp(r'[.!?]+\s*'))
+            .where((s) => s.trim().isNotEmpty)
+            .map((s) => s.trim() + '.')
+            .toList();
+
+    // If no sentences found, split by natural pauses
+    if (sentences.length <= 1) {
+      sentences =
+          text
+              .split(RegExp(r'[,;]\s*'))
+              .where((s) => s.trim().isNotEmpty)
+              .map((s) => s.trim())
+              .toList();
+    }
+
+    // Ensure reasonable chunk sizes (15-25 words max per chunk)
+    List<String> optimizedSentences = [];
+    for (String sentence in sentences) {
+      List<String> words = sentence.split(' ');
+      if (words.length > 25) {
+        // Split long sentences into smaller chunks
+        for (int i = 0; i < words.length; i += 20) {
+          int endIndex = (i + 20).clamp(0, words.length);
+          optimizedSentences.add(words.sublist(i, endIndex).join(' '));
+        }
+      } else {
+        optimizedSentences.add(sentence);
+      }
+    }
+
+    return optimizedSentences;
+  }
+
+  void _updateCaptionWithProgress(
+    String text,
+    int start,
+    int end,
+    String word,
+  ) {
+    // This method is called by TTS progress handler
+    // Calculate current position in the text
+    String currentText = text.substring(0, end);
+    int wordsSpoken = currentText.split(' ').length;
+
+    // Find which sentence we should be showing
+    int cumulativeWords = 0;
+    for (int i = 0; i < _speechSentences.length; i++) {
+      int sentenceWords = _speechSentences[i].split(' ').length;
+      if (wordsSpoken <= cumulativeWords + sentenceWords) {
+        if (i != _currentSentenceIndex) {
+          setState(() {
+            _currentSentenceIndex = i;
+            _currentCaption = _speechSentences[i];
+            _currentWordCount = wordsSpoken;
+          });
+        }
+        break;
+      }
+      cumulativeWords += sentenceWords;
+    }
+  }
+
+  void _startSentenceBasedCaptions() {
+    if (_speechSentences.isEmpty) return;
+
+    // Show first sentence immediately
+    setState(() {
+      _currentCaption = _speechSentences[0];
+    });
+
+    // Fallback timer in case TTS progress handler doesn't work
+    // This provides a backup synchronization method
+    const double ttsRate = 0.5; // Current TTS rate setting
+    const double baseWordsPerMinute = 100; // Conservative rate for TTS
+    final double actualWPM = baseWordsPerMinute * ttsRate;
+
+    _captionTimer = Timer.periodic(
+      const Duration(milliseconds: 800), // Check every 800ms
+      (timer) {
+        if (_currentSentenceIndex < _speechSentences.length - 1 &&
+            _isSpeaking) {
+          // Calculate expected words spoken by now
+          int elapsed = timer.tick * 800; // milliseconds elapsed
+          int expectedWords = ((elapsed / 60000) * actualWPM).round();
+
+          // Find which sentence should be showing based on word count
+          int cumulativeWords = 0;
+          for (int i = 0; i <= _currentSentenceIndex + 1; i++) {
+            if (i < _speechSentences.length) {
+              int sentenceWords = _speechSentences[i].split(' ').length;
+              if (expectedWords > cumulativeWords + sentenceWords &&
+                  i > _currentSentenceIndex) {
+                setState(() {
+                  _currentSentenceIndex = i;
+                  _currentCaption = _speechSentences[i];
+                });
+                break;
+              }
+              cumulativeWords += sentenceWords;
+            }
+          }
+        } else if (!_isSpeaking ||
+            _currentSentenceIndex >= _speechSentences.length - 1) {
+          timer.cancel();
+        }
+      },
+    );
+  }
+
   void _toggleSpeech() {
     if (_isSpeaking) {
       _flutterTts.stop();
+      _captionTimer?.cancel();
       setState(() {
         _isSpeaking = false;
+        _currentCaption = ''; // Clear caption when stopping speech
+        _currentSentenceIndex = 0;
+        _currentWordCount = 0;
       });
     } else {
       _speakSlideContent();
@@ -363,6 +570,7 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
     _slideAnimationController.dispose();
     _pageController.dispose();
     _flutterTts.stop();
+    _captionTimer?.cancel();
     super.dispose();
   }
 
@@ -408,6 +616,25 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
                 color: Colors.white,
               ),
               tooltip: _isSpeaking ? 'Stop Speech' : 'Play Speech',
+            ),
+          ),
+
+          // Captions toggle button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _showCaptions = !_showCaptions;
+                });
+              },
+              icon: Icon(
+                _showCaptions
+                    ? Icons.closed_caption
+                    : Icons.closed_caption_disabled,
+                color: Colors.white,
+              ),
+              tooltip: _showCaptions ? 'Hide Captions' : 'Show Captions',
             ),
           ),
 
@@ -466,6 +693,73 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
               },
             ),
           ),
+
+          // Captions Bar
+          if (_showCaptions && _currentCaption.isNotEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.9),
+                    Colors.black.withOpacity(0.7),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: LColors.blue.withOpacity(0.5),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: LColors.blue.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Icon(
+                      Icons.record_voice_over,
+                      color: LColors.blue,
+                      size: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Text(
+                        _currentCaption,
+                        key: ValueKey(_currentCaption),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          height: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          if (_showCaptions && _currentCaption.isNotEmpty)
+            const SizedBox(height: 8),
 
           // Navigation Controls
           Container(
