@@ -1325,27 +1325,6 @@ class GardenBackgroundPainter extends CustomPainter {
     }
   }
 
-  void _drawEnhancedCloud(Canvas canvas, Offset center, Paint paint) {
-    // Main cloud body with multiple circles for depth
-    canvas.drawCircle(center, 18, paint);
-    canvas.drawCircle(center.translate(-12, 2), 15, paint);
-    canvas.drawCircle(center.translate(12, 2), 15, paint);
-    canvas.drawCircle(center.translate(-6, -10), 12, paint);
-    canvas.drawCircle(center.translate(6, -10), 12, paint);
-    canvas.drawCircle(center.translate(0, -8), 10, paint);
-  }
-
-  void _drawMagicalElements(Canvas canvas, Size size) {
-    final magicPaint = Paint()..color = Colors.purple[200]!.withOpacity(0.3);
-
-    // Draw floating magical orbs
-    for (int i = 0; i < 5; i++) {
-      final x = (i + 1) * size.width / 6;
-      final y = size.height * 0.3 + sin(i * pi / 2) * 20;
-      canvas.drawCircle(Offset(x, y), 4, magicPaint);
-    }
-  }
-
   void _drawEnhancedWateringCan(Canvas canvas, Offset pos) {
     // Body with gradient
     final canPaint =

@@ -3,128 +3,104 @@ import 'package:learnit/ui/atoms/colors.dart';
 import 'adjective/adjective_deck.dart';
 
 class SlideDecksPage extends StatefulWidget {
-  const SlideDecksPage({super.key});
+  const SlideDecksPage({Key? key}) : super(key: key);
 
   @override
-  State<SlideDecksPage> createState() => _SlideDecksPageState();
+  _SlideDecksPageState createState() => _SlideDecksPageState();
 }
 
-class _SlideDecksPageState extends State<SlideDecksPage>
-    with TickerProviderStateMixin {
-  late AnimationController _listAnimationController;
-  late Animation<double> _fadeAnimation;
-
-  final List<SlideModule> _slideModules = [
-    SlideModule(
-      id: 'adjectives',
-      title: 'Adjectives',
-      subtitle: 'Describing Words',
-      description:
-          'Learn how adjectives make nouns more colorful and interesting!',
-      icon: Icons.palette,
-      color: Colors.orange,
-      isCompleted: false,
-      progress: 0.0,
-    ),
-    SlideModule(
-      id: 'verbs',
-      title: 'Verbs',
-      subtitle: 'Action Words',
-      description: 'Discover action words that bring sentences to life!',
-      icon: Icons.directions_run,
-      color: Colors.green,
-      isCompleted: false,
-      progress: 0.0,
-      isComingSoon: true,
-    ),
-    SlideModule(
-      id: 'nouns',
-      title: 'Nouns',
-      subtitle: 'Naming Words',
-      description:
-          'Master the building blocks of sentences - people, places, and things!',
-      icon: Icons.home,
-      color: Colors.blue,
-      isCompleted: false,
-      progress: 0.0,
-      isComingSoon: true,
-    ),
-    SlideModule(
-      id: 'pronouns',
-      title: 'Pronouns',
-      subtitle: 'Replacement Words',
-      description:
-          'Learn words that replace nouns to make sentences flow better!',
-      icon: Icons.swap_horiz,
-      color: Colors.purple,
-      isCompleted: false,
-      progress: 0.0,
-      isComingSoon: true,
-    ),
+class _SlideDecksPageState extends State<SlideDecksPage> {
+  final TextEditingController _searchController = TextEditingController();
+  final List<Map<String, dynamic>> _topics = [
+    {'title': 'Adjectives', 'minutes': 3, 'progress': 0, 'isAvailable': true},
+    {'title': 'Nouns', 'minutes': 5, 'progress': 0, 'isAvailable': false},
+    {'title': 'Pronouns', 'minutes': 4, 'progress': 0, 'isAvailable': false},
+    {'title': 'Verbs', 'minutes': 6, 'progress': 0, 'isAvailable': false},
+    {'title': 'Adverbs', 'minutes': 2, 'progress': 0, 'isAvailable': false},
+    {
+      'title': 'Prepositions',
+      'minutes': 4,
+      'progress': 0,
+      'isAvailable': false,
+    },
+    {
+      'title': 'Conjunctions',
+      'minutes': 3,
+      'progress': 0,
+      'isAvailable': false,
+    },
+    {
+      'title': 'Interjections',
+      'minutes': 2,
+      'progress': 0,
+      'isAvailable': false,
+    },
   ];
+
+  List<Map<String, dynamic>> _filteredTopics = [];
 
   @override
   void initState() {
     super.initState();
-    _initializeAnimations();
-    _startEntryAnimation();
+    _filteredTopics = _topics;
   }
 
-  void _initializeAnimations() {
-    _listAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _listAnimationController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
+  void _filterTopics(String query) {
+    setState(() {
+      _filteredTopics =
+          _topics
+              .where(
+                (topic) =>
+                    topic['title'].toLowerCase().contains(query.toLowerCase()),
+              )
+              .map(
+                (topic) => {
+                  'title': topic['title'],
+                  'minutes': topic['minutes'] ?? 0,
+                  'progress': topic['progress'] ?? 0,
+                  'isAvailable': topic['isAvailable'] ?? false,
+                },
+              )
+              .toList();
+    });
   }
 
-  void _startEntryAnimation() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    _listAnimationController.forward();
-  }
+  void _navigateToTopic(String topic, bool isAvailable) {
+    if (!isAvailable) {
+      _showComingSoonDialog(topic);
+      return;
+    }
 
-  @override
-  void dispose() {
-    _listAnimationController.dispose();
-    super.dispose();
-  }
-
-  void _openSlideModule(SlideModule module) {
-    if (module.isComingSoon) {
-      _showComingSoonDialog(module);
-    } else {
-      // Navigate to the specific slide module
-      switch (module.id) {
-        case 'adjectives':
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => SlideModulePage(
-                    moduleType: 'adjectives',
-                    onComplete: () {
-                      setState(() {
-                        module.isCompleted = true;
-                        module.progress = 1.0;
-                      });
-                    },
-                  ),
-            ),
-          );
-          break;
-        default:
-          _showComingSoonDialog(module);
-      }
+    String topicLower = topic.toLowerCase();
+    switch (topicLower) {
+      case 'adjectives':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => SlideModulePage(
+                  moduleType: 'adjectives',
+                  onComplete: () {
+                    setState(() {
+                      // Update progress when completed
+                      int index = _topics.indexWhere(
+                        (t) => t['title'] == topic,
+                      );
+                      if (index != -1) {
+                        _topics[index]['progress'] = 100;
+                      }
+                    });
+                  },
+                ),
+          ),
+        );
+        break;
+      default:
+        _showComingSoonDialog(topic);
     }
   }
 
-  void _showComingSoonDialog(SlideModule module) {
+  void _showComingSoonDialog(String topic) {
     showDialog(
       context: context,
       builder:
@@ -134,12 +110,12 @@ class _SlideDecksPageState extends State<SlideDecksPage>
             ),
             title: Row(
               children: [
-                Icon(module.icon, color: module.color, size: 30),
+                Icon(Icons.slideshow, color: LColors.blue, size: 30),
                 const SizedBox(width: 12),
                 Text(
-                  module.title,
+                  topic,
                   style: TextStyle(
-                    color: module.color,
+                    color: LColors.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -160,7 +136,7 @@ class _SlideDecksPageState extends State<SlideDecksPage>
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'This ${module.title.toLowerCase()} module is currently under development. Stay tuned for more amazing learning experiences!',
+                  'This ${topic.toLowerCase()} slide deck is currently under development. Stay tuned for more amazing learning experiences!',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey.shade600, height: 1.4),
                 ),
@@ -170,7 +146,7 @@ class _SlideDecksPageState extends State<SlideDecksPage>
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: module.color,
+                  backgroundColor: LColors.blue,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -190,223 +166,72 @@ class _SlideDecksPageState extends State<SlideDecksPage>
       appBar: AppBar(
         backgroundColor: LColors.blue,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Slide Deck Modules',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Column(
+          children: [
+            Text(
+              'SLIDE DECKS',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Interactive Learning Slides',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [LColors.background, LColors.surface],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Column(
-              children: [
-                // Header Section
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: LColors.blue.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: LColors.blue,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.slideshow,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Interactive Learning',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Explore grammar concepts through engaging visual presentations',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey.shade600,
-                                      height: 1.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Modules List
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: _slideModules.length,
-                    itemBuilder: (context, index) {
-                      final module = _slideModules[index];
-                      return TweenAnimationBuilder<double>(
-                        duration: Duration(milliseconds: 800 + (index * 200)),
-                        tween: Tween(begin: 0.0, end: 1.0),
-                        curve: Curves.easeOutCubic,
-                        builder: (context, value, child) {
-                          return Transform.translate(
-                            offset: Offset(0, 50 * (1 - value)),
-                            child: Opacity(
-                              opacity: value.clamp(0.0, 1.0),
-                              child: _buildModuleCard(module, index),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModuleCard(SlideModule module, int index) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () => _openSlideModule(module),
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: module.color,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: module.color.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon Container
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
+              TextField(
+                controller: _searchController,
+                onChanged: _filterTopics,
+                decoration: InputDecoration(
+                  hintText: 'SEARCH',
+                  hintStyle: TextStyle(color: Colors.white),
+                  prefixIcon: Icon(Icons.search, color: Colors.white),
+                  filled: true,
+                  fillColor: LColors.blue,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-                child: Icon(module.icon, size: 24, color: Colors.white),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'SLIDES',
+                style: TextStyle(
+                  color: LColors.greyDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
 
-              const SizedBox(width: 16),
-
-              // Content
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          module.title,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        if (module.isComingSoon) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: const Text(
-                              'Soon',
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      module.subtitle,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
-                        fontWeight: FontWeight.w500,
+              SizedBox(height: 8),
+              ..._filteredTopics.map(
+                (topic) => GestureDetector(
+                  onTap:
+                      () => _navigateToTopic(
+                        topic['title'],
+                        topic['isAvailable'],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Status Icon
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  module.isCompleted
-                      ? Icons.check_circle
-                      : module.isComingSoon
-                      ? Icons.schedule
-                      : Icons.play_arrow,
-                  color: Colors.white,
-                  size: 20,
+                  child: _SlideDeckTile(
+                    progress: topic['progress'] ?? 0,
+                    title: topic['title'],
+                    minutes: topic['minutes'] ?? 0,
+                    isAvailable: topic['isAvailable'] ?? false,
+                  ),
                 ),
               ),
             ],
@@ -417,27 +242,151 @@ class _SlideDecksPageState extends State<SlideDecksPage>
   }
 }
 
-// Data Model
-class SlideModule {
-  final String id;
+class _TopicCard extends StatelessWidget {
   final String title;
-  final String subtitle;
-  final String description;
-  final IconData icon;
+  final String daysAgo;
   final Color color;
-  bool isCompleted;
-  double progress;
-  final bool isComingSoon;
 
-  SlideModule({
-    required this.id,
+  const _TopicCard({
     required this.title,
-    required this.subtitle,
-    required this.description,
-    required this.icon,
+    required this.daysAgo,
     required this.color,
-    this.isCompleted = false,
-    this.progress = 0.0,
-    this.isComingSoon = false,
-  });
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 3 - 24,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            daysAgo,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SlideDeckTile extends StatelessWidget {
+  final int progress;
+  final String title;
+  final int minutes;
+  final bool isAvailable;
+
+  const _SlideDeckTile({
+    required this.progress,
+    required this.title,
+    required this.minutes,
+    required this.isAvailable,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              CircularProgressIndicator(
+                value: progress / 100,
+                backgroundColor: LColors.greyLight,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  isAvailable ? LColors.blue : LColors.grey,
+                ),
+              ),
+              if (!isAvailable) Icon(Icons.lock, color: LColors.grey, size: 16),
+            ],
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          color: isAvailable ? LColors.greyDark : LColors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // ),
+                      // if (!isAvailable)
+                      //   Container(
+                      //     padding: EdgeInsets.symmetric(
+                      //       horizontal: 6,
+                      //       vertical: 2,
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.orange.shade100,
+                      //       borderRadius: BorderRadius.circular(4),
+                      //     ),
+                      //     child: Text(
+                      //       'Coming Soon',
+                      //       style: TextStyle(
+                      //         color: Colors.orange.shade700,
+                      //         fontSize: 10,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '${minutes} minutes to complete',
+                  style: TextStyle(
+                    color: isAvailable ? LColors.grey : LColors.greyLight,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            isAvailable ? Icons.arrow_forward_ios : Icons.schedule,
+            color: isAvailable ? LColors.grey : LColors.greyLight,
+            size: 16,
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -306,7 +306,7 @@ class _AdjectiveSlideModuleState extends State<AdjectiveSlideModule>
       });
       _pageController.previousPage(
         duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
+        curve: Curves.easeInOut,  
       );
 
       // Speak the current slide content

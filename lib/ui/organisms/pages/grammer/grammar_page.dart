@@ -8,120 +8,25 @@ class GrammarPage extends StatefulWidget {
   _GrammarPageState createState() => _GrammarPageState();
 }
 
-class _GrammarPageState extends State<GrammarPage>
-    with TickerProviderStateMixin {
-  late AnimationController _listAnimationController;
-  late Animation<double> _fadeAnimation;
-
+class _GrammarPageState extends State<GrammarPage> {
   final TextEditingController _searchController = TextEditingController();
-  final List<GrammarTopic> _topics = [
-    GrammarTopic(
-      id: 'nouns',
-      title: 'Nouns',
-      subtitle: 'Naming Words',
-      description: 'Learn about people, places, and things',
-      icon: Icons.home,
-      color: Colors.blue,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'pronouns',
-      title: 'Pronouns',
-      subtitle: 'Replacement Words',
-      description: 'Words that replace nouns',
-      icon: Icons.swap_horiz,
-      color: Colors.purple,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'verbs',
-      title: 'Verbs',
-      subtitle: 'Action Words',
-      description: 'Words that show action or state',
-      icon: Icons.directions_run,
-      color: Colors.green,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'adjectives',
-      title: 'Adjectives',
-      subtitle: 'Describing Words',
-      description: 'Words that describe nouns',
-      icon: Icons.palette,
-      color: Colors.orange,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'adverbs',
-      title: 'Adverbs',
-      subtitle: 'Modifying Words',
-      description: 'Words that modify verbs and adjectives',
-      icon: Icons.speed,
-      color: Colors.red,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'prepositions',
-      title: 'Prepositions',
-      subtitle: 'Position Words',
-      description: 'Words that show relationships',
-      icon: Icons.place,
-      color: Colors.teal,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'conjunctions',
-      title: 'Conjunctions',
-      subtitle: 'Connecting Words',
-      description: 'Words that join other words',
-      icon: Icons.link,
-      color: Colors.indigo,
-      progress: 0.0,
-    ),
-    GrammarTopic(
-      id: 'interjections',
-      title: 'Interjections',
-      subtitle: 'Emotion Words',
-      description: 'Words that express emotions',
-      icon: Icons.emoji_emotions,
-      color: Colors.pink,
-      progress: 0.0,
-    ),
+  final List<Map<String, dynamic>> _topics = [
+    {'title': 'Nouns', 'minutes': 5, 'progress': 0},
+    {'title': 'Pronouns', 'minutes': 4, 'progress': 0},
+    {'title': 'Verbs', 'minutes': 6, 'progress': 0},
+    {'title': 'Adjectives', 'minutes': 3, 'progress': 0},
+    {'title': 'Adverbs', 'minutes': 2, 'progress': 0},
+    {'title': 'Prepositions', 'minutes': 4, 'progress': 0},
+    {'title': 'Conjunctions', 'minutes': 3, 'progress': 0},
+    {'title': 'Interjections', 'minutes': 2, 'progress': 0},
   ];
 
-  List<GrammarTopic> _filteredTopics = [];
+  List<Map<String, dynamic>> _filteredTopics = [];
 
   @override
   void initState() {
     super.initState();
     _filteredTopics = _topics;
-    _initializeAnimations();
-    _startEntryAnimation();
-  }
-
-  void _initializeAnimations() {
-    _listAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _listAnimationController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
-  }
-
-  void _startEntryAnimation() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    _listAnimationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _listAnimationController.dispose();
-    super.dispose();
   }
 
   void _filterTopics(String query) {
@@ -130,7 +35,16 @@ class _GrammarPageState extends State<GrammarPage>
           _topics
               .where(
                 (topic) =>
-                    topic.title.toLowerCase().contains(query.toLowerCase()),
+                    topic['title'].toLowerCase().contains(query.toLowerCase()),
+              )
+              .map(
+                (topic) => {
+                  'title': topic['title'],
+                  'minutes':
+                      topic['minutes'] ?? 0, // Ensure minutes is non-null
+                  'progress':
+                      topic['progress'] ?? 0, // Ensure progress is non-null
+                },
               )
               .toList();
     });
@@ -148,218 +62,87 @@ class _GrammarPageState extends State<GrammarPage>
       appBar: AppBar(
         backgroundColor: LColors.blue,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Grammar Topics',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Column(
+          children: [
+            Text(
+              'GRAMMAR',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Learn Grammar Easily',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [LColors.background, LColors.surface],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Column(
-              children: [
-                // Header Section
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: LColors.blue.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: LColors.blue,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.book,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Grammar Learning',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Master the building blocks of English language',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey.shade600,
-                                      height: 1.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Search Bar
-                      TextField(
-                        controller: _searchController,
-                        onChanged: _filterTopics,
-                        decoration: InputDecoration(
-                          hintText: 'Search topics...',
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey.shade500,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Topics List
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: _filteredTopics.length,
-                    itemBuilder: (context, index) {
-                      final topic = _filteredTopics[index];
-                      return TweenAnimationBuilder<double>(
-                        duration: Duration(milliseconds: 800 + (index * 200)),
-                        tween: Tween(begin: 0.0, end: 1.0),
-                        curve: Curves.easeOutCubic,
-                        builder: (context, value, child) {
-                          return Transform.translate(
-                            offset: Offset(0, 50 * (1 - value)),
-                            child: Opacity(
-                              opacity: value.clamp(0.0, 1.0),
-                              child: _buildTopicCard(topic, index),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopicCard(GrammarTopic topic, int index) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () => _navigateToTopic(topic.title),
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: topic.color,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: topic.color.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon Container
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(topic.icon, size: 24, color: Colors.white),
-              ),
-
-              const SizedBox(width: 16),
-
-              // Content
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      topic.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      topic.subtitle,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
+              TextField(
+                controller: _searchController,
+                onChanged: _filterTopics,
+                decoration: InputDecoration(
+                  hintText: 'SEARCH',
+                  hintStyle: TextStyle(color: Colors.white),
+                  prefixIcon: Icon(Icons.search, color: Colors.white),
+                  filled: true,
+                  fillColor: LColors.blue,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
-
-              // Status Icon
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+              SizedBox(height: 16),
+              Text(
+                'RECENT TOPICS',
+                style: TextStyle(
+                  color: LColors.greyDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
-                child: Icon(
-                  topic.progress > 0 ? Icons.check_circle : Icons.play_arrow,
-                  color: Colors.white,
-                  size: 20,
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _TopicCard(
+                    title: 'The adverbs – Summary',
+                    daysAgo: '29 days ago',
+                    color: Colors.orange,
+                  ),
+                  _TopicCard(
+                    title: 'Comparison of adjectives',
+                    daysAgo: '1 months ago',
+                    color: Colors.green,
+                  ),
+                  _TopicCard(
+                    title: 'Demonstrative Adjectives',
+                    daysAgo: '1 months ago',
+                    color: Colors.blue,
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              ..._filteredTopics.map(
+                (topic) => GestureDetector(
+                  onTap: () => _navigateToTopic(topic['title']),
+                  child: _GrammarTile(
+                    progress: topic['progress'] ?? 0,
+                    title: topic['title'],
+                    minutes: topic['minutes'] ?? 0,
+                  ),
                 ),
               ),
             ],
@@ -370,23 +153,109 @@ class _GrammarPageState extends State<GrammarPage>
   }
 }
 
-// Data Model
-class GrammarTopic {
-  final String id;
+class _TopicCard extends StatelessWidget {
   final String title;
-  final String subtitle;
-  final String description;
-  final IconData icon;
+  final String daysAgo;
   final Color color;
-  double progress;
 
-  GrammarTopic({
-    required this.id,
+  const _TopicCard({
     required this.title,
-    required this.subtitle,
-    required this.description,
-    required this.icon,
+    required this.daysAgo,
     required this.color,
-    this.progress = 0.0,
-  });
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 3 - 24,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12, 
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            daysAgo,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GrammarTile extends StatelessWidget {
+  final int progress;
+  final String title;
+  final int minutes;
+
+  const _GrammarTile({
+    required this.progress,
+    required this.title,
+    required this.minutes,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircularProgressIndicator(
+            value: progress / 100,
+            backgroundColor: LColors.greyLight,
+            valueColor: AlwaysStoppedAnimation<Color>(LColors.blue),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: LColors.greyDark,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '$minutes minutes to read',
+                  style: TextStyle(color: LColors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.arrow_forward_ios, color: LColors.grey, size: 16),
+        ],
+      ),
+    );
+  }
 }
