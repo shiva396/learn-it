@@ -12,7 +12,7 @@ import 'package:learnit/ui/organisms/pages/test_packs/test_page.dart';
 import 'package:learnit/ui/organisms/pages/test_packs/test_results_page.dart';
 import 'package:learnit/ui/organisms/welcome/splash_screen.dart';
 import 'package:learnit/ui/organisms/pages/grammer/nouns_page.dart';
-import 'package:learnit/ui/organisms/pages/explanation/adjective/adjective_explanation_page.dart';
+import 'package:learnit/ui/organisms/pages/explanation/adjective_explanation_page.dart';
 import 'package:learnit/ui/organisms/pages/explanation/noun_explanation_page.dart';
 import 'package:learnit/ui/organisms/welcome/welcome_screen.dart';
 import 'package:learnit/ui/organisms/welcome/onboarding_screen.dart';

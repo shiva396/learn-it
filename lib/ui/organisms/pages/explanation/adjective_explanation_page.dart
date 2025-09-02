@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 import 'package:learnit/ui/molecules/video_card.dart';
 import 'package:learnit/data/video_data.dart';
-import 'package:learnit/ui/organisms/pages/video_player_page.dart';
+import 'package:learnit/ui/molecules/video_player_page.dart';
 
 class AdjectiveExplanationPage extends StatelessWidget {
   const AdjectiveExplanationPage({Key? key}) : super(key: key);
