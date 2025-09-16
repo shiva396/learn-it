@@ -3,16 +3,20 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 import 'package:learnit/ui/atoms/colors.dart';
 import 'package:learnit/services/recent_activities_service.dart';
+import 'package:learnit/ui/molecules/video_transcription_widget.dart';
+import 'package:learnit/ui/molecules/live_caption_bar.dart';
 import 'dart:async';
 
 class VideoPlayerPage extends StatefulWidget {
   final String videoPath;
   final String description;
+  final String? transcriptionPath;
 
   const VideoPlayerPage({
     Key? key,
     required this.videoPath,
     required this.description,
+    this.transcriptionPath,
   }) : super(key: key);
 
   @override
@@ -85,6 +89,18 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     _startHideControlsTimer();
   }
 
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes % 60;
+    final seconds = duration.inSeconds % 60;
+
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    }
+  }
+
   Widget _buildVideoWithControls(BuildContext context, bool isPortrait) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -130,6 +146,34 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                           playedColor: Colors.red,
                           bufferedColor: Colors.grey,
                           backgroundColor: Colors.black,
+                        ),
+                      ),
+                      // Duration display
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 4.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _formatDuration(_controller.value.position),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              _formatDuration(_controller.value.duration),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Row(
@@ -282,16 +326,35 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            'Transcription content goes here.',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                        widget.transcriptionPath != null
+                            ? Column(
+                              children: [
+                                LiveCaptionBar(
+                                  videoController: _controller,
+                                  transcriptionAssetPath:
+                                      widget.transcriptionPath,
+                                ),
+                                Expanded(
+                                  child: VideoTranscriptionWidget(
+                                    videoController: _controller,
+                                    transcriptionAssetPath:
+                                        widget.transcriptionPath!,
+                                  ),
+                                ),
+                              ],
+                            )
+                            : const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(
+                                child: Text(
+                                  'No transcription available for this video.',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

@@ -251,7 +251,7 @@ class TestPacksData {
         id: 'adj_easy_8',
         question:
             'In the sentence, "The hungry cat meowed loudly," what does the word "hungry" describe?',
-        options: ['Cat', 'Meowed', 'The', 'Cat'],
+        options: ['Cat', 'Meowed', 'The', 'Loudly'],
         correctAnswerIndex: 0,
         explanation: '"Hungry" describes the state or condition of the cat.',
       ),

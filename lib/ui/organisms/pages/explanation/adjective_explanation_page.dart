@@ -48,6 +48,10 @@ class AdjectiveExplanationPage extends StatelessWidget {
                         (context) => VideoPlayerPage(
                           videoPath: video.videoPath,
                           description: video.title,
+                          transcriptionPath:
+                              video.videoPath.contains('adjective')
+                                  ? 'assets/subtitle/adjective.txt'
+                                  : null,
                         ),
                   ),
                 ),

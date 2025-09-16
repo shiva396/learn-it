@@ -36,15 +36,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
     {'name': 'giant', 'scale': 2.0},
   ];
 
-  final List<Map<String, dynamic>> shapes = [
-    {'name': 'round', 'description': 'Circular petals'},
-    {'name': 'star-shaped', 'description': 'Pointed like a star'},
-    {'name': 'heart-shaped', 'description': 'Shaped like hearts'},
-    {'name': 'trumpet', 'description': 'Long and tubular'},
-    {'name': 'daisy-like', 'description': 'Simple and cheerful'},
-    {'name': 'rose-like', 'description': 'Layered and elegant'},
-  ];
-
   final List<Map<String, dynamic>> atmospheres = [
     {'name': 'sunny', 'description': 'Bright sunny day', 'icon': '☀️'},
     {'name': 'moonlit', 'description': 'Magical moonlit night', 'icon': '🌙'},
@@ -66,7 +57,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
   // State variables
   String? selectedColor;
   String? selectedSize;
-  String? selectedShape;
   String? selectedAtmosphere;
   String selectedPlantType = 'sunflower';
   bool _showMagic = false;
@@ -215,7 +205,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
 
       if (category == 'color') selectedColor = value;
       if (category == 'size') selectedSize = value;
-      if (category == 'shape') selectedShape = value;
       if (category == 'atmosphere') selectedAtmosphere = value;
     });
 
@@ -249,7 +238,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
     final applied = [
       if (selectedColor != null) selectedColor!,
       if (selectedSize != null) selectedSize!,
-      if (selectedShape != null) selectedShape!,
       if (selectedAtmosphere != null) selectedAtmosphere!,
     ];
 
@@ -277,7 +265,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
     setState(() {
       selectedColor = null;
       selectedSize = null;
-      selectedShape = null;
       selectedAtmosphere = null;
     });
 
@@ -310,7 +297,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
     final applied = [
       if (selectedColor != null) selectedColor!,
       if (selectedSize != null) selectedSize!,
-      if (selectedShape != null) selectedShape!,
       if (selectedAtmosphere != null) selectedAtmosphere!,
     ];
 
@@ -419,7 +405,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
                                 painter: RealisticPlantPainter(
                                   plantType: selectedPlantType,
                                   color: _getColorFromAdjective(selectedColor),
-                                  shape: selectedShape,
                                   atmosphere: selectedAtmosphere,
                                   growthValue: _growthAnim.value,
                                   bloomValue: _bloomAnim.value,
@@ -560,7 +545,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
                   children: [
                     _buildEnhancedCategory('Colors', colors, 'color'),
                     _buildEnhancedCategory('Sizes', sizes, 'size'),
-                    _buildEnhancedCategory('Shapes', shapes, 'shape'),
                     _buildEnhancedCategory(
                       'Atmosphere',
                       atmospheres,
@@ -723,7 +707,6 @@ class _MagicalGardenGrowerPageState extends State<MagicalGardenGrowerPage>
   bool _isSelected(String category, String value) {
     return (category == 'color' && selectedColor == value) ||
         (category == 'size' && selectedSize == value) ||
-        (category == 'shape' && selectedShape == value) ||
         (category == 'atmosphere' && selectedAtmosphere == value);
   }
 }
@@ -1803,7 +1786,6 @@ class SparkleEffectPainter extends CustomPainter {
 class RealisticPlantPainter extends CustomPainter {
   final String plantType;
   final Color color;
-  final String? shape;
   final String? atmosphere;
   final double growthValue;
   final double bloomValue;
@@ -1811,7 +1793,6 @@ class RealisticPlantPainter extends CustomPainter {
   RealisticPlantPainter({
     required this.plantType,
     required this.color,
-    this.shape,
     this.atmosphere,
     required this.growthValue,
     required this.bloomValue,
@@ -1981,7 +1962,11 @@ class RealisticPlantPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawRealisticFlower(Canvas canvas, Offset center, double bloom) {
+  void _drawRealisticFlower(
+    Canvas canvas,
+    Offset center,
+    double bloom,
+  ) {
     // Scale up flowers significantly for realistic size
     final baseSize = 40 * bloom; // Much larger base size
 
@@ -2107,6 +2092,8 @@ class RealisticPlantPainter extends CustomPainter {
 
     canvas.restore();
   }
+
+
 
   void _drawRealisticRose(
     Canvas canvas,

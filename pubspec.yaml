@@ -32,5 +32,6 @@ flutter:
     - assets/images/onboard/
     - assets/images/gif/
     - assets/images/assessment/
+    - assets/subtitle/
     - assets/videos/
     - assets/markdown/
