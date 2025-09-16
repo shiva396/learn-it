@@ -1962,11 +1962,7 @@ class RealisticPlantPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawRealisticFlower(
-    Canvas canvas,
-    Offset center,
-    double bloom,
-  ) {
+  void _drawRealisticFlower(Canvas canvas, Offset center, double bloom) {
     // Scale up flowers significantly for realistic size
     final baseSize = 40 * bloom; // Much larger base size
 
@@ -2092,8 +2088,6 @@ class RealisticPlantPainter extends CustomPainter {
 
     canvas.restore();
   }
-
-
 
   void _drawRealisticRose(
     Canvas canvas,

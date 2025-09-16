@@ -168,55 +168,11 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
     },
   ];
 
-  final List<Map<String, dynamic>> personalities = [
-    {
-      'name': 'lazy',
-      'description': 'Loves to relax and nap',
-      'activity': 'sleeping',
-    },
-    {
-      'name': 'energetic',
-      'description': 'Full of energy and life',
-      'activity': 'jumping',
-    },
-    {
-      'name': 'curious',
-      'description': 'Always exploring new things',
-      'activity': 'investigating',
-    },
-    {
-      'name': 'shy',
-      'description': 'Quiet and reserved nature',
-      'activity': 'hiding',
-    },
-    {
-      'name': 'brave',
-      'description': 'Fearless and bold spirit',
-      'activity': 'prowling',
-    },
-    {
-      'name': 'mischievous',
-      'description': 'Playfully naughty',
-      'activity': 'plotting',
-    },
-    {
-      'name': 'gentle',
-      'description': 'Kind and loving heart',
-      'activity': 'purring',
-    },
-    {
-      'name': 'independent',
-      'description': 'Self-reliant and confident',
-      'activity': 'observing',
-    },
-  ];
-
   // State variables
   String? selectedColor;
   String? selectedSize;
   String? selectedTexture;
   String? selectedFeeling;
-  String? selectedPersonality;
   bool _showMagic = false;
   bool _showStars = false;
   bool _isMuted = false;
@@ -388,7 +344,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       if (category == 'size') selectedSize = value;
       if (category == 'texture') selectedTexture = value;
       if (category == 'feeling') selectedFeeling = value;
-      if (category == 'personality') selectedPersonality = value;
     });
 
     // Trigger animations
@@ -437,7 +392,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       if (selectedTexture != null) selectedTexture!,
       if (selectedSize != null) selectedSize!,
       if (selectedFeeling != null) selectedFeeling!,
-      if (selectedPersonality != null) selectedPersonality!,
     ];
 
     final sentence = _buildEnhancedSentence(applied);
@@ -468,7 +422,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       selectedSize = null;
       selectedTexture = null;
       selectedFeeling = null;
-      selectedPersonality = null;
     });
     _controller.forward(from: 0);
 
@@ -500,7 +453,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
       if (selectedTexture != null) selectedTexture!,
       if (selectedSize != null) selectedSize!,
       if (selectedFeeling != null) selectedFeeling!,
-      if (selectedPersonality != null) selectedPersonality!,
     ];
 
     return Scaffold(
@@ -601,7 +553,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                                   color: _getColorFromAdjective(selectedColor),
                                   texture: selectedTexture,
                                   feeling: selectedFeeling,
-                                  personality: selectedPersonality,
                                   animationValue: _magicAnim.value,
                                   scale: _getScaleFromSize(selectedSize),
                                 ),
@@ -676,11 +627,6 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
                     _buildEnhancedCategory('Sizes', sizes, 'size'),
                     _buildEnhancedCategory('Textures', textures, 'texture'),
                     _buildEnhancedCategory('Feelings', feelings, 'feeling'),
-                    _buildEnhancedCategory(
-                      'Personalities',
-                      personalities,
-                      'personality',
-                    ),
                   ],
                 ),
               ),
@@ -802,21 +748,52 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
     );
   }
 
-  // Enhanced sentence builder with more dynamic descriptions
+  // Helper function to determine correct article (a/an)
+  String _getCorrectArticle(String word) {
+    if (word.isEmpty) return 'a';
+
+    // Words that start with vowel sounds
+    final vowelSounds = ['a', 'e', 'i', 'o', 'u'];
+    final firstLetter = word.toLowerCase()[0];
+
+    // Special cases for words that start with 'u' but have consonant sound
+    if (word.toLowerCase().startsWith('un')) {
+      return 'an'; // uniform, unusual, etc.
+    }
+
+    // Special cases for 'h' words
+    if (firstLetter == 'h') {
+      // Silent 'h' words use 'an'
+      final silentHWords = ['hour', 'honest', 'honor', 'heir'];
+      if (silentHWords.any(
+        (silentWord) => word.toLowerCase().startsWith(silentWord),
+      )) {
+        return 'an';
+      }
+      return 'a'; // most 'h' words use 'a'
+    }
+
+    return vowelSounds.contains(firstLetter) ? 'an' : 'a';
+  }
+
+  // Enhanced sentence builder with proper grammar
   String _buildEnhancedSentence(List<String> adjectives) {
     if (adjectives.isEmpty) {
       return 'This is just a plain, ordinary cat waiting for your magic!';
     }
 
     if (adjectives.length == 1) {
-      return 'This is a ${adjectives[0]} cat!';
+      final article = _getCorrectArticle(adjectives[0]);
+      return 'This is $article ${adjectives[0]} cat!';
     }
 
     if (adjectives.length <= 3) {
-      return 'This is a ${adjectives.join(', ')} cat!';
+      final article = _getCorrectArticle(adjectives[0]);
+      return 'This is $article ${adjectives.join(', ')} cat!';
     }
 
-    return 'This is a ${adjectives.sublist(0, adjectives.length - 1).join(', ')}, and ${adjectives.last} cat!';
+    final article = _getCorrectArticle(adjectives[0]);
+    return 'This is $article ${adjectives.sublist(0, adjectives.length - 1).join(', ')}, and ${adjectives.last} cat!';
   }
 
   Color _getColorFromAdjective(String? color) {
@@ -841,8 +818,7 @@ class _PaintTheCatPageState extends State<PaintTheCatPage>
     return (category == 'color' && selectedColor == value) ||
         (category == 'size' && selectedSize == value) ||
         (category == 'texture' && selectedTexture == value) ||
-        (category == 'feeling' && selectedFeeling == value) ||
-        (category == 'personality' && selectedPersonality == value);
+        (category == 'feeling' && selectedFeeling == value);
   }
 }
 
@@ -920,7 +896,6 @@ class RealisticCatPainter extends CustomPainter {
   final Color color;
   final String? texture;
   final String? feeling;
-  final String? personality;
   final double animationValue;
   final double scale;
 
@@ -928,7 +903,6 @@ class RealisticCatPainter extends CustomPainter {
     required this.color,
     this.texture,
     this.feeling,
-    this.personality,
     required this.animationValue,
     this.scale = 1.0,
   });
@@ -956,7 +930,6 @@ class RealisticCatPainter extends CustomPainter {
     _drawFacialFeatures(canvas, center, bodyScale);
     _drawWhiskers(canvas, center, bodyScale);
     _drawTexture(canvas, center, bodyScale);
-    _drawPersonalityEffects(canvas, center, bodyScale);
     _drawEmotionalEffects(canvas, center, bodyScale);
   }
 
@@ -1497,13 +1470,17 @@ class RealisticCatPainter extends CustomPainter {
   }
 
   void _drawFrontLegs(Canvas canvas, Offset center, double scale) {
-    _drawRealisticLeg(canvas, center.translate(-40 * scale, 35 * scale), scale);
-    _drawRealisticLeg(canvas, center.translate(-15 * scale, 40 * scale), scale);
+    // Left front leg - positioned more naturally under the chest
+    _drawRealisticLeg(canvas, center.translate(-30 * scale, 50 * scale), scale);
+    // Right front leg - slightly forward and to the right
+    _drawRealisticLeg(canvas, center.translate(-10 * scale, 55 * scale), scale);
   }
 
   void _drawBackLegs(Canvas canvas, Offset center, double scale) {
-    _drawRealisticLeg(canvas, center.translate(15 * scale, 40 * scale), scale);
-    _drawRealisticLeg(canvas, center.translate(40 * scale, 35 * scale), scale);
+    // Left back leg - positioned more naturally under the body
+    _drawRealisticLeg(canvas, center.translate(20 * scale, 50 * scale), scale);
+    // Right back leg - slightly back and to the right
+    _drawRealisticLeg(canvas, center.translate(45 * scale, 45 * scale), scale);
   }
 
   void _drawRealisticLeg(Canvas canvas, Offset legPos, double scale) {
@@ -1801,23 +1778,6 @@ class RealisticCatPainter extends CustomPainter {
     }
   }
 
-  void _drawPersonalityEffects(Canvas canvas, Offset center, double scale) {
-    switch (personality) {
-      case 'lazy':
-        _drawSleepyZzz(canvas, center, scale);
-        break;
-      case 'energetic':
-        _drawEnergyLines(canvas, center, scale);
-        break;
-      case 'mischievous':
-        _drawMischievousGlint(canvas, center, scale);
-        break;
-      case 'brave':
-        _drawConfidentAura(canvas, center, scale);
-        break;
-    }
-  }
-
   void _drawEmotionalEffects(Canvas canvas, Offset center, double scale) {
     switch (feeling) {
       case 'happy':
@@ -1833,70 +1793,6 @@ class RealisticCatPainter extends CustomPainter {
         _drawShockLines(canvas, center, scale);
         break;
     }
-  }
-
-  void _drawSleepyZzz(Canvas canvas, Offset center, double scale) {
-    final zzzPaint =
-        Paint()
-          ..color = Colors.blue[300]!.withOpacity(0.6)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2 * scale;
-
-    for (int i = 0; i < 3; i++) {
-      final zPos = center.translate(
-        30 * scale + i * 15 * scale,
-        -60 * scale + i * 10 * scale,
-      );
-      final zPath =
-          Path()
-            ..moveTo(zPos.dx, zPos.dy)
-            ..lineTo(zPos.dx + 8 * scale, zPos.dy)
-            ..lineTo(zPos.dx, zPos.dy + 8 * scale)
-            ..lineTo(zPos.dx + 8 * scale, zPos.dy + 8 * scale);
-      canvas.drawPath(zPath, zzzPaint);
-    }
-  }
-
-  void _drawEnergyLines(Canvas canvas, Offset center, double scale) {
-    final energyPaint =
-        Paint()
-          ..color = Colors.yellow[600]!.withOpacity(0.7)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3 * scale;
-
-    for (int i = 0; i < 8; i++) {
-      final angle = i * pi / 4;
-      final start = center.translate(
-        cos(angle) * 100 * scale,
-        sin(angle) * 100 * scale,
-      );
-      final end = center.translate(
-        cos(angle) * 120 * scale,
-        sin(angle) * 120 * scale,
-      );
-      canvas.drawLine(start, end, energyPaint);
-    }
-  }
-
-  void _drawMischievousGlint(Canvas canvas, Offset center, double scale) {
-    final glintPaint = Paint()..color = Colors.white.withOpacity(0.8);
-
-    // Eye glint
-    final eyePos = center.translate(0, -95 * scale);
-    canvas.drawCircle(eyePos.translate(-20 * scale, 0), 3 * scale, glintPaint);
-    canvas.drawCircle(eyePos.translate(20 * scale, 0), 3 * scale, glintPaint);
-  }
-
-  void _drawConfidentAura(Canvas canvas, Offset center, double scale) {
-    final auraPaint =
-        Paint()
-          ..color = Colors.orange[300]!.withOpacity(0.3)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
-
-    canvas.drawOval(
-      Rect.fromCenter(center: center, width: 250 * scale, height: 180 * scale),
-      auraPaint,
-    );
   }
 
   void _drawHappySparkles(Canvas canvas, Offset center, double scale) {
